@@ -1,0 +1,327 @@
+# compliance_rules.yaml
+#
+# Source-of-truth mapping from governance patterns to the regulations they satisfy.
+# Updates require a PR with a regulatory citation and a test proving the pattern
+# function still satisfies the cited clause.
+#
+# Schema:
+#   patterns:
+#     <pattern_name>:
+#       adr: <ADR number>
+#       regulations:
+#         - name: <regulation name>
+#           statute: <citation>
+#           clause: <one-line description>
+#           jurisdiction_level: federal | state | municipal | international
+#           jurisdictions: [<list of applicable jurisdictions>]
+#           effective_date: <YYYY-MM-DD>
+#           pattern_function: <code symbol that implements the satisfaction>
+#           nist_ai_rmf_function: GOVERN | MAP | MEASURE | MANAGE
+#           treasury_fs_ai_rmf_controls: [<list of TFRMF-* control IDs>]
+#           last_reviewed: <YYYY-MM-DD>
+#
+# `nist_ai_rmf_function` maps to NIST AI RMF 1.0 (2023) core functions
+# (https://www.nist.gov/itl/ai-risk-management-framework).
+#
+# `treasury_fs_ai_rmf_controls` maps to the Treasury Financial Services AI Risk
+# Management Framework released 2026-02-19 (230 total control objectives).
+# Control ID prefixes used here:
+#   TFRMF-LG · Lifecycle Governance (§§ 1.1-1.12)
+#   TFRMF-DA · Decision Authority + Override (§§ 2.1-2.5)
+#   TFRMF-AT · Audit + Traceability (§§ 3.1-3.9)
+#   TFRMF-PR · Pre-Production / Promotion Validation (§§ 4.1-4.7)
+#   TFRMF-DL · Data Lineage (§§ 5.1-5.4)
+#   TFRMF-CF · Compliance + Fairness (§§ 5.5-5.8)
+#   TFRMF-DR · Data Residency + Cross-Border (§§ 5.9-5.12)
+# The Treasury document's exact section numbering is canonical; these mappings
+# are best-effort by ADR and should be validated against the document on every
+# annual review.
+
+version: "1.1.0"
+last_repo_review: "2026-05-22"
+maintainer: "Kunjar Bhaduri"
+
+meta:
+  nist_ai_rmf_version: "1.0 (2023-01-26, with 2024-2025 profile extensions)"
+  treasury_fs_ai_rmf_version: "1.0 (2026-02-19)"
+  notes: |
+    Mapping discipline per Gap-Finding G-58 (Memo: Gap_Finding_Synthesis_Report_2026-05-22.md).
+    NIST AI RMF + Treasury FS AI RMF 230-control overlay is the credibility anchor for
+    Private Capital buyer conversations. Every pattern carries at least one NIST function +
+    one Treasury control range.
+
+patterns:
+
+  # ─────────────────────────────────────────────────────────────
+  # INHERITED PATTERNS
+  # ─────────────────────────────────────────────────────────────
+
+  defcon_state_machine:
+    adr: "0001"
+    regulations:
+      - name: "NIST AI Risk Management Framework"
+        statute: "NIST AI RMF 1.0 GOVERN 1.6"
+        clause: "incident response procedures documented and tested"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2023-01-26"
+        pattern_function: "DefconController.transition_to"
+        nist_ai_rmf_function: "GOVERN"
+        treasury_fs_ai_rmf_controls: ["TFRMF-LG-01", "TFRMF-LG-02", "TFRMF-LG-03"]
+        last_reviewed: "2026-05-22"
+
+  sovereign_veto:
+    adr: "0002"
+    regulations:
+      - name: "NIST AI Risk Management Framework"
+        statute: "NIST AI RMF 1.0 MANAGE 2.3"
+        clause: "risk decisions and tradeoffs documented"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2023-01-26"
+        pattern_function: "SovereignVeto.check"
+        nist_ai_rmf_function: "GOVERN"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DA-01", "TFRMF-DA-02", "TFRMF-DA-03"]
+        last_reviewed: "2026-05-22"
+      - name: "NIST AI Risk Management Framework — measurement function"
+        statute: "NIST AI RMF 1.0 MEASURE 2.1"
+        clause: "veto outcomes measured against constraint surface"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2023-01-26"
+        pattern_function: "SovereignVeto.check"
+        nist_ai_rmf_function: "MEASURE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DA-04", "TFRMF-DA-05"]
+        last_reviewed: "2026-05-22"
+
+  hash_chain_audit_ledger:
+    adr: "0003"
+    regulations:
+      - name: "SOC 2 Trust Services Criteria"
+        statute: "AICPA TSP 100 (2017) CC7.2"
+        clause: "system monitoring and evidence preservation"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2018-12-15"
+        pattern_function: "AuditChain.append"
+        nist_ai_rmf_function: "MEASURE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-AT-01", "TFRMF-AT-02", "TFRMF-AT-03", "TFRMF-AT-04"]
+        last_reviewed: "2026-05-22"
+      - name: "SEC 17a-4"
+        statute: "17 CFR § 240.17a-4"
+        clause: "record retention and immutability"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "1997-10-15"
+        pattern_function: "AuditChain.checkpoint"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-AT-05", "TFRMF-AT-06", "TFRMF-AT-07", "TFRMF-AT-08", "TFRMF-AT-09"]
+        last_reviewed: "2026-05-22"
+
+  autonomy_ladder_a0_a4:
+    adr: "0004"
+    regulations:
+      - name: "EU AI Act"
+        statute: "Regulation (EU) 2024/1689 Art. 14"
+        clause: "human oversight requirements scale by risk class"
+        jurisdiction_level: international
+        jurisdictions: ["eu_de", "eu_fr", "eu_it", "eu_es", "eu_nl"]
+        effective_date: "2026-08-02"
+        pattern_function: "AutonomyLadder.gate"
+        nist_ai_rmf_function: "GOVERN"
+        treasury_fs_ai_rmf_controls: ["TFRMF-LG-08", "TFRMF-LG-09", "TFRMF-LG-10"]
+        last_reviewed: "2026-05-22"
+      - name: "Colorado AI Act"
+        statute: "SB 26-189"
+        clause: "impact assessments for consequential decisions"
+        jurisdiction_level: state
+        jurisdictions: ["us_co"]
+        effective_date: "2027-01-01"
+        pattern_function: "AutonomyLadder.promotion_audit"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-LG-11", "TFRMF-LG-12"]
+        last_reviewed: "2026-05-22"
+        notes: "SB 24-205 stayed by federal magistrate 2026-04-27; SB 26-189 (signed 2026-05-14 per Holland & Knight) is operative"
+
+  regulation_to_pattern_mapping:
+    adr: "0005"
+    regulations:
+      - name: "self-referential"
+        statute: "this YAML file"
+        clause: "the mapping IS the artifact"
+        jurisdiction_level: federal
+        jurisdictions: ["all"]
+        pattern_function: "RegulationLoader.from_file"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-LG-04", "TFRMF-LG-05"]
+        last_reviewed: "2026-05-22"
+
+  shadow_mode_rollout:
+    adr: "0006"
+    regulations:
+      - name: "SR 11-7 (Federal Reserve model risk guidance)"
+        statute: "SR Letter 11-7"
+        clause: "model validation including parallel testing"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2011-04-04"
+        pattern_function: "ShadowRouter.aggregate_divergence_rate"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-PR-01", "TFRMF-PR-02"]
+        last_reviewed: "2026-05-22"
+        notes: "SR 11-7 superseded by SR 26-2 on 2026-04-17; SR 26-2 explicitly carved out GenAI / agentic AI — Shadow Mode operates in that vacuum"
+      - name: "SR 26-2 (Fed/OCC/FDIC interagency Model Risk Management revision)"
+        statute: "Joint guidance issued 2026-04-17"
+        clause: "promotion gates with quantified divergence under representative traffic"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2026-04-17"
+        pattern_function: "ShadowRouter.promotion_check"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-PR-03", "TFRMF-PR-04", "TFRMF-PR-05", "TFRMF-PR-06", "TFRMF-PR-07"]
+        last_reviewed: "2026-05-22"
+
+  # ─────────────────────────────────────────────────────────────
+  # CRE-NATIVE PATTERNS
+  # ─────────────────────────────────────────────────────────────
+
+  lease_abstraction_provenance_chain:
+    adr: "0007"
+    regulations:
+      - name: "SOC 2 Trust Services Criteria"
+        statute: "AICPA TSP 100 (2017) CC7.2"
+        clause: "evidence preservation for system outputs"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2018-12-15"
+        pattern_function: "LeaseProvenanceCheck.evaluate"
+        nist_ai_rmf_function: "MEASURE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DL-01", "TFRMF-DL-02"]
+        last_reviewed: "2026-05-22"
+      - name: "Institutional Lease-Administration Audit Standards"
+        statute: "industry standard (REIT / fund / family office)"
+        clause: "material clause changes require reviewer signature"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        pattern_function: "LeaseProvenanceCheck.evaluate"
+        nist_ai_rmf_function: "MEASURE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DL-03", "TFRMF-DL-04"]
+        last_reviewed: "2026-05-22"
+
+  fair_housing_preflight_gate:
+    adr: "0008"
+    regulations:
+      - name: "Fair Housing Act"
+        statute: "42 U.S.C. § 3604"
+        clause: "discrimination in the sale or rental of housing"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "1968-04-11"
+        pattern_function: "FairHousingPreflightGate.evaluate"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-01", "TFRMF-CF-02"]
+        last_reviewed: "2026-05-22"
+      - name: "Equal Credit Opportunity Act (ECOA)"
+        statute: "15 U.S.C. § 1691"
+        clause: "discrimination in any aspect of a credit transaction"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "1974-10-28"
+        pattern_function: "FairHousingPreflightGate.evaluate"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-03"]
+        last_reviewed: "2026-05-22"
+      - name: "Disparate-Impact Standard"
+        statute: "24 C.F.R. § 100.500"
+        clause: "discriminatory effect liability under FHA"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2013-02-08"
+        pattern_function: "DisparateImpactMonitor.lowest_cohort_ratio"
+        nist_ai_rmf_function: "MEASURE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-04", "TFRMF-CF-05"]
+        last_reviewed: "2026-05-22"
+      - name: "HUD AI Guidance"
+        statute: "2024 HUD memorandum on AI and Fair Housing"
+        clause: "AI-driven tenant screening must be FHA-compliant by design"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2024-04-29"
+        pattern_function: "FairHousingPreflightGate.evaluate"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-06"]
+        last_reviewed: "2026-05-22"
+      - name: "Colorado AI Act"
+        statute: "SB 26-189"
+        clause: "impact assessments for consequential decisions including tenant screening"
+        jurisdiction_level: state
+        jurisdictions: ["us_co"]
+        effective_date: "2027-01-01"
+        pattern_function: "FairHousingPreflightGate.evaluate"
+        nist_ai_rmf_function: "MAP"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-07"]
+        last_reviewed: "2026-05-22"
+      - name: "Source-of-Income Protections"
+        statute: "state-specific"
+        clause: "income source may not be used in housing decisions in protected jurisdictions"
+        jurisdiction_level: state
+        jurisdictions: ["us_ca", "us_ct", "us_dc", "us_ma", "us_mn", "us_nj", "us_ny", "us_or", "us_vt", "us_wa"]
+        pattern_function: "FairHousingPreflightGate._resolve_rules"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-08"]
+        last_reviewed: "2026-05-22"
+        notes: "Municipal layers exist beyond state floor — community PRs requested via issue #9"
+      - name: "DOJ-RealPage Restrictions"
+        statute: "United States v. RealPage Inc. consent decree (Nov 24, 2025)"
+        clause: "rent-pricing AI data must be >= 1 yr old, state-wide granularity, no user-meeting pricing discussions"
+        jurisdiction_level: federal
+        jurisdictions: ["us_federal"]
+        effective_date: "2025-11-24"
+        pattern_function: "RealPageAntitrustCheck.evaluate"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-CF-09"]
+        last_reviewed: "2026-05-22"
+
+  tenant_pii_data_residency_partitioning:
+    adr: "0009"
+    regulations:
+      - name: "GDPR"
+        statute: "Regulation (EU) 2016/679 Art. 6"
+        clause: "lawful basis required for personal data processing"
+        jurisdiction_level: international
+        jurisdictions: ["eu_de", "eu_fr", "eu_it", "eu_es", "eu_nl"]
+        effective_date: "2018-05-25"
+        pattern_function: "TenantPIIResidencyCheck.evaluate"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DR-01", "TFRMF-DR-02", "TFRMF-DR-03"]
+        last_reviewed: "2026-05-22"
+      - name: "CCPA / CPRA"
+        statute: "Cal. Civ. Code § 1798.100 et seq."
+        clause: "consumer rights to know, delete, correct, limit"
+        jurisdiction_level: state
+        jurisdictions: ["us_ca"]
+        effective_date: "2020-01-01"
+        pattern_function: "TenantPIIResidencyCheck.evaluate"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DR-04", "TFRMF-DR-05"]
+        last_reviewed: "2026-05-22"
+      - name: "State Tenant-Data-Protection Statutes"
+        statute: "state-specific"
+        clause: "tenant PII handling under state housing laws"
+        jurisdiction_level: state
+        jurisdictions: ["us_ny", "us_ca", "us_ma", "us_wa"]
+        pattern_function: "TenantPIIResidencyCheck.evaluate"
+        nist_ai_rmf_function: "MANAGE"
+        treasury_fs_ai_rmf_controls: ["TFRMF-DR-06", "TFRMF-DR-07"]
+        last_reviewed: "2026-05-22"
+
+# ─────────────────────────────────────────────────────────────
+# Open community contributions invited:
+# - Municipal SOI ordinances beyond the federal/state floor (issue #9 · good first issue)
+# - Multi-language lease provenance extensions (issue #10)
+# - Adversarial test corpus per pattern (issue #8 · good first issue)
+# - k-anonymity / differential privacy gates on aggregates (ADR-0009 extension · issue #17)
+# - Authoritative cross-reference against Treasury FS AI RMF section numbers in the
+#   published PDF (the TFRMF-* IDs in this file are best-effort mappings by lifecycle
+#   phase; the canonical numbering lives in the Treasury document)
+# ─────────────────────────────────────────────────────────────
