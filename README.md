@@ -20,13 +20,13 @@
 >
 > **v0.2.x patches landing post-Mon Jun 2:** per-clause-kind typed schema specializations · orchestrator wiring against the full compose order · NIST AI RMF + Treasury FS AI RMF 230-control mapping in `compliance_rules.yaml` · full FINOS AIR Governance Framework submission (18-file PR).
 
-92% of CRE firms are piloting AI agents. 5% have hit program goals. The gap is governance.
+Three settled cases anchor the difference between an AI program that works and an AI program that becomes a liability. **TransUnion** paid $15M to the FTC and the CFPB in October 2023 on a tenant-screening AI tool. **SafeRent** settled for $2.3M in November 2024 on an AI scoring model that treated housing-voucher status as a Fair Housing Act violation. **RealPage** agreed to binding DOJ restrictions in November 2025 on rent-pricing AI — data at least one year old, state-wide granularity only, no pricing discussions permitted at user meetings.
 
-Three settled cases anchor the discipline. **TransUnion** paid $15M to the FTC and the CFPB in October 2023 on a tenant-screening AI tool. **SafeRent** settled for $2.3M in November 2024 on an AI scoring model that treated housing-voucher status as a Fair Housing Act violation. **RealPage** agreed to binding DOJ restrictions in November 2025 on rent-pricing AI — data at least one year old, state-wide granularity only, no pricing discussions permitted at user meetings.
+92% of CRE firms are piloting AI agents. 5% have hit program goals. The gap between those numbers is governance. The gap between governance and settled liability is months.
 
 The **Colorado AI Act** (SB 189, signed March 14, 2026) sets a **January 1, 2027** compliance deadline for impact assessments and risk-management policies on consequential decisions, with tenant screening named explicitly. Other states are drafting against the Colorado template.
 
-This repo is a **reference architecture, not a product**. Nine architectural decision records — six patterns inherited from [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit), three CRE-native. MIT-licensed. Fork it. Pressure-test it. Open an issue.
+This repo is the governance standard those three cases should have triggered. A **reference architecture, not a product**. Nine architectural decision records — six patterns inherited from [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit), three CRE-native. MIT-licensed. **Fork it if you operate CRE technology. Use it if you write checks into CRE platforms with AI inside.**
 
 ---
 
