@@ -74,7 +74,7 @@ from cre_agent_audit.governance.tenant_pii_residency import (
     TenantPIIResidencyCheck,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.2.1.dev1"
 __all__ = [
     # Pattern 1 — DEFCON state machine (ADR-0001)
     "Capability",

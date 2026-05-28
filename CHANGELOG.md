@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] — v0.2.1 in flight
+
+**v0.2.1 hardening — PR 1 + PR 2 (storage foundation + trusted timestamps + witness anchor).** Closes 3 of the 7 deferred items named in [`docs/SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md). Remaining v0.2.1 items (MI-threshold proxy detection, `VendorScoreGate` concrete implementation, agent topology pruning, full `docs/FAILURE-MODES.md` appendix) tracked for subsequent PRs before v0.2.1 tag.
+
+### Added
+
+- **Pluggable persistence via `LedgerStore` Protocol** (ADR-0012 § Seam 1).
+  - `InMemoryLedgerStore` — v0.2.0 behavior preserved as the default backend.
+  - `SqliteLedgerStore` — stdlib `sqlite3` backend; one row per `AuditEntry`; no UPDATE codepath; table name validated to prevent injection.
+  - `JsonlLedgerStore` — append-only JSONL file; `fsync=True` default for durability.
+  - Production deployers wire Postgres+WAL / S3+Object Lock / DynamoDB conditional writes against the Protocol; ADR-0012 documents the integration shape. Driver libraries stay out of the package — the Zero-Deps badge is intact.
+- **Trusted timestamps via `TimestampSource` Protocol** (ADR-0012 § Seam 2).
+  - `LocalClockTimestampSource` — `datetime.now(timezone.utc)`; no token; preserves v0.2.0 semantics.
+  - `RFC3161TimestampSource` — stdlib `http.client` + `ssl` TSA client; fallback-to-local on TSA failure (so a TSA outage cannot stall the audit pipeline); `on_fallback` callback for deployer alerting; set `fallback_to_local_on_failure=False` to fail closed.
+  - Hand-rolled `rfc3161_codec.py` covers the DER ASN.1 subset RFC 3161 actually uses (TSQ builder + GeneralizedTime extraction). Signature-chain verification deferred to `rfc3161_verify.py` behind the (forthcoming) `audit-verify` extra.
+- **`AuditEntry.timestamp_token_b64`** — optional field; bound into `canonical_bytes_for_hashing` ONLY when present, so v0.2.0 token-free ledgers remain hash-stable under v0.2.1 `verify_chain()`. Mixed-mode ledgers (some entries with tokens, some without) are supported and audit-honest.
+- **External witness anchoring via `WitnessRegister` Protocol** (ADR-0012 § Seam 3).
+  - `RekorWitness` — Sigstore Rekor public transparency log client; submits `hashedrekord` entries; receives inclusion UUID + logIndex.
+  - `OpenTimestampsWitness` — OTS calendar API client with multi-calendar redundancy; pending-commitment receipt upgradable to Bitcoin attestation.
+  - `anchor_to_witness(ledger, witness)` writes the receipt back to the ledger as a `decision_type="witness_anchor"` entry — binding the anchor record into the same hash chain it protects.
+- **`docs/adr/0012-persistence-witness-timestamp-pattern.md`** documenting the three Protocol seams, the integration shape per non-stdlib backend, and the regulatory mapping (SOC 2 CC6.1 / CC7.2, SOX 404 ITGC, FFIEC Audit Booklet, RFC 3161, RFC 6962).
+
+### Changed
+
+- `AuditLedger.__init__` accepts `store: LedgerStore | None = None` and `timestamp_source: TimestampSource | None = None`. Both default to the v0.2.0 reference implementations via `__post_init__`. **Existing `AuditLedger()` callers see no behavior change.**
+- Public API surface (`__init__.py`) re-exports `LedgerStore`, `InMemoryLedgerStore`, `SqliteLedgerStore`, `JsonlLedgerStore` from the package root.
+
+### Tests
+
+- pytest: **185 / 185 passing** (was 142; +43 new tests across in-memory / SQLite / JSONL stores, timestamp source, RFC 3161 codec, witness anchor + AuditLedger integration)
+- pytest-cov: **88%** branch coverage (above 85% gate); covers the v0.2.0 baseline plus all new modules
+- mypy `--strict`: clean across 27+ source files
+- ruff + ruff format: clean
+- `make verify` end-to-end green (lint + format + typecheck + test + json-sync + wheel build + quickstart imports)
+
+### Deferred to subsequent v0.2.1 PRs
+
+The remaining 4 of 7 [`SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md) deferred items:
+
+- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update)
+- `VendorScoreGate` concrete implementation (ADR-0011 update) + SafeRent-shaped synthetic fixture
+- Agent topology pruning (`strategy`, `risk`, `domain_intelligence` stubs removed with deprecation; `orchestrator` + `monitor` promoted to functional implementations) (ADR-0013, forthcoming)
+- `docs/FAILURE-MODES.md` per-pattern negative-results appendix
+- Named-GC reference quotes
+- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation)
+
+v0.2.1 tag waits until those land.
+
+---
+
 ## [0.2.0] — 2026-06-02 — First public release · Foundation
 
 **First public release of cre-agent-audit.** Nine governance patterns for AI-enabled commercial real estate workflows. Built to a single design philosophy: durable artifacts, not slideware.
