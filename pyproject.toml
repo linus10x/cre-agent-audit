@@ -36,6 +36,9 @@ dev = [
   "types-pyyaml",
   "build>=1.0",
 ]
+audit-verify = [
+  "cryptography>=42",
+]
 
 [project.scripts]
 cre-replay = "cre_agent_audit.regulatory_replay.cli:main"

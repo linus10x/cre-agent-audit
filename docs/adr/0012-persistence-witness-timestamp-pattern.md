@@ -137,6 +137,30 @@ v0.2.1 ships:
 - `src/cre_agent_audit/governance/witness_anchor.py` — `RekorWitness`, `OpenTimestampsWitness`, `anchor_to_witness()`
 - Test files round-tripping each backend; mock HTTP server for Rekor; OTS unreachable-calendar failure path
 
+### v0.2.2 update — `rfc3161_verify` shipped under `[audit-verify]` extra
+
+The ADR-0012-A1 forward-reference to `rfc3161_verify.py` lands in v0.2.2. The module ships behind the optional `[project.optional-dependencies] audit-verify` extra (pulls `cryptography>=42`); the base `cre-agent-audit` package never imports it and the Zero-Runtime-Dependencies posture is preserved.
+
+```python
+from cre_agent_audit.governance.rfc3161_verify import (
+    verify_audit_entry_token,
+    verify_tsr_token,
+)
+
+result = verify_audit_entry_token(
+    entry=ledger.entries[42],
+    trusted_tsa_certs=load_trusted_tsa_bundle(),
+)
+if not result.verified:
+    log_verification_failure(result.errors)
+```
+
+The verifier accepts the JSON-wrapped CMS-shaped token `RFC3161TimestampSource` produces (`tsa_cert_pem`, `signature_b64`, `payload_hash_hex`, `issued_at_iso` struct), validates the TSA signature against the cert's RSA public key, chains the TSA cert to operator-supplied trusted roots, and checks the cert's `not_valid_after_utc` at verification time. The `accept_expired_at_verify_time` parameter (default `False`) honors the deployer's "valid at issuance is sufficient" policy when needed for long-horizon archival.
+
+Token-free `AuditEntry` instances (v0.2.0 default, no TSA call) return `TSRVerificationResult(verified=True, timestamp=None, ...)` — they carry no TSA claim, so there is nothing to invalidate.
+
+CI installs `[dev,audit-verify]` to exercise the new module; the test suite skips cleanly on installs that omit the extra. The `synthetic_tsa` pytest fixture in `tests/conftest.py` generates a deterministic test TSA at test-runtime; no compiled fixtures committed.
+
 v0.2.1 follow-up landed on `main` (PR 3 on the `feat/audit-system-hardening` branch, merged 2026-05-28):
 - `FAILURE-MODES.md` per-pattern adversarial / partition / corruption matrix + drift-detection test (repo root)
 - ADR-0013 — MI Proxy (Module Integrity verifier chain-of-custody); `LocalMIProxy` default backend; `AuditLedger.verify_chain(mi_proxy=...)` opt-in hook
