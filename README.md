@@ -7,10 +7,9 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
-[![v0.2.0](https://img.shields.io/badge/release-v0.2.0-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.0)
-[![v0.2.1.dev2 in flight](https://img.shields.io/badge/in--flight-v0.2.1.dev2-orange)](CHANGELOG.md)
+[![v0.2.1](https://img.shields.io/badge/release-v0.2.1-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.1)
 [![Autonomy Ladder™ family](https://img.shields.io/badge/family-Autonomy%20Ladder%E2%84%A2-purple)](https://autonomy-ladder.io)
-<!-- DOI badge added in v0.2.0 via Zenodo (Stage 12) -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20434575.svg)](https://doi.org/10.5281/zenodo.20434575)
 
 ## The five anchors
 
