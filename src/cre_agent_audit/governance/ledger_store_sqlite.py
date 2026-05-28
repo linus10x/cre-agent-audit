@@ -45,14 +45,15 @@ class SqliteLedgerStore:
                 gate_verdicts_json TEXT NOT NULL,
                 prior_hash TEXT NOT NULL,
                 self_hash TEXT NOT NULL,
-                corrects_sequence INTEGER
+                corrects_sequence INTEGER,
+                timestamp_token_b64 TEXT
             )
             """
         )
 
     def append(self, entry: AuditEntry) -> None:
         self._conn.execute(
-            f"INSERT INTO {self._table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            f"INSERT INTO {self._table} VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 entry.sequence,
                 entry.timestamp.isoformat(),
@@ -64,13 +65,15 @@ class SqliteLedgerStore:
                 entry.prior_hash,
                 entry.self_hash,
                 entry.corrects_sequence,
+                entry.timestamp_token_b64,
             ),
         )
 
     def __iter__(self) -> Iterator[AuditEntry]:
         rows = self._conn.execute(
             f"SELECT sequence, timestamp_iso, actor_kind, actor_id, decision_type, "
-            f"action_payload, gate_verdicts_json, prior_hash, self_hash, corrects_sequence "
+            f"action_payload, gate_verdicts_json, prior_hash, self_hash, corrects_sequence, "
+            f"timestamp_token_b64 "
             f"FROM {self._table} ORDER BY sequence ASC"
         )
         for row in rows:
@@ -84,7 +87,8 @@ class SqliteLedgerStore:
     def get(self, sequence: int) -> AuditEntry:
         cur = self._conn.execute(
             f"SELECT sequence, timestamp_iso, actor_kind, actor_id, decision_type, "
-            f"action_payload, gate_verdicts_json, prior_hash, self_hash, corrects_sequence "
+            f"action_payload, gate_verdicts_json, prior_hash, self_hash, corrects_sequence, "
+            f"timestamp_token_b64 "
             f"FROM {self._table} WHERE sequence = ?",
             (sequence,),
         )
@@ -112,9 +116,11 @@ class SqliteLedgerStore:
         sequence_raw = row[0]
         action_payload_raw = row[5]
         corrects_raw = row[9]
+        token_raw = row[10] if len(row) > 10 else None
         assert isinstance(sequence_raw, int)
         assert isinstance(action_payload_raw, (bytes, bytearray))
         assert corrects_raw is None or isinstance(corrects_raw, int)
+        assert token_raw is None or isinstance(token_raw, str)
         return AuditEntry(
             sequence=sequence_raw,
             timestamp=datetime.fromisoformat(str(row[1])),
@@ -126,4 +132,5 @@ class SqliteLedgerStore:
             prior_hash=str(row[7]),
             self_hash=str(row[8]),
             corrects_sequence=corrects_raw,
+            timestamp_token_b64=token_raw,
         )

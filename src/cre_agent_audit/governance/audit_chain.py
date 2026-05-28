@@ -28,12 +28,13 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cre_agent_audit.governance.ledger_store import LedgerStore
+    from cre_agent_audit.governance.timestamp_source import TimestampSource
 
 GENESIS_PRIOR_HASH = "0" * 64
 """Sentinel value for the first entry's ``prior_hash``. SHA-256 zeroes."""
@@ -73,6 +74,9 @@ class AuditEntry:
     prior_hash: str
     self_hash: str
     corrects_sequence: int | None = None
+    timestamp_token_b64: str | None = None
+    """Base64-encoded RFC 3161 TSR token (if a trusted TSA was used).
+    None for local-clock entries (backward-compatible default)."""
 
     def canonical_bytes_for_hashing(self) -> bytes:
         """Return the bytes whose SHA-256 is ``self_hash``.
@@ -82,7 +86,7 @@ class AuditEntry:
         actor_kind value, actor_id, decision_type, action_payload (raw bytes),
         gate_verdicts (sorted JSON), prior_hash, corrects_sequence.
         """
-        payload = {
+        payload: dict[str, object] = {
             "sequence": self.sequence,
             "timestamp": self.timestamp.isoformat(),
             "actor_kind": self.actor_kind.value,
@@ -95,6 +99,11 @@ class AuditEntry:
             "prior_hash": self.prior_hash,
             "corrects_sequence": self.corrects_sequence,
         }
+        # Include token only when present — preserves backward-compat with
+        # v0.2.0 ledgers that never had this field. Mixing local-clock and
+        # TSA-stamped entries in the same ledger is supported.
+        if self.timestamp_token_b64 is not None:
+            payload["timestamp_token_b64"] = self.timestamp_token_b64
         return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
@@ -109,9 +118,10 @@ def _compute_self_hash(
     gate_verdicts: dict[str, str],
     prior_hash: str,
     corrects_sequence: int | None,
+    timestamp_token_b64: str | None = None,
 ) -> str:
     """Internal helper — compute self_hash before constructing the frozen entry."""
-    payload = {
+    payload: dict[str, object] = {
         "sequence": sequence,
         "timestamp": timestamp.isoformat(),
         "actor_kind": actor_kind.value,
@@ -122,6 +132,8 @@ def _compute_self_hash(
         "prior_hash": prior_hash,
         "corrects_sequence": corrects_sequence,
     }
+    if timestamp_token_b64 is not None:
+        payload["timestamp_token_b64"] = timestamp_token_b64
     return hashlib.sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
@@ -142,13 +154,17 @@ class AuditLedger:
     """
 
     store: LedgerStore | None = None
+    timestamp_source: TimestampSource | None = None
 
     def __post_init__(self) -> None:
-        # Local import to avoid circular import at module load.
+        # Local imports to avoid circular imports at module load.
         from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+        from cre_agent_audit.governance.timestamp_source import LocalClockTimestampSource
 
         if self.store is None:
             self.store = InMemoryLedgerStore()
+        if self.timestamp_source is None:
+            self.timestamp_source = LocalClockTimestampSource()
 
     @property
     def entries(self) -> tuple[AuditEntry, ...]:
@@ -169,12 +185,39 @@ class AuditLedger:
     ) -> AuditEntry:
         """Append a new entry to the ledger and return it."""
         assert self.store is not None  # set in __post_init__
+        assert self.timestamp_source is not None  # set in __post_init__
         sequence = len(self.store)
         prior_hash = self.chain_head()
-        timestamp = now or datetime.now(timezone.utc)
 
         # Defensive copy so the ledger entry cannot be mutated via caller-held dicts.
         gate_verdicts_copy = dict(gate_verdicts)
+
+        # The TSA attests to the payload BEFORE the timestamp is bound. The
+        # token + timestamp are then folded into the canonical self_hash so
+        # the chain binds both.
+        if now is not None:
+            timestamp = now
+            timestamp_token: str | None = None
+        else:
+            payload_digest = hashlib.sha256(
+                json.dumps(
+                    {
+                        "sequence": sequence,
+                        "actor_kind": actor_kind.value,
+                        "actor_id": actor_id,
+                        "decision_type": decision_type,
+                        "action_payload_hex": action_payload.hex(),
+                        "gate_verdicts": dict(sorted(gate_verdicts_copy.items())),
+                        "prior_hash": prior_hash,
+                        "corrects_sequence": corrects_sequence,
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).digest()
+            attested = self.timestamp_source.stamp(payload_digest)
+            timestamp = attested.asserted_at
+            timestamp_token = attested.tsr_token_b64
 
         self_hash = _compute_self_hash(
             sequence=sequence,
@@ -186,6 +229,7 @@ class AuditLedger:
             gate_verdicts=gate_verdicts_copy,
             prior_hash=prior_hash,
             corrects_sequence=corrects_sequence,
+            timestamp_token_b64=timestamp_token,
         )
         entry = AuditEntry(
             sequence=sequence,
@@ -198,6 +242,7 @@ class AuditLedger:
             prior_hash=prior_hash,
             self_hash=self_hash,
             corrects_sequence=corrects_sequence,
+            timestamp_token_b64=timestamp_token,
         )
         self.store.append(entry)
         return entry
@@ -272,6 +317,7 @@ class AuditLedger:
                 gate_verdicts=entry.gate_verdicts,
                 prior_hash=entry.prior_hash,
                 corrects_sequence=entry.corrects_sequence,
+                timestamp_token_b64=entry.timestamp_token_b64,
             )
             if recomputed != entry.self_hash:
                 raise AuditChainTamperError(

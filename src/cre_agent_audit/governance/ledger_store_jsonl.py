@@ -41,6 +41,7 @@ class JsonlLedgerStore:
             "prior_hash": entry.prior_hash,
             "self_hash": entry.self_hash,
             "corrects_sequence": entry.corrects_sequence,
+            "timestamp_token_b64": entry.timestamp_token_b64,
         }
         line = json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n"
         with open(self._path, "a", encoding="utf-8") as f:
@@ -97,4 +98,5 @@ class JsonlLedgerStore:
             prior_hash=d["prior_hash"],
             self_hash=d["self_hash"],
             corrects_sequence=d.get("corrects_sequence"),
+            timestamp_token_b64=d.get("timestamp_token_b64"),
         )
