@@ -25,7 +25,7 @@ These anchor the framing. The patterns below are the artifact.
 
 ## Lede
 
-The U.S. Department of Justice filed *U.S. v. RealPage, Inc.* in August 2024 — DOJ plus eight state attorneys general, civil antitrust under Sherman § 1, alleging algorithmic rent-coordination across commercial real estate operating companies. The case is ongoing. The *Louis v. SafeRent Solutions* class settlement (D. Mass., approximately $2.275M, November 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. TransUnion's joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
+The U.S. Department of Justice filed *U.S. v. RealPage, Inc.* in August 2024 — DOJ plus eight state attorneys general, civil antitrust under Sherman § 1, alleging algorithmic rent-coordination across commercial real estate operating companies. The case is ongoing. The *Louis v. SafeRent Solutions, LLC* class settlement (No. 1:22-cv-10800, D. Mass., approximately $2.275M, November 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. The Trans Union Rental Screening Solutions joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
 
 Each matter named the same operator-side gap: no audit trail of the model decision. No human-in-loop documentation. No way to prove the system stayed bounded.
 
@@ -77,7 +77,7 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 
 ## Why this exists
 
-Three regulatory matters in 24 months changed what *reasonable AI governance* means for commercial real estate operating companies. The plaintiffs and the consent orders named the same evidentiary gap — no documented decision trail, no human-in-loop record, no defensible record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
+Three regulatory matters in 24 months changed what *reasonable AI governance* means for commercial real estate operating companies. The plaintiffs and the consent orders named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
 
 Most operator AI surface is vendor-mediated. Tenant-screening models come from SafeRent, RentGrow, TransUnion SmartMove. Revenue-management models come from RealPage, AppFolio, Yardi Revenue IQ. Lease-abstraction models come from Leverton/MRI, V7 Lease, Reonomy. For those surfaces, the patterns in this repo translate to **procurement-clause power** as much as engineering rails — see [`docs/vendor-clauses/`](docs/vendor-clauses/) for the contractual companion to the code.
 
@@ -125,7 +125,7 @@ For an interim CTO or fractional CAIO scoping adoption:
 | Engineering hours to integrate per pattern | 0.5–3 dev-days |
 | Ongoing CPU / memory cost | Negligible (stdlib only; ledger size grows linearly with decision volume) |
 | Exception-review headcount | 0.1–0.3 FTE compliance reviewer per A2+ workflow at portfolio scale |
-| What it replaces | $120K–$280K/yr commercial AI-governance platform (Credo AI / Holistic AI tier) for the covered patterns; ~40 hours/month manual GC review of decision logs |
+| What it offsets | The runtime-gate + audit-primitive layer of a commercial AI-governance platform subscription (typical tier: $120K–$280K/yr) for the patterns this repo covers — does NOT replace policy authoring, vendor-risk workflow, or board-reporting modules those platforms also provide; complementary, not competitive (see Section 11). Also offsets ~40 hours/month manual GC review of decision logs. |
 | Hardest integration item | Wiring Sovereign-Veto authority resolver to your IdP (Okta, Azure AD) — 4–6 months at most enterprises |
 | Cold-clone-to-running examples | < 60 seconds |
 
@@ -236,7 +236,7 @@ cre-agent-audit/
 
 Both repos: MIT, zero runtime dependencies, primary-source regulatory citations, `mypy --strict` clean, ≥85% branch coverage.
 
-The umbrella is **Regulated-Operations AI Governance**, documented at [autonomy-ladder.io](https://autonomy-ladder.io).
+The umbrella discipline — **Regulated-Operations AI Governance** — is documented at [autonomy-ladder.io](https://autonomy-ladder.io). One framework, two named verticals, one author.
 
 ## Governance artifacts (FINOS-format contributory)
 

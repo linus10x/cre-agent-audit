@@ -2,7 +2,7 @@
 
 > **Reference checklist, not investment-decision advice.** Adapt to the operating-partner's investment thesis + the portco's regulatory exposure profile in consultation with PE counsel and CRE-specialist outside counsel. See repo-root [`DISCLAIMER.md`](../DISCLAIMER.md).
 
-A 10-question checklist for a PE operating partner conducting an AI-governance review of a CRE portfolio company. Hand to the portco CTO with a 14-day response window. Use the responses to (a) score the portco's AI-governance maturity against a portfolio-wide baseline, (b) identify the highest-leverage 90-day interventions, (c) inform the portco's next operating-cadence review.
+A 10-question checklist for a PE operating partner conducting an AI-governance review of a CRE portfolio company. Hand to the portco CTO with a 14-day response window. Use the responses to (a) score the portco's AI-governance maturity against a portfolio-wide baseline, (b) identify the highest-impact 90-day interventions, (c) inform the portco's next operating-cadence review.
 
 The 10 questions below are designed to be answerable in ≤2 pages each. A portco CTO who cannot answer them is the answer.
 
