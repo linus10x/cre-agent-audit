@@ -137,9 +137,15 @@ v0.2.1 ships:
 - `src/cre_agent_audit/governance/witness_anchor.py` — `RekorWitness`, `OpenTimestampsWitness`, `anchor_to_witness()`
 - Test files round-tripping each backend; mock HTTP server for Rekor; OTS unreachable-calendar failure path
 
-v0.2.1 tracked for completion (separate ADRs / commits):
+v0.2.1 follow-up landed on `main` (PR 3 on the `feat/audit-system-hardening` branch, merged 2026-05-28):
+- `FAILURE-MODES.md` per-pattern adversarial / partition / corruption matrix + drift-detection test (repo root)
+- ADR-0013 — MI Proxy (Module Integrity verifier chain-of-custody); `LocalMIProxy` default backend; `AuditLedger.verify_chain(mi_proxy=...)` opt-in hook
+- `VendorScoreGate` concrete implementation (ADR-0011 update); `InMemoryVendorScoreGate` default; score-drift detection with fail-closed default
+- Consolidated `AuditConsumer` base in `src/cre_agent_audit/agents/base.py` — the three ADR-0012 seams + MI Proxy + VendorScoreGate inject through one interface
+
+v0.2.1 still tracked for the final tag:
 - ADR-0012-A1 (forthcoming) — `rfc3161_verify.py` signature-chain verification under the `audit-verify` extra
-- MI-threshold proxy detector (Fair-Housing Gate; ADR-0008 update)
-- `VendorScoreGate` concrete implementation (ADR-0011 update)
-- Agent topology pruning (ADR-0013, forthcoming)
-- `docs/FAILURE-MODES.md` per-pattern negative-results appendix
+- MI-threshold learned-proxy detector (Fair-Housing Gate; ADR-0008 update). **Note on naming:** this is mutual-information based, distinct from the Module Integrity Proxy that landed under ADR-0013.
+- Named-GC reference quotes
+
+Agent topology pruning (removing the unused `strategy` / `risk` / `domain_intelligence` stubs) is deferred to a future ADR (likely ADR-0014). The placeholder "(ADR-0013, forthcoming)" that this section previously carried was superseded by PR 3's ADR-0013 (MI Proxy) — a different concern.

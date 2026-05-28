@@ -53,15 +53,23 @@
 
 **33 findings surfaced; 26 folded into v0.2.0** (see `docs/SESSION-AUDIT.md` Section 4 for the F1–F33 table); **7 explicitly deferred to v0.2.1** (see below).
 
-## Deferred v0.2.1 follow-ups (named, in `ROADMAP.md`)
+## v0.2.1 follow-up status (post-merge 2026-05-28 of PR #31)
 
-1. **F11 (researcher)** — Implement MI-threshold learned-proxy detection in `fair_housing_preflight.py` (v0.2.0 ships lexical-only with bounded ADR-0008 claim)
-2. **F20 (Big-4)** — Pluggable persistence backend for `AuditLedger` (replace in-memory `list[AuditEntry]` with Postgres + WAL / append-only S3 + Object Lock / DynamoDB conditional writes)
-3. **F20 (Big-4)** — RFC 3161 trusted-timestamp integration for `AuditEntry.timestamp`
-4. **F10 (researcher)** — OpenTimestamps / Sigstore Rekor witness-anchor reference integration (v0.2.0 exposes `AuditLedger.chain_head()` for deployer-side anchoring; reference integration is v0.3 candidate)
-5. **F12 (CRE-CTO)** — `VendorScoreGate` concrete implementation (v0.2.0 ships ADR-0011 design + Protocol sketch + `docs/vendor-clauses/`; reference implementation in v0.3)
-6. **F32 (Big-4)** — Named-GC reference quotes (cannot source today; v0.2.1 candidate)
-7. **F33 (researcher)** — Full negative-results / failure-mode appendix (v0.2.0 has `docs/LIMITATIONS.md` as substitute)
+**4 of 7 landed on `main` as `0.2.1.dev2` (PR 1 + 2 + 3 on the `feat/audit-system-hardening` branch):**
+
+- ✅ **F20 (Big-4)** — Pluggable persistence backend — shipped via `LedgerStore` Protocol + `InMemoryLedgerStore` / `SqliteLedgerStore` / `JsonlLedgerStore` (ADR-0012 § Seam 1).
+- ✅ **F20 (Big-4)** — RFC 3161 trusted-timestamp integration — shipped via `TimestampSource` Protocol + `LocalClockTimestampSource` / `RFC3161TimestampSource` + hand-rolled `rfc3161_codec.py` (ADR-0012 § Seam 2).
+- ✅ **F10 (researcher)** — OpenTimestamps / Sigstore Rekor witness-anchor reference — shipped via `WitnessRegister` Protocol + `RekorWitness` / `OpenTimestampsWitness` + `anchor_to_witness()` (ADR-0012 § Seam 3).
+- ✅ **F12 (CRE-CTO)** — `VendorScoreGate` concrete implementation — shipped (ADR-0011 update; `InMemoryVendorScoreGate` default backend; score-drift detection with fail-closed default; ADR-0013 unrelated, see note below).
+- ✅ **F33 (researcher)** — Full negative-results / failure-mode appendix — shipped as repo-root `FAILURE-MODES.md` matrix + doc/code parity test (`tests/test_failure_modes_matrix.py`).
+
+**Plus one item not on the original list, added during PR 3:** ADR-0013 (MI Proxy / Module Integrity verifier chain-of-custody) — out-of-band verifier attestation; `LocalMIProxy` HMAC default backend; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed opt-in hook. Closes FAILURE-MODES.md § Row 7 (Verifier compromise).
+
+**3 of 7 still gate the v0.2.1 final tag:**
+
+1. **F11 (researcher)** — MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update). **Naming disambiguation:** this is distinct from the Module Integrity Proxy that shipped under ADR-0013 in PR 3.
+2. **F32 (Big-4)** — Named-GC reference quotes.
+3. **(implied by ADR-0012-A1)** — `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`).
 
 ## Rollback plan
 

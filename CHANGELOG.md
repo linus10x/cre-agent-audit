@@ -107,7 +107,7 @@ Doctrinal foundation: *Texas Dept. of Housing v. Inclusive Communities Project*,
 - **ADR-0008 — Fair-Housing Pre-Flight Gate** · 5 ordered checks (FHA-PROXY/VOUCHER/SOI/CRIM/DISPARATE) · lexical-only proxy detection bound · ICP v Texas cited · BypassRegistry auto-escalation
 - **ADR-0009 — Tenant-PII Data-Residency Partitioning** · 5 RESIDENCY-* veto codes · GDPR Art. 6 LegalBasis taxonomy
 - **ADR-0010** (NEW) — Audit-Chain Retention, Privilege & Discovery Posture · SOL-synchronized retention · attorney-client privilege routing · litigation-hold integration
-- **ADR-0011** (NEW) — Vendor-Output Adapter Pattern (design only for v0.2.0; implementation in v0.3) · `VendorScoreGate` Protocol for vendor-mediated AI surfaces
+- **ADR-0011** (NEW) — Vendor-Output Adapter Pattern (design baseline; concrete `VendorScoreGate` implementation ships in v0.2.1) · `VendorScoreGate` Protocol for vendor-mediated AI surfaces
 
 ### Adversarial pressure-test fold-in
 

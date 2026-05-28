@@ -14,21 +14,25 @@ The proxy-detection check in `FairHousingPreflightGate` compares input feature n
 - **Behavioral-signal proxies.** Browser fingerprints, application-session timing patterns, language patterns (Buolamwini & Gebru 2018 *Gender Shades*).
 - **Geospatial-granularity proxies finer than zip code.** Census-tract-level, block-group-level, or precinct-level proxies require finer-grained detection than this gate provides.
 
-Detection of those classes requires upstream training-time controls (differential privacy on training data, adversarial debiasing, counterfactual fairness audits — Kusner et al. 2017 *Counterfactual Fairness*) — out of scope for v0.2.0; MI-threshold detection tracked for v0.3.
+Detection of those classes requires upstream training-time controls (differential privacy on training data, adversarial debiasing, counterfactual fairness audits — Kusner et al. 2017 *Counterfactual Fairness*) — out of scope for v0.2.0. The mutual-information-threshold learned-proxy detector for Pattern 8 is tracked as a v0.2.1 deliverable (not yet landed).
 
-### 2. Internally-consistent ledger, not adversarially tamper-evident on its own (Pattern 3 / ADR-0003)
+### 2. Tamper-detection within the trust boundary by default; tamper-evidence requires the witness pattern (Pattern 3 / ADR-0003 + ADR-0012 + ADR-0013)
 
-The hash-chained Audit Ledger detects modification by an honest holder of the chain head. Adversarial integrity against an attacker with full ledger-host write access requires periodic anchoring of the chain head to an external witness register — OpenTimestamps, Sigstore Rekor, regulator log, or a notarized blockchain anchor (Haber & Stornetta 1991; RFC 6962 Certificate Transparency design rationale).
+The hash-chained Audit Ledger detects modification by an honest holder of the chain head. Adversarial integrity against an attacker with full ledger-host write access requires anchoring the chain head to an external witness register.
 
-The `AuditLedger.chain_head()` method exposes the head digest for deployer-side anchoring. Reference integration of OpenTimestamps / Sigstore Rekor is a v0.3 candidate.
+v0.2.1 ships the witness-anchor pattern (ADR-0012 § Seam 3 — `RekorWitness` for Sigstore, `OpenTimestampsWitness`, and `anchor_to_witness()` that binds the receipt back into the same chain). Scheduling the anchor cron is the deployer's responsibility. v0.2.1 also ships the MI Proxy (ADR-0013) so the verifier itself is tamper-detecting: `AuditLedger.verify_chain(mi_proxy=...)` fails closed via `IntegrityVerificationError` when the verifier's own attestation does not check.
 
-### 3. In-memory persistence in the reference implementation (Pattern 3 / ADR-0003)
+Out-of-band external attestation backends (SLSA / in-toto / Sigstore cosign) are tracked behind the future `[attestation]` extra.
 
-The reference `AuditLedger` stores entries in an in-memory `list[AuditEntry]`. Production deployments need a pluggable persistence backend (Postgres + WAL with row-level-immutability constraints, append-only S3 + Object Lock, DynamoDB with conditional writes) to satisfy SOX 404 ITGC retention or FFIEC Audit booklet expectations. This is the highest-priority v0.3 follow-up.
+### 3. Pluggable persistence shipped in v0.2.1; production substrate is the deployer's choice (Pattern 3 / ADR-0003 + ADR-0012)
 
-### 4. Local-clock timestamps (Pattern 3 / ADR-0003)
+v0.2.0's reference `AuditLedger` stored entries in an in-memory `list[AuditEntry]`. v0.2.1 introduces the `LedgerStore` Protocol (ADR-0012 § Seam 1) with three stdlib reference backends (`InMemoryLedgerStore`, `SqliteLedgerStore`, `JsonlLedgerStore`). Production deployments wire their own backend against the Protocol — Postgres + WAL with row-level-immutability constraints, append-only S3 + Object Lock, or DynamoDB with conditional writes — to satisfy SOX 404 ITGC retention or FFIEC Audit booklet expectations. The package does not pull driver libraries; the Zero-Deps badge is intact.
 
-`AuditEntry.timestamp` comes from `datetime.now(timezone.utc)` — local system clock. For RFC 3161 trusted timestamps (the audit-grade time-attestation standard), deployers integrate a TSA (FreeTSA, DigiCert, internal TSA). v0.3 candidate.
+### 4. RFC 3161 trusted timestamps shipped in v0.2.1; signature-chain verification on the v0.2.1 follow-up backlog (Pattern 3 / ADR-0003 + ADR-0012)
+
+v0.2.0 used `datetime.now(timezone.utc)` for `AuditEntry.timestamp` — local system clock. v0.2.1 introduces the `TimestampSource` Protocol (ADR-0012 § Seam 2) with `LocalClockTimestampSource` (default) and `RFC3161TimestampSource` (stdlib `http.client` + hand-rolled DER ASN.1 codec). The TSR token is opaque-stored verbatim so any RFC 3161-aware verifier can validate the TSA chain later.
+
+Signature-chain re-verification of stored TSR tokens (`rfc3161_verify.py` behind the `audit-verify` extra, using `pyca/cryptography`) is the remaining v0.2.1 deliverable on this seam.
 
 ### 5. Four-fifths-rule monitor only (Pattern 8)
 
@@ -40,19 +44,16 @@ The disparate-impact check uses the standard four-fifths-rule selection-rate com
 
 Adopters owning a regulator-facing fairness defense should choose their fairness metric in consultation with counsel and document the choice. The four-fifths-rule is the standard regulatory benchmark under HUD 24 C.F.R. § 100.500 and Uniform Guidelines on Employee Selection Procedures (29 C.F.R. § 1607.4(D)); adopting it is defensible-but-not-uniquely-defensible.
 
-### 6. Vendor-mediated AI gets partial coverage in v0.2.0 (Pattern 11)
+### 6. Vendor-mediated AI captured via `VendorScoreGate` in v0.2.1 (Pattern 11 / ADR-0011 + FAILURE-MODES.md Row 8)
 
-Most CRE operators do not run their own tenant-screening, lease-abstraction, or pricing models. They consume vendor outputs. ADR-0011 documents the design for the `VendorScoreGate` adapter that bridges vendor outputs (score, recommendation, reason-codes) into the operator's audit ledger + sovereign-veto layer. v0.2.0 ships:
+Most CRE operators do not run their own tenant-screening, lease-abstraction, or pricing models. They consume vendor outputs. ADR-0011 documents the design for the `VendorScoreGate` adapter; v0.2.1 ships the concrete implementation:
 
-- The ADR-0011 design + interface sketch
-- The `docs/vendor-clauses/{screening,abstraction,pricing}.md` procurement-side companion
+- The ADR-0011 design + interface sketch (v0.2.0)
+- The `docs/vendor-clauses/{screening,abstraction,pricing}.md` procurement-side companion (v0.2.0)
+- The `VendorScoreGate` Protocol + `InMemoryVendorScoreGate` default backend (v0.2.1) — emits every vendor-scoring event to the audit chain with full provenance (`vendor_id`, `input_hash`, `score`, `model_version`)
+- Score-drift detection (v0.2.1) — same `input_hash` + same `model_version` + different `score` surfaces as a flagged `decision_type="vendor_score_drift"` chain entry; default posture raises `VendorScoreDriftDetected` so the pipeline halts rather than silently absorbing the change (`raise_on_drift=False` available for shadow-mode rollouts)
 
-v0.2.0 does NOT ship:
-- Reference implementation of `VendorScoreGate` (v0.3 candidate)
-- A SafeRent-shaped synthetic vendor-output test example (v0.3 candidate)
-- Integration test against a mock vendor (v0.3 candidate)
-
-Until the v0.3 implementation lands, operators that depend on vendor-mediated AI coverage should adopt the procurement-clause companion and build the adapter integration in-house following the ADR-0011 design sketch.
+A SafeRent-shaped synthetic vendor-output fixture is the remaining v0.2.1 deliverable on this seam — currently tracked as a follow-up alongside the fair-housing MI-threshold detector.
 
 ### 7. State-by-state regulatory coverage is partial
 
@@ -72,19 +73,33 @@ The repository is a reference architecture published as a v0.2.0 first public re
 
 The MIT license disclaims warranty. This `LIMITATIONS.md` extends that posture to the non-software components (regulatory characterizations, control descriptions, vendor-clause templates, due-diligence checklists, deployment-cadence walkthroughs). See [`DISCLAIMER.md`](../DISCLAIMER.md) for the full statement.
 
-## What v0.2.0 also does NOT cover (named v0.3 follow-ups)
+## Follow-up backlog
 
-- Implementation of MI-threshold learned-proxy detection in `fair_housing_preflight.py`
-- Pluggable persistence backend for `AuditLedger`
-- RFC 3161 trusted-timestamp integration
-- OpenTimestamps / Sigstore Rekor witness-anchor reference integration
-- `VendorScoreGate` concrete implementation (with SafeRent-shaped synthetic example)
+### v0.2.1 in flight on `main` as `0.2.1.dev2` — 4 of 7 deferred items landed
+
+- ✅ Pluggable persistence backend for `AuditLedger` — shipped (ADR-0012 § Seam 1)
+- ✅ RFC 3161 trusted-timestamp integration — shipped (ADR-0012 § Seam 2)
+- ✅ OpenTimestamps / Sigstore Rekor witness-anchor reference integration — shipped (ADR-0012 § Seam 3)
+- ✅ `VendorScoreGate` concrete implementation — shipped (ADR-0011 update)
+- ✅ Full failure-modes appendix — shipped (`FAILURE-MODES.md` matrix + drift-detection test)
+- ✅ (added in PR 3) ADR-0013 MI Proxy — shipped (verifier chain-of-custody)
+- ✅ (added in PR 3) Consolidated `AuditConsumer` base — shipped
+
+### v0.2.1 still gates the final tag
+
+- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. Distinct from the Module Integrity Proxy that shipped under ADR-0013.
+- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`)
+- Named-GC reference quotes
+
+### v0.3 follow-ups
+
 - Full per-pattern subordinate-clause-level ISO/IEC 42001 mapping (v0.2.0 ships pattern-level mappings)
 - Five state regulatory mappings (TX, NY, CA, WA, FL) — community good-first-issues
-- `agents/` subpackage: five stub agent classes (`strategy`, `risk`, `monitor`, `orchestrator`, `domain_intelligence`) get reference implementations or get removed
+- `agents/` subpackage: prune the unused stubs (`strategy`, `risk`, `domain_intelligence`) and promote `orchestrator` to a functional implementation. The `AuditConsumer` base shipped in v0.2.1 already consolidated the seams for `audit` and `monitor`.
 - Docker compose for 60-second zero-pip-install demo
 - LangChain + CrewAI adapter modules
 - Terraform module sketch for the IdP-bypass-authority resolver integration
+- External-attestation backends for the MI Proxy (SLSA / in-toto / Sigstore cosign) behind the `[attestation]` extra
 
 ## What this list does NOT do
 

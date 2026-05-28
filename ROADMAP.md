@@ -16,23 +16,31 @@
 - DISCLAIMER.md, LIMITATIONS.md, PRIOR-ART.md
 - Sibling cross-link to `linus10x/finserv-agent-audit`
 
-## v0.2.1 — Adversarial-review follow-ups (target: 2026-Q3)
+## v0.2.1 — Adversarial-review follow-ups (in flight on `main` as `0.2.1.dev2`)
 
-The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings; 26 folded into v0.2.0. The 7 deferred items:
+The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings; 26 folded into v0.2.0; 7 deferred to v0.2.1. As of 2026-05-28 (PR #31 merged), 4 of the 7 have landed plus 2 not on the original list.
 
-- **Implement MI-threshold learned-proxy detection** in `fair_housing_preflight.py` (v0.2.0 ships lexical-only with a bounded ADR-0008 claim)
-- **Pluggable persistence backend** for `AuditLedger` (replace in-memory `list[AuditEntry]` with Postgres + WAL / append-only S3 + Object Lock / DynamoDB conditional writes)
-- **RFC 3161 trusted-timestamp integration** for `AuditEntry.timestamp`
-- **OpenTimestamps / Sigstore Rekor witness-anchor reference integration** (v0.2.0 exposes `AuditLedger.chain_head()` for deployer-side anchoring; the reference integration ships in v0.2.1)
-- **VendorScoreGate concrete implementation** (v0.2.0 ships ADR-0011 design + interface sketch; v0.2.1 ships reference implementation + SafeRent-shaped synthetic example)
-- **Full negative-results / failure-mode appendix** (v0.2.0 has `docs/LIMITATIONS.md`; v0.2.1 has a documented set of inputs each pattern *fails to catch* with explanations and mitigations)
-- **Named-GC reference quotes** (cannot source today; v0.2.1 candidate)
+### Landed on `main` (`0.2.1.dev2`)
+
+- ✅ **Pluggable persistence backend** for `AuditLedger` — `LedgerStore` Protocol + `InMemoryLedgerStore` / `SqliteLedgerStore` / `JsonlLedgerStore` (ADR-0012 § Seam 1)
+- ✅ **RFC 3161 trusted-timestamp integration** — `TimestampSource` Protocol + `LocalClockTimestampSource` / `RFC3161TimestampSource` + stdlib DER ASN.1 codec (ADR-0012 § Seam 2)
+- ✅ **OpenTimestamps / Sigstore Rekor witness-anchor reference integration** — `WitnessRegister` Protocol + `RekorWitness` / `OpenTimestampsWitness` + `anchor_to_witness()` (ADR-0012 § Seam 3)
+- ✅ **`VendorScoreGate` concrete implementation** — Protocol + `InMemoryVendorScoreGate` default + score-drift detection with fail-closed default (ADR-0011 update; FAILURE-MODES.md Row 8)
+- ✅ **Full negative-results / failure-mode appendix** — repo-root `FAILURE-MODES.md` matrix across 8 classes + drift-detection test enforcing doc/code parity
+- ✅ **(added in PR 3) ADR-0013 — MI Proxy** — out-of-band verifier chain-of-custody; `LocalMIProxy` HMAC default; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed hook
+- ✅ **(added in PR 3) Consolidated `AuditConsumer` base** — the three ADR-0012 seams + MI Proxy + VendorScoreGate inject through one interface
+
+### Still gates the v0.2.1 final tag
+
+- **MI-threshold learned-proxy detection** in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. **Distinct from the Module Integrity Proxy that shipped under ADR-0013.**
+- **`audit-verify` extra wiring** — `rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`
+- **Named-GC reference quotes**
 
 ## v0.3.0 — Production-deployment hardening (target: 2026-Q4)
 
 - **Full ISO/IEC 42001:2023 + COSO ICAIR overlay** at per-pattern subcategory cell-level (v0.2.0 ships a condensed single-doc matrix; v0.3 ships full per-pattern mapping)
 - **Five state regulatory mappings** (TX, NY, CA, WA, FL) tracked as community good-first-issues; primary-source citation required per PR
-- **`agents/` subpackage** filled out — five stubbed agent classes (`strategy`, `risk`, `monitor`, `orchestrator`, `domain_intelligence`) get reference implementations or get removed
+- **`agents/` subpackage cleanup** — v0.2.1 consolidated the two real audit-chain consumers (`audit`, `monitor`) behind the `AuditConsumer` base. v0.3 prunes the unused domain stubs (`strategy`, `risk`, `domain_intelligence`) and promotes `orchestrator` to a functional implementation (likely under ADR-0014).
 - **LangChain + CrewAI adapters** for agent-orchestration framework users
 - **Async pattern variants** for high-volume decision surfaces
 - **Docker compose for 60-sec zero-pip-install demo**
