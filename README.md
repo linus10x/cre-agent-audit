@@ -8,6 +8,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
 [![v0.2.0](https://img.shields.io/badge/release-v0.2.0-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.0)
+[![v0.2.1.dev2 in flight](https://img.shields.io/badge/in--flight-v0.2.1.dev2-orange)](CHANGELOG.md)
 [![Autonomy Ladder™ family](https://img.shields.io/badge/family-Autonomy%20Ladder%E2%84%A2-purple)](https://autonomy-ladder.io)
 <!-- DOI badge added in v0.2.0 via Zenodo (Stage 12) -->
 
@@ -58,6 +59,7 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 - [Acknowledgements](#acknowledgements)
 - [Citation](#citation)
 - [Related work + intellectual lineage](#related-work--intellectual-lineage)
+- [Failure modes](#failure-modes)
 - [Limitations and what this stack does NOT do](#limitations-and-what-this-stack-does-not-do)
 - [License + trademark](#license--trademark)
 
@@ -65,9 +67,9 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 
 | | |
 |---|---|
-| Patterns | 9 (ADR-0001 → ADR-0009; ADR-0010/0011 added for retention + vendor) |
-| Tests | 142 passing |
-| Branch coverage | 89% |
+| Patterns | 9 core (ADR-0001 → ADR-0009) + 4 hardening (ADR-0010 retention; ADR-0011 vendor adapter; ADR-0012 persistence / timestamps / witness anchor; ADR-0013 MI Proxy) |
+| Tests | 234 passing (was 142 at v0.2.0; +92 across PR 1+2 and PR 3) |
+| Branch coverage | 87% (above 85% gate) |
 | Runtime dependencies | 0 (stdlib only) |
 | Python | 3.10, 3.11, 3.12 (CI matrix) |
 | License | MIT |
@@ -145,10 +147,15 @@ The 90-day deployment cadence is in [`examples/FIRST_90_DAYS.md`](examples/FIRST
 | 8 | Fair-Housing Pre-Flight Gate | `src/cre_agent_audit/governance/fair_housing_preflight.py` | Fair Housing Act § 3604 · ICP v Texas (576 U.S. 519) · ECOA · CO AI Act | [CTRL-008](docs/controls/CTRL-008-fair-housing-preflight.md) |
 | 9 | Tenant PII Data Residency | `src/cre_agent_audit/governance/tenant_pii_residency.py` | GDPR Art. 6 · CCPA/CPRA · state tenant-data statutes | [CTRL-009](docs/controls/CTRL-009-tenant-pii-residency.md) |
 
-Two ADRs added in v0.2.0 from adversarial-review fold-in (no separate pattern primitives — design + policy layer):
+Two ADRs added in v0.2.0 from adversarial-review fold-in (design + policy layer):
 
 - [ADR-0010 — Audit-Chain Retention, Privilege & Discovery Posture](docs/adr/0010-audit-chain-retention-privilege-discovery.md) — layered on top of Patterns 2, 3, 7, 8, 9
-- [ADR-0011 — Vendor-Output Adapter Pattern](docs/adr/0011-vendor-output-adapter-pattern.md) — design-only for v0.2.0; reference implementation in v0.3
+- [ADR-0011 — Vendor-Output Adapter Pattern](docs/adr/0011-vendor-output-adapter-pattern.md) — design baseline; concrete `VendorScoreGate` implementation lands in v0.2.1.dev2
+
+Two more ADRs added in v0.2.1 (in flight, on `main`):
+
+- [ADR-0012 — Persistence, Trusted Timestamps, External Witness Anchoring](docs/adr/0012-persistence-witness-timestamp-pattern.md) — three Protocol seams: `LedgerStore` (stdlib `InMemory` / `Sqlite` / `Jsonl` defaults), `TimestampSource` (`LocalClock` / `RFC3161`), `WitnessRegister` (`Rekor` / `OpenTimestamps`).
+- [ADR-0013 — MI Proxy (Module Integrity verifier chain-of-custody)](docs/adr/0013-mi-proxy-module-integrity.md) — out-of-band attestation of the verifier itself; `LocalMIProxy` HMAC default backend; `AuditLedger.verify_chain(mi_proxy=...)` is the opt-in fail-closed hook.
 
 For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Big-4 taxonomy) see [`docs/MAPPING-MATRICES.md`](docs/MAPPING-MATRICES.md).
 
@@ -303,12 +310,18 @@ If you cite this work in research or in adoption-decision memos, use the metadat
 
 These patterns build on prior work. The Autonomy Ladder A0→A4 ladder structure is intentionally isomorphic to existing staged-autonomy frameworks (SAE J3016 driving-automation taxonomy; OECD AI Principles staged-oversight language; NIST AI RMF MANAGE 2.3 maturity scaffolding; Shavit et al. 2023 *Practices for Governing Agentic AI Systems*; Anderljung et al. 2023 *Frontier AI Regulation*). What this work contributes is the **CRE-vertical mapping of autonomy tier to specific patterns and to specific regulatory matters** — the ladder is borrowed scaffolding, the per-tier-per-pattern + per-tier-per-matter mapping is the novel contribution. Doctrinal foundation for the Fair-Housing Pre-Flight Gate is *Texas Dept. of Housing v. Inclusive Communities Project*, 576 U.S. 519 (2015), which constitutionalized disparate-impact under the FHA. Full lineage in [`docs/PRIOR-ART.md`](docs/PRIOR-ART.md).
 
+## Failure modes
+
+[`FAILURE-MODES.md`](FAILURE-MODES.md) is the repo-root matrix of 8 adversarial / partition / corruption failure-mode classes: storage drift, sequence gap / split-brain, adversarial replay in-trust-boundary, timestamp tampering, witness disagreement, backend permission revocation, **verifier compromise** (the Module Integrity Proxy in ADR-0013), and **vendor AI scoring drift** (the VendorScoreGate). Each row names the detection mechanism (resolved to a real callable in the codebase or marked `NOT YET IMPLEMENTED · tracking: ADR-XXXX`) and the recovery action. A companion test ([`tests/test_failure_modes_matrix.py`](tests/test_failure_modes_matrix.py)) enforces doc/code parity — the build fails on drift.
+
+The audit chain is **tamper-detecting within its trust boundary by default**. Tamper-*evidence* against an attacker who controls the ledger host requires the external witness pattern shipped in v0.2.1 (RFC 3161 trusted timestamps via `TimestampSource` + Sigstore Rekor / OpenTimestamps via `WitnessRegister`, per [`docs/adr/0012-persistence-witness-timestamp-pattern.md`](docs/adr/0012-persistence-witness-timestamp-pattern.md)). Tamper-detection of the *verifier itself* requires the MI Proxy hook shipped in v0.2.1.dev2 ([`docs/adr/0013-mi-proxy-module-integrity.md`](docs/adr/0013-mi-proxy-module-integrity.md)) — out-of-band SHA-256 + HMAC attestation by default, opt-in SLSA / in-toto / Sigstore cosign.
+
 ## Limitations and what this stack does NOT do
 
-- **Lexical-only proxy detection.** The Fair-Housing Pre-Flight Gate (Pattern 8) checks for named-feature proxies against a configurable blocklist. It does NOT detect learned proxies in embedding space, behavioral-signal proxies (browser fingerprints, language patterns), or geospatial-granularity proxies. Detection of those classes requires upstream training-time controls — out of scope for v0.2.0; v0.3 candidate.
-- **Internally-consistent ledger, not adversarially tamper-evident on its own.** The hash-chained Audit Ledger (Pattern 3) detects modification by an honest holder of the chain head. Adversarial integrity against an attacker with full ledger-host write access requires periodic anchoring of the chain head to an external witness register (OpenTimestamps, Sigstore Rekor, regulator log). The `AuditLedger.chain_head()` method exposes the head digest for deployer-side anchoring; reference integration is a v0.3 candidate.
+- **Lexical-only proxy detection.** The Fair-Housing Pre-Flight Gate (Pattern 8) checks for named-feature proxies against a configurable blocklist. It does NOT detect learned proxies in embedding space, behavioral-signal proxies (browser fingerprints, language patterns), or geospatial-granularity proxies. The MI-threshold learned-proxy detector (mutual-information based, ADR-0008 update) is a tracked v0.2.1 deliverable — not yet landed.
+- **Internally-consistent ledger by default; adversarial tamper-evidence requires the witness pattern.** The hash-chained Audit Ledger (Pattern 3) detects modification by an honest holder of the chain head. Adversarial integrity against an attacker with full ledger-host write access requires anchoring the chain head to an external witness register. v0.2.1 ships `RekorWitness` (Sigstore), `OpenTimestampsWitness`, and the `anchor_to_witness()` helper that binds the receipt back into the chain (ADR-0012 Seam 3). Scheduling the anchor is the deployer's responsibility.
 - **Four-fifths-rule monitor only.** The disparate-impact check is the standard four-fifths-rule selection-rate comparison. It does not engage the fairness-metric pluralism / impossibility-result literature (Kleinberg/Mullainathan/Raghavan 2016; Chouldechova 2017) — adopters owning a regulator-facing fairness defense should choose their fairness metric in consultation with counsel and document the choice.
-- **Vendor-mediated AI gets partial coverage in v0.2.0.** ADR-0011 documents the design for the VendorScoreGate adapter; reference implementation is v0.3. Vendor-clauses ship now as procurement-side mitigation.
+- **Vendor-mediated AI scoring captured via `VendorScoreGate` in v0.2.1.dev2.** The Protocol + `InMemoryVendorScoreGate` default backend ship now (ADR-0011 update; FAILURE-MODES.md Row 8); score-drift on `(vendor_id, input_hash, model_version)` surfaces as a flagged chain entry and, by default, raises to halt the pipeline. Vendor-clauses remain the procurement-side companion.
 - **Five state regulatory mappings ship in v0.2.0.** TX, NY, CA, WA, FL state mappings tracked as community-contribution good-first-issues — primary-source citation required per PR.
 - **Engages the operator's deployment, not the model's training.** Selbst et al. 2019 *Fairness and Abstraction in Sociotechnical Systems* — fairness is sociotechnical, not technical. This stack governs how AI is *deployed* by an operator. Training-time controls are out of scope.
 - **Pre-revenue research artifact; no production-deployment warranties.** Adopters own validation. See [`DISCLAIMER.md`](DISCLAIMER.md) and [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) for the full statement.
