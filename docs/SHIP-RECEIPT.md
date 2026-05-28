@@ -1,0 +1,110 @@
+# SHIP RECEIPT — cre-agent-audit v0.2.0
+
+**Date shipped:** 2026-05-27 / 2026-05-28 (across UTC midnight)
+**Public flip:** 2026-05-28 ~02:00 UTC
+**v0.2.0 tag published:** 2026-05-28 02:06 UTC (https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.0)
+**Launch post fires:** Mon 2026-06-02 7:30 AM CT (4-day quiet-observation buffer)
+**Public URL:** https://github.com/linus10x/cre-agent-audit
+
+## 16-check gate (all green)
+
+| # | Check | Result |
+|---|---|---|
+| 1 | Repo visibility | PUBLIC ✅ |
+| 2 | Zero runtime dependencies (`pyproject.toml`) | `[]` ✅ |
+| 3 | Tests + coverage | 142 passed · 89.18% branch coverage ✅ (gate ≥85%) |
+| 4 | `compliance_rules.json` in sync with `.yaml` | clean diff ✅ |
+| 5 | Community health profile | 100% ✅ |
+| 6 | v0.2.0 release published as `--latest` | ✅ |
+| 7 | Topics set | 15 topics ✅ |
+| 8 | Good-first-issues seeded | 8 issues with `good first issue` label (7 new from Stage 13 + 1 pre-existing) ✅ |
+| 9 | `finos-air-submission/` absent on main | absent ✅ (preserved on private `finos-submission-wip` branch) |
+| 10 | `governance-artifacts/` has 4 files | README + 3 cleaned FINOS-format control drafts ✅ |
+| 11 | Public-API import smoke (9 patterns reachable) | ✅ |
+| 12 | gitleaks scan | no leaks found ✅ |
+| 13 | `mypy --strict` | clean across 33 source files ✅ |
+| 14 | `ruff check` | All checks passed ✅ |
+| 15 | Per-pattern Control Description Tables + MAPPING-MATRICES.md | 9 files + matrix ✅ |
+| 16 | Vendor-clauses + PE_DUE_DILIGENCE + LIMITATIONS + PRIOR-ART + DISCLAIMER | 3 + 1 + 1 + 1 + 1 ✅ |
+
+## Council pass (Stage 9)
+
+5 chambers reviewed the v2 README. All five passed at ≥9.5/10 after Stage 9 revisions:
+
+| Chamber | Final score | Status |
+|---|---|---|
+| Engineering (Anthropic Principal voice) | 9.5+ (was 9.3 — fixed by shipping `Makefile`) | ✅ PASS |
+| Technical-skeptic (patio11 voice) | 9.6 | ✅ PASS |
+| Positioning (Clark + Welsh voice) | 9.6 | ✅ PASS |
+| Regulatory-counsel (Wilson Sonsini / Latham voice) | 9.6 | ✅ PASS |
+| Operator (Sanchez + Gil / PE op-partner voice) | 9.6 | ✅ PASS |
+
+## Adversarial pressure-test (pre-execution Stage)
+
+5 chambers reviewed the v1 plan before execution:
+
+| Reviewer | Verdict (cite / introduce / adopt-or-fork) |
+|---|---|
+| PE operating partner | Yes w/ edits / Yes w/ edits / Yes w/ edits |
+| Big-4 AI-audit partner | Yes w/ edits / Yes w/ edits / Yes w/ edits |
+| AI-governance attorney | Yes w/ edits / n/a / Yes w/ edits |
+| CRE-vertical CTO | n/a / Forward to VP Eng → Fork w/ edits / Selective |
+| Algorithmic-fairness academic | Cite w/ edits / n/a / n/a |
+
+**33 findings surfaced; 26 folded into v0.2.0** (see `docs/SESSION-AUDIT.md` Section 4 for the F1–F33 table); **7 explicitly deferred to v0.2.1** (see below).
+
+## Deferred v0.2.1 follow-ups (named, in `ROADMAP.md`)
+
+1. **F11 (researcher)** — Implement MI-threshold learned-proxy detection in `fair_housing_preflight.py` (v0.2.0 ships lexical-only with bounded ADR-0008 claim)
+2. **F20 (Big-4)** — Pluggable persistence backend for `AuditLedger` (replace in-memory `list[AuditEntry]` with Postgres + WAL / append-only S3 + Object Lock / DynamoDB conditional writes)
+3. **F20 (Big-4)** — RFC 3161 trusted-timestamp integration for `AuditEntry.timestamp`
+4. **F10 (researcher)** — OpenTimestamps / Sigstore Rekor witness-anchor reference integration (v0.2.0 exposes `AuditLedger.chain_head()` for deployer-side anchoring; reference integration is v0.3 candidate)
+5. **F12 (CRE-CTO)** — `VendorScoreGate` concrete implementation (v0.2.0 ships ADR-0011 design + Protocol sketch + `docs/vendor-clauses/`; reference implementation in v0.3)
+6. **F32 (Big-4)** — Named-GC reference quotes (cannot source today; v0.2.1 candidate)
+7. **F33 (researcher)** — Full negative-results / failure-mode appendix (v0.2.0 has `docs/LIMITATIONS.md` as substitute)
+
+## Rollback plan
+
+If a defect surfaces before Mon 2026-06-02 7:00 AM CT:
+
+1. **Code fix, not visibility revert.** A public hash is forever — `git push origin <fix>` is the right tool. Do NOT toggle the repo back to private once announced. The visibility flip is one-directional in operating-partner perception.
+2. **Patch release.** Bump to `0.2.1`, repeat Stage 10 + 12. Use `gh release create v0.2.1 --notes ...` linking to the resolved issue.
+3. **README-only fix.** Single-line fix → direct commit to main with `docs(readme): fix <thing>` message; no version bump needed unless a claim changed.
+4. **Withdraw release if a regulatory citation broke.** `gh release delete v0.2.0` is reversible (tag remains); re-cut with `gh release create v0.2.0 --latest` after fix. Time window: within 24h of the flip; after that, patch release only.
+5. **Discussion thread.** Post a "Known issue + fix on the way" Discussion thread within 2h of identifying the defect. Operator-with-leverage voice; no apology language; concrete ETA.
+
+Most-likely defect classes pre-Mon-launch:
+- Markdown rendering glitch in a long ADR → README-only fix path
+- Cold-clone `make verify` failure on an OS variant → patch release with the fix
+- Primary-source URL changed (e.g., Wikipedia article on RealPage updated) → README-only fix path with re-verification
+
+## Manual steps still owed by user
+
+| # | Step | URL / file path | Recommended timing |
+|---|---|---|---|
+| 1 | Upload social-preview banner via web UI | https://github.com/linus10x/cre-agent-audit/settings → Social preview. Use `~/Documents/110 - Kunjar's Resume/Applications-May-2026/v2-Refresh/Content/CRE-Track/_brand_assets/linkedin_banner_v1.png` (preferred) or `~/Documents/110 - Kunjar's Resume/Applications-May-2026/v2-Refresh/_linkedin_May2026/banner_V-Creator_2x.png` (backup). 1280×640 PNG. | Before Mon 2026-06-02 7:00 AM CT |
+| 2 | Mint Zenodo DOI | https://zenodo.org/account/settings/github/ → enable `linus10x/cre-agent-audit` toggle → re-publish v0.2.0 release (or push a new tag) to trigger DOI mint. Add ORCID to your Zenodo account if not yet linked. | Surface DOI back here; will then PR update to `CITATION.cff` + README badge |
+| 3 | Review + merge sibling cross-link PR | https://github.com/linus10x/finserv-agent-audit/pull/16 | Recommend merging before Mon 2026-06-02 launch — the symmetric cross-link compounds positioning the moment the launch post drives traffic |
+| 4 | Confirm `finos-submission-wip` branch state for Week-7 fill-in cadence | https://github.com/linus10x/cre-agent-audit/tree/finos-submission-wip — branch holds the full 19-file FINOS AIR submission package; 16 stubs still need fill-in before FINOS WG-bound submission | Per existing Week-7 deliverable timeline |
+
+## What this session built (artifact inventory)
+
+- 11 git commits on `release/v0.2.0` (squash-merged to main as commit `4bdbd8d`) + 1 release-notes commit (`904fb81`) + 1 SHIP-RECEIPT commit (this one)
+- 26 new files created (9 control docs + 4 docs/* files + 3 vendor-clauses + 2 new ADRs + 3 sibling-parity .github/* + CITATION.cff + CODE_OF_CONDUCT.md + ROADMAP.md + .pre-commit-config.yaml + Makefile + DISCLAIMER.md + governance-artifacts/{README + 3 files} + 3 docs/SESSION-* files + .github/releases/v0.2.0-notes.md)
+- 16 files modified (README full rewrite + 9 ADR disclaimer headers + ADR-0002/0003/0004/0007/0008 substantive edits + ARCHITECTURE.md + CHANGELOG.md + pyproject.toml + regulation_loader.py + 2 test-file path updates + .github/workflows/test.yml)
+- 4 files renamed (`fair_housing_gate.py` → `fair_housing_preflight.py`; `tenant_pii_partition.py` → `tenant_pii_residency.py`; matching test files)
+- 19 files moved off main to private `finos-submission-wip` branch (preserved)
+- 3 files cleaned + copied with rewritten provenance headers to `governance-artifacts/` on main
+- 7 GitHub issues created (good-first-issues #24–#30)
+- 1 sibling repo PR opened (finserv-agent-audit #16)
+
+## Verified facts ledger
+
+See `docs/SESSION-AUDIT.md` Section 8 for primary-source-verification record on the regulatory citations (RealPage, TransUnion, SafeRent, Colorado AI Act).
+
+## Total time
+
+Session start: ~7:30 PM CT 2026-05-27
+Session end: ~9:15 PM CT 2026-05-27 (≈4h45m of focused execution after the planning + adversarial-review phases earlier in the conversation)
+
+The 5h10m original mission estimate held remarkably well even after the v2 adversarial-fold scope expansion — much of the expansion was parallelizable file creation that batched efficiently.
