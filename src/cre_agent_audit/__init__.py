@@ -80,6 +80,12 @@ from cre_agent_audit.governance.tenant_pii_residency import (
     TenantPIIAction,
     TenantPIIResidencyCheck,
 )
+from cre_agent_audit.governance.vendor_score_gate import (
+    InMemoryVendorScoreGate,
+    VendorScoreDriftDetected,
+    VendorScoreEntry,
+    VendorScoreGate,
+)
 
 __version__ = "0.2.1.dev1"
 __all__ = [
@@ -138,6 +144,11 @@ __all__ = [
     "LocalMIProxy",
     "MIProxy",
     "MIProxyKeyMissingWarning",
+    # VendorScoreGate — third-party AI scoring (ADR-0011 update)
+    "InMemoryVendorScoreGate",
+    "VendorScoreDriftDetected",
+    "VendorScoreEntry",
+    "VendorScoreGate",
     # Package metadata
     "__version__",
 ]
