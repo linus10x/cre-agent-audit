@@ -1,14 +1,12 @@
----
-mitigation_id: AIR-MIT-RC-VETO-01
-title: "Autonomy Ladder™ Sovereign Veto — non-overridable runtime check at the agent boundary"
-control_type: preventative
-mitigates_risks:
-  - AIR-RC-004
-contributors:
-  - Kunjar Bhaduri (Autonomy Ladder™ framework · autonomy-ladder.io)
-reference_implementation: "https://github.com/linus10x/cre-agent-audit/blob/main/src/cre_agent_audit/governance/sovereign_veto.py"
-adr_back_reference: "https://github.com/linus10x/cre-agent-audit/blob/main/docs/adr/0002-sovereign-veto.md"
-license: MIT
+> **Provenance.** This file was drafted by the author in the FINOS AI Risk Initiative artifact format.
+> **It has not been reviewed, endorsed, or accepted by FINOS or the AIR Working Group as of v0.2.0 (2026-06-02).**
+> It is released independently under MIT alongside the patterns it accompanies. The full 19-artifact submission
+> package — including 16 additional risk and mitigation files in author-draft form — is under separate
+> working-group-bound development on a private branch (`finos-submission-wip`) and is not in this folder by design.
+>
+> Adopters: fork freely; cite in your own control catalog; do not infer FINOS endorsement from the use of the
+> FINOS AIR schema. See repo-root [`DISCLAIMER.md`](../DISCLAIMER.md).
+
 ---
 
 ## Description

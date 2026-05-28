@@ -1,13 +1,12 @@
----
-risk_id: AIR-RC-007
-title: "Tenant-screening, renewal-pricing, marketing-audience-targeting, or housing-credit AI executes without Fair Housing Act pre-flight gating"
-category: regulatory-and-compliance
-contributors:
-  - Kunjar Bhaduri (Autonomy Ladder™ framework · autonomy-ladder.io)
-related_mitigations:
-  - AIR-MIT-RC-FHA-01
-adr_back_reference: "https://github.com/linus10x/cre-agent-audit/blob/main/docs/adr/0008-fair-housing-preflight-gate.md"
-license: MIT
+> **Provenance.** This file was drafted by the author in the FINOS AI Risk Initiative artifact format.
+> **It has not been reviewed, endorsed, or accepted by FINOS or the AIR Working Group as of v0.2.0 (2026-06-02).**
+> It is released independently under MIT alongside the patterns it accompanies. The full 19-artifact submission
+> package — including 16 additional risk and mitigation files in author-draft form — is under separate
+> working-group-bound development on a private branch (`finos-submission-wip`) and is not in this folder by design.
+>
+> Adopters: fork freely; cite in your own control catalog; do not infer FINOS endorsement from the use of the
+> FINOS AIR schema. See repo-root [`DISCLAIMER.md`](../DISCLAIMER.md).
+
 ---
 
 ## Description
