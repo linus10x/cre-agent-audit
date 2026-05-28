@@ -107,6 +107,49 @@ def test_verify_garbage_bytes_raises_parse_error() -> None:
         )
 
 
+def test_verify_non_rsa_tsa_key_surfaces_explicit_error(
+    synthetic_tsa: dict[str, Any],
+) -> None:
+    """A non-RSA TSA certificate must NOT silently pass verification.
+
+    Builds a token whose ``tsa_cert_pem`` field points at an EC (not RSA)
+    certificate. The verifier must surface an explicit "unsupported TSA
+    public-key algorithm" error rather than silently mis-verifying.
+    """
+    from cryptography import x509
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import ec
+    from cryptography.x509.oid import NameOID
+
+    ec_key = ec.generate_private_key(ec.SECP256R1())
+    builder = (
+        x509.CertificateBuilder()
+        .subject_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "EC-TSA")]))
+        .issuer_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, "EC-TSA")]))
+        .public_key(ec_key.public_key())
+        .serial_number(1)
+        .not_valid_before(datetime(2026, 1, 1, tzinfo=timezone.utc))
+        .not_valid_after(datetime(2027, 1, 1, tzinfo=timezone.utc))
+    )
+    ec_cert = builder.sign(ec_key, hashes.SHA256())
+    ec_pem = ec_cert.public_bytes(serialization.Encoding.PEM)
+
+    token_struct = {
+        "tsa_cert_pem": ec_pem.decode("ascii"),
+        "signature_b64": base64.b64encode(b"\x00" * 64).decode("ascii"),
+        "payload_hash_hex": ("aa" * 32),
+        "issued_at_iso": datetime(2026, 5, 28, tzinfo=timezone.utc).isoformat(),
+    }
+    token_b64 = base64.b64encode(json.dumps(token_struct).encode("utf-8")).decode("ascii")
+
+    result = verify_tsr_token(
+        token_b64=token_b64,
+        trusted_tsa_certs=[synthetic_tsa["root_cert_pem"]],
+    )
+    assert result.verified is False
+    assert any("unsupported TSA public-key algorithm" in e for e in result.errors)
+
+
 def test_verify_audit_entry_token_with_none_returns_verified() -> None:
     """Token-free AuditEntry (v0.2.0 default) is not invalidated."""
     from cre_agent_audit.governance.audit_chain import (

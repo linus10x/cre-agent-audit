@@ -21,7 +21,17 @@ from cre_agent_audit.governance.audit_chain import (
 
 
 class LedgerStore(Protocol):
-    """Storage Protocol for `AuditLedger`. Append-only; never mutates."""
+    """Storage Protocol for `AuditLedger`. Append-only; never mutates.
+
+    **Concurrency posture (ADR-0012).** Implementations in this repository
+    (``InMemoryLedgerStore``, ``JsonlLedgerStore``, ``SqliteLedgerStore``)
+    are safe for single-writer workloads. Concurrent ``append`` from
+    multiple threads or processes is NOT supported by the in-repo backends;
+    the deployer must serialize writes via an application-level lock, a
+    dedicated writer thread, or a write-ahead Postgres / S3-Object-Lock /
+    DynamoDB-conditional-write backend implementing this Protocol against
+    the underlying transactional guarantees.
+    """
 
     def append(self, entry: AuditEntry) -> None: ...
     def __iter__(self) -> Iterator[AuditEntry]: ...

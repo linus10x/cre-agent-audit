@@ -108,16 +108,23 @@ def verify_tsr_token(
     tsa_subject = ", ".join(attr.rfc4514_string() for attr in tsa_cert.subject)
     errors: list[str] = []
 
-    try:
-        tsa_public_key = cast(RSAPublicKey, tsa_cert.public_key())
-        tsa_public_key.verify(
-            signature,
-            payload_hash,
-            padding.PKCS1v15(),
-            hashes.SHA256(),
+    raw_public_key = tsa_cert.public_key()
+    if not isinstance(raw_public_key, RSAPublicKey):
+        # Fail-fast on non-RSA TSA keys rather than silently mis-verifying.
+        # ADR-0012 § Seam 2 mandates fail-closed posture for the witness path.
+        errors.append(
+            f"unsupported TSA public-key algorithm: {type(raw_public_key).__name__} (expected RSA)"
         )
-    except Exception as e:
-        errors.append(f"signature verification failed: {e}")
+    else:
+        try:
+            raw_public_key.verify(
+                signature,
+                payload_hash,
+                padding.PKCS1v15(),
+                hashes.SHA256(),
+            )
+        except Exception as e:
+            errors.append(f"signature verification failed: {e}")
 
     if not trusted_tsa_certs:
         errors.append("no trusted TSA certificates supplied; cannot validate chain")

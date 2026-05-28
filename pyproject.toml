@@ -35,6 +35,7 @@ dev = [
   "pyyaml>=6.0",
   "types-pyyaml",
   "build>=1.0",
+  "hypothesis>=6.100",
 ]
 audit-verify = [
   "cryptography>=42",

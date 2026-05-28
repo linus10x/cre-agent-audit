@@ -15,7 +15,7 @@ The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list �
 
 ## [0.2.2] — 2026-05-28 — Engineering items 2 of 3 closed
 
-**Released:** 2026-05-28 · **Tag:** `v0.2.2` (forthcoming) · **PR:** post-PR-#31 follow-on commits on `main`
+**Released:** 2026-05-28 · **Tag:** `v0.2.2` (minted post-CI green on the release commit) · **PR:** post-PR-#31 follow-on commits on `main`
 
 Closes the two engineering items remaining from the original 7 `SHIP-RECEIPT.md` deferred list. The third (F32 — named-GC reference quotes) is research outside engineering scope and remains open.
 

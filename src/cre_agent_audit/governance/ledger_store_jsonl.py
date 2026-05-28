@@ -22,11 +22,22 @@ from cre_agent_audit.governance.audit_chain import (
 
 
 class JsonlLedgerStore:
-    """JSONL file-backed `LedgerStore`."""
+    """JSONL file-backed `LedgerStore`.
+
+    **Concurrency posture (ADR-0012).** This backend is safe for
+    single-writer workloads. Concurrent ``append`` from multiple threads or
+    processes is NOT supported; the deployer must serialize writes (one
+    writer thread, an application-level lock, or an S3+Object-Lock backend
+    instead). The class also requires ``path.parent`` to exist — the
+    constructor fails fast otherwise so the first ``append`` does not
+    surface a deferred ``FileNotFoundError``.
+    """
 
     def __init__(self, path: Path | str, *, fsync: bool = True) -> None:
         self._path = Path(path)
         self._fsync = fsync
+        if not self._path.parent.exists():
+            raise FileNotFoundError(f"parent directory {self._path.parent!s} does not exist")
         self._path.touch(exist_ok=True)
 
     def append(self, entry: AuditEntry) -> None:

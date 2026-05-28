@@ -13,6 +13,7 @@ integration shape; the repo does not pull driver libraries.
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from collections.abc import Iterator
 from datetime import datetime
@@ -24,13 +25,24 @@ from cre_agent_audit.governance.audit_chain import (
     AuditEntry,
 )
 
+# Strict identifier — ASCII letters/digits/underscore only, must start with a
+# letter or underscore. Tighter than ``str.isalnum`` (which admits Unicode
+# letters) so a SQL identifier cannot smuggle non-ASCII codepoints.
+_SAFE_TABLE_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
 
 class SqliteLedgerStore:
-    """sqlite3-backed `LedgerStore`. One row per `AuditEntry`."""
+    """sqlite3-backed `LedgerStore`. One row per `AuditEntry`.
+
+    **Concurrency posture (ADR-0012).** This backend is safe for single-writer
+    workloads. Concurrent ``append`` from multiple threads or processes is
+    NOT supported; the deployer must serialize writes (one writer thread, an
+    application-level lock, or a write-ahead Postgres backend instead).
+    """
 
     def __init__(self, db_path: Path | str, *, table: str = "audit_chain") -> None:
-        if not table.replace("_", "").isalnum():
-            raise ValueError(f"table name {table!r} must be alphanumeric+underscore")
+        if not _SAFE_TABLE_NAME.match(table):
+            raise ValueError(f"table name {table!r} must match [A-Za-z_][A-Za-z0-9_]*")
         self._table = table
         self._conn = sqlite3.connect(str(db_path), isolation_level=None)
         self._conn.execute(

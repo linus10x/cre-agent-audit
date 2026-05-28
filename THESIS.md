@@ -28,7 +28,7 @@ Every chapter is rare. The combination is irreproducible. The framework is the p
 
 - ✅ **v0.2.0** released 2026-06-02 — 9 governance patterns, 142 tests, zero runtime dependencies
 - ✅ **v0.2.1** released 2026-05-28 — 4 hardening ADRs (persistence, timestamps, witness anchor, MI Proxy), 234 tests, `FAILURE-MODES.md` matrix-as-contract, DOI [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575)
-- **v0.2.2** target Q3 2026 — Regulatory-Incident Replay framework + 3 named-matter examples + ADR-0014 (operator-side category claim) + this `THESIS.md`
+- ✅ **v0.2.2** released 2026-05-28 — Regulatory-Incident Replay framework + 3 named-matter examples + ADR-0014 (operator-side category claim) + MI-threshold learned-proxy detection + `audit-verify` extra + this `THESIS.md`
 - **v0.3.0** target Q4 2026 — Production-deployment hardening, state-by-state regulatory coverage (TX, NY, CA, WA, FL), full ISO/IEC 42001 mapping
 
 ### 2027 — Commercial wedge + peer-reviewed credibility
