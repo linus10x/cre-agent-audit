@@ -30,13 +30,13 @@ The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-gove
 - ✅ **(added in PR 3) ADR-0013 — MI Proxy** — out-of-band verifier chain-of-custody; `LocalMIProxy` HMAC default; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed hook
 - ✅ **(added in PR 3) Consolidated `AuditConsumer` base** — the three ADR-0012 seams + MI Proxy + VendorScoreGate inject through one interface
 
-## v0.2.2 — In flight on `main` as `0.2.2.dev0` (target: 2026-Q3)
+## v0.2.2 — Released 2026-05-28 (engineering items 2 of 3 closed)
 
 The 3 items deferred from the original 7 `SHIP-RECEIPT.md` v0.2.1 follow-up list:
 
-- **MI-threshold learned-proxy detection** in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. **Distinct from the Module Integrity Proxy that shipped under ADR-0013.**
-- **`audit-verify` extra wiring** — `rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`
-- **Named-GC reference quotes**
+- ✅ **MI-threshold learned-proxy detection** in `fair_housing_preflight.py` — shipped (ADR-0008 update; mutual-information based; `MIThresholdDetector` + `FHA-MI-PROXY` veto code). Distinct from the Module Integrity Proxy that shipped under ADR-0013.
+- ✅ **`audit-verify` extra wiring** — shipped (`rfc3161_verify.py` signature-chain validation behind the `[audit-verify]` extra; `cryptography>=42`)
+- ❌ **Named-GC reference quotes** — research outside engineering scope; remains open
 
 ## v0.3.0 — Production-deployment hardening (target: 2026-Q4)
 

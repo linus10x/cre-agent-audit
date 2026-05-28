@@ -65,11 +65,11 @@
 
 **Plus one item not on the original list, added during PR 3:** ADR-0013 (MI Proxy / Module Integrity verifier chain-of-custody) — out-of-band verifier attestation; `LocalMIProxy` HMAC default backend; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed opt-in hook. Closes FAILURE-MODES.md § Row 7 (Verifier compromise).
 
-**3 of 7 deferred to v0.2.2 (in flight on `main` as `0.2.2.dev0`):**
+**v0.2.2 released 2026-05-28 — 2 of 3 engineering items closed; 1 research item remains open:**
 
-1. **F11 (researcher)** — MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update). **Naming disambiguation:** this is distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1.
-2. **F32 (Big-4)** — Named-GC reference quotes.
-3. **(implied by ADR-0012-A1)** — `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`).
+1. ✅ **F11 (researcher)** — MI-threshold learned-proxy detection — **shipped in v0.2.2** (ADR-0008 update; `MutualInformationCalculator` + `MIThresholdDetector`; `FHA-MI-PROXY` veto code; SafeRent-shaped synthetic fixture). Distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1.
+2. ❌ **F32 (Big-4)** — Named-GC reference quotes. Research outside engineering scope; remains open.
+3. ✅ **(implied by ADR-0012-A1)** — `audit-verify` extra wiring — **shipped in v0.2.2** (`rfc3161_verify.py` behind `[audit-verify]` extra; `cryptography>=42`).
 
 ## Rollback plan
 

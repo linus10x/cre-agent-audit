@@ -33,7 +33,7 @@ Risk committees at Tier-1 banks, top-10 health insurance carriers, and Big-4 par
 
 **Working title:** "Operator-Side Mutual-Information Proxy Detection for Fair-Housing AI Decision Stacks"
 
-**Status:** Outline pending. Depends on v0.2.2 deferred-item completion (the MI-threshold detector in `fair_housing_preflight.py`).
+**Status:** Implementation shipped in v0.2.2 (2026-05-28) — `MIThresholdDetector` + `MutualInformationCalculator` in `src/cre_agent_audit/governance/mi_threshold_detector.py`; SafeRent-shaped synthetic reference at `tests/fixtures/saferent_shaped_reference.py`; `FHA-MI-PROXY` veto code wired into `fair_housing_preflight.py`. Outline ready to draft.
 
 **Submission target:** Q3 2027
 

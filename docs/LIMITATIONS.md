@@ -85,11 +85,11 @@ The MIT license disclaims warranty. This `LIMITATIONS.md` extends that posture t
 - ✅ (added in PR 3) ADR-0013 MI Proxy — shipped (verifier chain-of-custody)
 - ✅ (added in PR 3) Consolidated `AuditConsumer` base — shipped
 
-### v0.2.2 candidate scope (in flight on `main` as `0.2.2.dev0`)
+### v0.2.2 released 2026-05-28 — 2 of 3 engineering items closed
 
-- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. Distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1.
-- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`)
-- Named-GC reference quotes
+- ✅ MI-threshold learned-proxy detection in `fair_housing_preflight.py` — shipped (ADR-0008 update; mutual-information detector + `FHA-MI-PROXY` veto code). Distinct from the Module Integrity Proxy (ADR-0013, v0.2.1).
+- ✅ `audit-verify` extra — shipped (`rfc3161_verify.py` behind `[audit-verify]` extra; `cryptography>=42`)
+- ❌ Named-GC reference quotes — research outside engineering scope; remains open
 
 ### v0.3 follow-ups
 

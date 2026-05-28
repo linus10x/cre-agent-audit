@@ -5,15 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — v0.2.2 in flight
+## [Unreleased]
 
-**v0.2.2 candidate scope** — the 3 items deferred from the original 7 `SHIP-RECEIPT.md` `v0.2.1` follow-up list:
+No items currently in flight. Next-cycle candidate work surfaces here as it lands on `main`.
 
-- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update; mutual-information based; distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1)
-- Named-GC reference quotes
-- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`)
+The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list — **F32 (Big-4) — Named-GC reference quotes** — is research outside engineering scope and stays open until primary-source quotes can be sourced. It is not gating the next release.
 
-Marker on `main`: `0.2.2.dev0`.
+---
+
+## [0.2.2] — 2026-05-28 — Engineering items 2 of 3 closed
+
+**Released:** 2026-05-28 · **Tag:** `v0.2.2` (forthcoming) · **PR:** post-PR-#31 follow-on commits on `main`
+
+Closes the two engineering items remaining from the original 7 `SHIP-RECEIPT.md` deferred list. The third (F32 — named-GC reference quotes) is research outside engineering scope and remains open.
+
+### Added
+
+- **Fair-housing MI-threshold learned-proxy detector (ADR-0008 update; closes F11).**
+  - `MutualInformationCalculator` — stdlib-only MI computation (no `scikit-learn`); quartile-binning for numeric features; result cached per feature
+  - `MIThresholdDetector(reference=..., mi_threshold=0.10)` — opt-in detector; `detect_proxies(applicant_features)` returns `tuple[ProxyFinding, ...]`
+  - `ProtectedClassReference` — operator-configured labeled sample; construction-time validation (≥30 samples; <100 warns)
+  - `ProxyFinding` — feature_name, mi_score, threshold, protected_class_name, severity (auto-derived)
+  - `InvalidReferenceError` + `MIReferenceUndersizedWarning`
+  - `FairHousingPreflightGate(mi_proxy_detector=...)` — opt-in integration; emits `FHA-MI-PROXY` veto when the detector flags a feature
+  - Academic anchoring: Kusner 2017, Calmon 2017, Hardt-Price-Srebro 2016, Pedreshi-Ruggieri-Turini 2008
+  - SafeRent-shaped synthetic fixture (`tests/fixtures/saferent_shaped_reference.py`): 1,000-applicant deterministic dataset where `zip_code_quintile` carries MI ≈ 0.369 against voucher status
+- **`audit-verify` extra (closes ADR-0012-A1).**
+  - New `[project.optional-dependencies] audit-verify = ["cryptography>=42"]`
+  - New `src/cre_agent_audit/governance/rfc3161_verify.py` — `verify_tsr_token` + `verify_audit_entry_token` + `TSRVerificationResult` + `TSRParseError`
+  - Validates RSA signatures (PKCS1v15 + SHA-256), chains the TSA cert to operator-supplied trusted roots, checks `not_valid_after_utc` (with opt-out via `accept_expired_at_verify_time`)
+  - Token-free `AuditEntry` instances (v0.2.0 default) return `verified=True` — no TSA claim to invalidate
+  - Base package NEVER imports the module; Zero-Runtime-Dependencies posture preserved
+  - CI installs `[dev,audit-verify]` so the new module is exercised across the Python 3.10/3.11/3.12 matrix
+  - Synthetic-TSA pytest fixture in `tests/conftest.py` (deterministic, regenerated each run)
+
+### Changed
+
+- `FairHousingPreflightGate.__init__` accepts `mi_proxy_detector: MIThresholdDetector | None = None`. Default `None` preserves v0.2.1 behavior.
+- ADR-0008 updated with the "MI-threshold learned-proxy detection (`FHA-MI-PROXY`; added v0.2.2)" subsection.
+- ADR-0012 updated with the "v0.2.2 update — `rfc3161_verify` shipped under `[audit-verify]` extra" subsection.
+- Package `__init__.py` re-exports the six new detector types.
+
+### Tests
+
+- pytest: **317 / 317 passing** (was 294; +23 across MI detector + fixture + integration + audit-verify)
+- mypy `--strict`: clean across `src/ tests/`
+- ruff + ruff format: clean
+
+### Deferred to a future release
+
+- **F32 (Big-4) — Named-GC reference quotes.** Research outside engineering scope; stays open until primary-source quotes can be sourced.
 
 ---
 
