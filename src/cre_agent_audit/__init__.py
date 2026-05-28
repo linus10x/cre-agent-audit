@@ -54,6 +54,14 @@ from cre_agent_audit.governance.mi_proxy import (
     MIProxy,
     MIProxyKeyMissingWarning,
 )
+from cre_agent_audit.governance.mi_threshold_detector import (
+    InvalidReferenceError,
+    MIReferenceUndersizedWarning,
+    MIThresholdDetector,
+    MutualInformationCalculator,
+    ProtectedClassReference,
+    ProxyFinding,
+)
 from cre_agent_audit.governance.regulation_loader import (
     InvalidComplianceRulesError,
     RegulationCitation,
@@ -145,6 +153,13 @@ __all__ = [
     "BypassRegistry",
     "DisparateImpactMonitor",
     "FairHousingPreflightGate",
+    # Fair-housing MI-threshold detector (ADR-0008 update; v0.2.2)
+    "InvalidReferenceError",
+    "MIReferenceUndersizedWarning",
+    "MIThresholdDetector",
+    "MutualInformationCalculator",
+    "ProtectedClassReference",
+    "ProxyFinding",
     # Pattern 9 — Tenant PII Data Residency (ADR-0009)
     "CrossJurisdictionRequest",
     "LegalBasis",

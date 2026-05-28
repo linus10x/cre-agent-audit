@@ -75,6 +75,35 @@ HUD 2016 guidance plus state and municipal layers. The check enforces (a) no bla
 
 A running statistical monitor across all decisions in a configurable window (default 90 days). For each protected cohort with reportable demographics, the monitor computes the selection rate relative to the highest-selection cohort. A ratio below 0.80 (the four-fifths rule) on any active cohort triggers the veto on every subsequent decision in that surface until the rate recovers or a logged exception is filed.
 
+### MI-threshold learned-proxy detection — `FHA-MI-PROXY` (added v0.2.2)
+
+Lexical-only proxy detection (check #1 above) misses a class of failure the *Louis v. SafeRent Solutions* matter named: features that carry statistical signal about voucher-holder status without naming voucher status lexically (zip-code-shaped features being the canonical example).
+
+v0.2.2 ships `MIThresholdDetector` in [`src/cre_agent_audit/governance/mi_threshold_detector.py`](../../src/cre_agent_audit/governance/mi_threshold_detector.py). When wired into `FairHousingPreflightGate(mi_proxy_detector=...)`, the gate runs the detector immediately after check #1 (lexical proxy) and emits `FHA-MI-PROXY` for any feature whose mutual information with the protected class exceeds the configured threshold.
+
+```python
+from cre_agent_audit.governance.mi_threshold_detector import MIThresholdDetector
+from tests.fixtures.saferent_shaped_reference import saferent_shaped_reference
+
+reference = saferent_shaped_reference()  # or operator's own labeled sample
+detector = MIThresholdDetector(reference=reference, mi_threshold=0.10)
+gate = FairHousingPreflightGate(mi_proxy_detector=detector)
+result = gate.evaluate(action)
+# Features above the MI threshold produce reason_code='FHA-MI-PROXY' with the
+# feature name and MI score in result.detail.
+```
+
+**Methodology.** Mutual information `I(F; Y)` is computed between each feature `F` in the operator's labeled reference and the protected-class label `Y`, normalized to `[0, 1]` by the marginal entropy of `Y`. Numeric features are quartile-binned before computation. The threshold default is `0.10` — features carrying 10% of the protected-class signal are flagged for operator review. Stdlib-only implementation (no `scikit-learn`); the Zero-Runtime-Dependencies posture is preserved.
+
+**Academic anchoring.** The MI-threshold approach is grounded in:
+
+- Kusner et al. 2017 — *Counterfactual Fairness* (NeurIPS)
+- Calmon et al. 2017 — *Optimized Pre-Processing for Discrimination Prevention* (NeurIPS)
+- Hardt-Price-Srebro 2016 — *Equality of Opportunity in Supervised Learning*
+- Pedreshi-Ruggieri-Turini 2008 — *Discrimination-aware data mining* (KDD)
+
+**Limitations.** MI signal-presence is **necessary but not sufficient** for fair-housing compliance. Adopters owning a regulator-facing fairness defense should choose their fairness metric in consultation with counsel and document the choice. The four-fifths-rule monitor (check #5) is the post-decision complement; the MI detector is the pre-decision complement. Binary protected attributes only in v0.2.2; multi-class is a v0.3+ candidate. The detector is opt-in (`mi_proxy_detector=None` is the default); operators wire it when they have a labeled reference distribution.
+
 ### Human bypass path
 
 A human can override any single veto for any single decision. The bypass writes a logged exception with:

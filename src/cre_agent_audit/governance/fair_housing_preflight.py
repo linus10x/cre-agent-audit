@@ -21,6 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 
+from cre_agent_audit.governance.mi_threshold_detector import MIThresholdDetector
 from cre_agent_audit.governance.sovereign_veto import (
     AgentAction,
     ConstraintCheck,
@@ -163,6 +164,7 @@ class FairHousingPreflightGate(ConstraintCheck):
     jurisdiction_rules: dict[str, JurisdictionRules] = field(default_factory=dict)
     disparate_impact_monitor: DisparateImpactMonitor | None = None
     bypass_registry: BypassRegistry = field(default_factory=BypassRegistry)
+    mi_proxy_detector: MIThresholdDetector | None = None
 
     def _resolve_rules(self, jurisdiction: str) -> JurisdictionRules:
         override = self.jurisdiction_rules.get(jurisdiction)
@@ -199,6 +201,30 @@ class FairHousingPreflightGate(ConstraintCheck):
                     f"blocklist for {decision.jurisdiction}."
                 ),
             )
+
+        # 1.5. MI-threshold learned-proxy detection (ADR-0008 update; opt-in).
+        #
+        # Lexical-only proxy detection misses features that carry statistical
+        # signal about a protected class without naming the class lexically.
+        # When a MIThresholdDetector is wired, the gate flags any feature whose
+        # mutual information with the protected class exceeds the threshold.
+        # SafeRent failure shape: zip-code-shaped feature carrying voucher
+        # signal that the lexical blocklist could not catch.
+        if self.mi_proxy_detector is not None:
+            mi_findings = self.mi_proxy_detector.detect_proxies(decision.features)
+            if mi_findings:
+                flagged = ", ".join(f"{f.feature_name}(mi={f.mi_score:.3f})" for f in mi_findings)
+                return VetoResult.veto(
+                    reason_code="FHA-MI-PROXY",
+                    owner_required=_DEFAULT_OWNER,
+                    detail=(
+                        f"Features above MI threshold "
+                        f"{mi_findings[0].threshold:.2f} against protected class "
+                        f"{mi_findings[0].protected_class_name!r}: {flagged}. "
+                        "MI signal-presence is necessary but not sufficient; "
+                        "consult counsel for the fairness defense."
+                    ),
+                )
 
         # 2. Voucher-status (SafeRent failure mode).
         voucher_hit = next(

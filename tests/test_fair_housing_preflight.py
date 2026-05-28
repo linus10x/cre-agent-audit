@@ -232,3 +232,60 @@ class TestBypassRegistry:
         for i in range(4):
             registry.record(self._bypass(f"ops:reviewer{i}", "FHA-PROXY", days_ago=10 + i))
         assert registry.should_force_defcon_4(reason_code="FHA-PROXY", now=_ts()) is False
+
+
+class TestMIThresholdDetectorIntegration:
+    """v0.2.2: Fair-Housing Pre-Flight Gate accepts an opt-in MIThresholdDetector
+    that flags features carrying mutual-information signal about a protected
+    class (the SafeRent failure mode)."""
+
+    def test_gate_with_no_detector_preserves_v021_behavior(self) -> None:
+        """``FairHousingPreflightGate()`` with no detector is the v0.2.1 default."""
+        gate = FairHousingPreflightGate()
+        result = gate.evaluate(_action(_decision()))
+        assert result.verdict is VetoVerdict.PASS
+
+    def test_gate_with_detector_flags_voucher_proxy(self) -> None:
+        """When the detector is wired, applicant features above MI threshold veto."""
+        from cre_agent_audit.governance.mi_threshold_detector import (
+            MIThresholdDetector,
+        )
+        from tests.fixtures.saferent_shaped_reference import (
+            saferent_shaped_reference,
+        )
+
+        ref = saferent_shaped_reference()
+        detector = MIThresholdDetector(reference=ref, mi_threshold=0.10)
+        gate = FairHousingPreflightGate(mi_proxy_detector=detector)
+        decision = _decision(
+            features={
+                "zip_code_quintile": 5,
+                "credit_score": 720,
+                "income_x_rent": 3.5,
+            }
+        )
+        result = gate.evaluate(_action(decision))
+        assert result.verdict is VetoVerdict.VETO
+        assert result.reason_code == "FHA-MI-PROXY"
+        assert "zip_code_quintile" in (result.detail or "")
+
+    def test_gate_with_detector_passes_clean_features(self) -> None:
+        """Features below MI threshold do not produce FHA-MI-PROXY vetoes."""
+        from cre_agent_audit.governance.mi_threshold_detector import (
+            MIThresholdDetector,
+        )
+        from tests.fixtures.saferent_shaped_reference import (
+            saferent_shaped_reference,
+        )
+
+        ref = saferent_shaped_reference()
+        detector = MIThresholdDetector(reference=ref, mi_threshold=0.10)
+        gate = FairHousingPreflightGate(mi_proxy_detector=detector)
+        decision = _decision(
+            features={
+                "credit_score": 720,
+                "income_x_rent": 3.5,
+            }
+        )
+        result = gate.evaluate(_action(decision))
+        assert result.verdict is VetoVerdict.PASS
