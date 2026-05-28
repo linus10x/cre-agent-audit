@@ -142,6 +142,40 @@ These are not weaknesses — they are scope choices. The repo opens these as iss
 - **Real-time decision routing** — all examples are batch-oriented for clarity.
 - **Integration with named PMS / IWMS systems** — the patterns are vendor-neutral by design.
 
+## Zero runtime dependencies
+
+The package is `stdlib`-only at runtime. The human-edited source of truth for the regulation→pattern mapping is YAML (`config/compliance_rules.yaml`); `scripts/build_compliance_json.py` emits the checked-in JSON artifact (`config/compliance_rules.json`) that the runtime `RegulationLoader` reads. PyYAML is a dev-only dependency used by the build script and by YAML authors; CI verifies the JSON stays in sync with the YAML on every PR. This pattern preserves human-author ergonomics on the editing surface and zero-runtime-dependency posture on the install surface.
+
+## Module-name canonical vocabulary (v0.2.0 renames)
+
+Source-file names match canonical pattern names used in ADRs, the compliance YAML, and FINOS AIR-format submission files:
+
+- `governance/fair_housing_preflight.py` (was `fair_housing_gate.py`) — matches ADR-0008 title and `FairHousingPreflightGate` class
+- `governance/tenant_pii_residency.py` (was `tenant_pii_partition.py`) — matches ADR-0009 policy-language vocabulary
+
+## Layered policy ADRs (v0.2.0 additions)
+
+Two ADRs added in v0.2.0 from adversarial-review fold-in — no separate runtime primitives; they are design + policy layers on top of the nine pattern primitives:
+
+- **ADR-0010 — Audit-Chain Retention, Privilege & Discovery Posture** — layered on top of Patterns 2, 3, 7, 8, 9. Documents retention schedules synchronized to relevant statutes of limitations (FHA, ECOA, SEC 17a-4), attorney-client privilege routing on bypass-justification fields, work-product framing for disparate-impact monitor outputs, and litigation-hold integration with the audit chain.
+- **ADR-0011 — Vendor-Output Adapter Pattern** (design only for v0.2.0; reference implementation in v0.3) — the `VendorScoreGate` Protocol for vendor-mediated AI surfaces. Most operators do not run in-house screening / abstraction / pricing models; they receive (score, recommendation, reason-codes) tuples from vendors. The adapter bridges those outputs into the operator's audit ledger and sovereign-veto layer without requiring feature-level access.
+
+## Audit-evidence framing
+
+ADR-0003 reframes the audit ledger as **internally-consistent** (not adversarially tamper-evident on its own). The `AuditLedger.chain_head()` method exposes the chain-head SHA-256 digest for deployer-side anchoring to an external witness register (OpenTimestamps, Sigstore Rekor, regulator-side log). Without that anchor, an attacker with full ledger-host write access can regenerate the chain end-to-end. The reframe is reflected in the module docstring, ADR-0003 Audit Evidence Properties section, and the README Limitations section. Reference integration of OpenTimestamps / Sigstore Rekor is a v0.3 candidate.
+
+## Big-4 audit overlay
+
+The patterns map into Big-4 AI-assurance frameworks via:
+
+- `docs/controls/CTRL-001..009.md` — per-pattern Control Description Tables (Activity / Objective / Owner / Frequency / Type / Evidence of Operation / Test of Design / Test of Operating Effectiveness)
+- `docs/MAPPING-MATRICES.md` — four-framework overlay (NIST AI RMF × ISO/IEC 42001:2023 × COSO ICAIR × Big-4 standard taxonomy of AI controls)
+- `config/compliance_rules.yaml` extended with `iso_42001_controls`, `coso_icair_component`, `big4_taxonomy_bucket` fields on every pattern entry (v0.2.0 ships a representative subset; full per-pattern mapping is a v0.3 candidate)
+
+## Procurement-clause companion (for vendor-mediated AI)
+
+Most CRE-operator AI surface is vendor-mediated. The patterns translate to procurement-clause leverage via `docs/vendor-clauses/{screening,abstraction,pricing}.md` — drop-in contract addenda for tenant-screening vendors (DPA + model-risk addendum + four-fifths-rule reporting SLA), lease-abstraction vendors (clause-level provenance-disclosure SLA), and revenue-management vendors (independent-decision contract clause + data-input-topology disclosure).
+
 ---
 
 *Read the ADRs for the full reasoning behind each pattern. The ADRs are the discipline; the code is the implementation.*

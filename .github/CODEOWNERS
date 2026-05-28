@@ -1,0 +1,18 @@
+# Default owner for everything
+* @linus10x
+
+# Explicit ownership by path
+/src/ @linus10x
+/tests/ @linus10x
+/docs/ @linus10x
+/docs/adr/ @linus10x
+/docs/controls/ @linus10x
+/docs/vendor-clauses/ @linus10x
+/governance-artifacts/ @linus10x
+/config/ @linus10x
+/scripts/ @linus10x
+/.github/ @linus10x
+/pyproject.toml @linus10x
+/LICENSE @linus10x
+/DISCLAIMER.md @linus10x
+/CITATION.cff @linus10x

@@ -4,15 +4,21 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
-Algorithmic discrimination in tenant screening is no longer hypothetical. Three settled cases anchor the discipline:
+Three regulatory matters in 24 months name the operator-side AI-governance gap this pattern addresses:
 
-- **TransUnion** — October 2023 — $15M to the FTC and the CFPB. A tenant-screening AI tool that landed on the wrong side of consumer-reporting law.
-- **SafeRent** — November 20, 2024 — $2.3M. An AI scoring model that treated housing-voucher status as a negative signal in violation of the Fair Housing Act.
-- **RealPage** — November 24, 2025 — DOJ-imposed binding restrictions on rent-pricing AI (data ≥1 yr old · state-wide granularity only · no pricing discussions at user meetings).
+- **TransUnion** — October 2023 — $15M to the FTC and CFPB on systemic accuracy failures in rental-screening reports under FCRA § 607(b). The matter named *In re Trans Union Rental Screening Solutions, Inc.* (joint FTC/CFPB consent orders).
+- **SafeRent** — November 2024 — approximately $2.275M class settlement in *Louis v. SafeRent Solutions, LLC*, No. 1:22-cv-10800 (D. Mass.). The complaint named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. **Class settlement, not adjudicated FHA liability.**
+- **RealPage** — August 2024 — *U.S. v. RealPage, Inc.* filed by DOJ + 8 state AGs alleging Sherman § 1 violations from algorithmic rent-coordination. **Ongoing civil antitrust litigation** as of v0.2.0 (not a consent decree or settled liability).
 
-The Colorado AI Act (SB 189, signed March 14, 2026) sets a January 1, 2027 compliance deadline for impact assessments and risk-management policies on consequential decisions, with tenant screening named explicitly.
+The doctrinal foundation for disparate-impact under the FHA is *Texas Dept. of Housing v. Inclusive Communities Project*, 576 U.S. 519 (2015), which constitutionalized disparate-impact and articulated the burden-shifting framework HUD codified at 24 C.F.R. § 100.500.
+
+The Colorado AI Act (SB24-205, signed May 2024; follow-on amendments tracked separately) names housing among the consequential-decision categories; tenant-screening AI is in-scope as a deployer obligation. The Colorado AI Act timeline is the next state-level regulatory checkpoint for CRE operators in the housing branch.
+
+**This pattern materially reduces the class of failure modes the SafeRent and TransUnion matters exposed. It does not, standing alone, establish FHA compliance.**
 
 The conventional response to algorithmic discrimination is "human in the loop." At CRE-portfolio scale the conventional response is theatre. A tenant-screening agent runs hundreds of thousands of decisions per quarter at a mid-size portfolio. Human review at that volume is either a bottleneck (most decisions wait) or a stamp (most decisions are rubber-stamped without meaningful review).
 
@@ -42,9 +48,16 @@ The gate runs five ordered checks. Each is implemented as a separate function fo
 
 **1. Protected-class proxy detection — `FHA-PROXY`**
 
-The decision input is screened for features that proxy for protected class. Zip-code-only screening is a known proxy for race. Income-source granularity is a known proxy for source-of-income status. A configurable list of features per jurisdiction, with a per-feature mutual-information threshold against historical decisions' protected-class outcomes (where reportable demographics are available).
+The decision input is screened for features that proxy for protected class against a **configurable lexical blocklist** per jurisdiction (e.g., voucher-related feature names, source-of-income markers, criminal-history blanket-exclusion features). Zip-code-only screening is a known proxy for race; income-source granularity is a known proxy for source-of-income status; the blocklist captures known-name lexical proxies of this kind.
 
-Veto fires if any feature in the input crosses the threshold.
+Veto fires if any feature name in the input matches the blocklist.
+
+**Scope of proxy detection — explicit bound.** This pattern in v0.2.0 implements **lexical / named-feature** proxy detection. It does NOT detect:
+- **Learned proxies in embedding space** (a deep model can encode protected-class information in latent features even when the named feature is excluded — see Dwork et al. 2012; Datta et al. 2017).
+- **Behavioral-signal proxies** (browser fingerprints, application-session timing patterns, language patterns).
+- **Geospatial-granularity proxies** finer than zip code (precinct-level, block-group-level).
+
+Detection of those classes requires upstream training-time controls (differential privacy on training data, adversarial debiasing, counterfactual-fairness audits — Kusner et al. 2017) and is **out of scope for v0.2.0**. The MI-threshold (mutual-information against historical protected-class outcomes) approach is tracked as a v0.3 implementation candidate. See [`docs/LIMITATIONS.md`](../../docs/LIMITATIONS.md).
 
 **2. Voucher-status non-discrimination — `FHA-VOUCHER`**
 
@@ -100,11 +113,14 @@ These are issue placeholders, not architectural failures. The repo is open for t
 ## Regulatory anchor
 
 - Fair Housing Act (42 U.S.C. § 3604)
+- *Texas Dept. of Housing v. Inclusive Communities Project*, 576 U.S. 519 (2015) — constitutionalized disparate-impact under the FHA
+- HUD disparate-impact rule (24 C.F.R. § 100.500) — burden-shifting framework
 - ECOA (15 U.S.C. § 1691)
-- HUD AI guidance (2024 HUD memorandum on AI and Fair Housing)
-- Colorado AI Act SB 189 (effective 2027-01-01)
-- State-level fair-housing statutes
-- Disparate-impact framework under FHA (HUD 24 C.F.R. § 100.500)
+- HUD guidance on AI in housing decisions (2024)
+- Colorado AI Act (SB24-205 + follow-on amendments) — housing as consequential decision
+- State-level fair-housing statutes (CA, CT, DC, MA, MN, NJ, NY, OR, VT, WA — source-of-income protections)
+- TransUnion FTC/CFPB consent orders (Oct 2023) — FCRA § 607(b) accuracy
+- *Louis v. SafeRent Solutions* (D. Mass., Nov 2024) — class settlement
 
 ## Implementation notes
 

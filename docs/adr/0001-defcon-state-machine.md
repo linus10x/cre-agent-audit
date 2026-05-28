@@ -4,6 +4,8 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
 A CRE-AI program touches workflows where the cost of an unsafe operating state — degraded model availability, unverified deployment, regulator inquiry in flight, data-quality incident — is asymmetric. A single hour of agent autonomy during a known-unsafe condition can produce hundreds of decisions that later require manual unwind. Per-decision risk checks are necessary but insufficient: some risk conditions are system-wide and need a system-wide brake.

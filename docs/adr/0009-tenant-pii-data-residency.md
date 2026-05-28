@@ -4,6 +4,8 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
 Tenant data crosses jurisdictions in CRE operations as a matter of routine. A multi-state landlord with a centralized property-management platform processes data on tenants whose residency, lease jurisdiction, employment jurisdiction, and consent jurisdiction may not overlap. An international tenant in a US-based portfolio adds GDPR exposure. A vendor processing tenant data in a different state adds CCPA / CPRA exposure. Cross-jurisdiction flows that violate residency requirements are settled-liability territory under GDPR (EU tenants), under CCPA / CPRA (California), and under an increasing list of state-level tenant-data-protection statutes.

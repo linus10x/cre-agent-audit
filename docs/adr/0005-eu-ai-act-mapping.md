@@ -4,6 +4,8 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
 An institutional CRE buyer of an AI-enabled platform — a portfolio company GC, a PE operating partner, a board risk committee — wants the answer to a single practical question: "If my regulator asks how this system meets requirement X, what part of the architecture is the answer?"

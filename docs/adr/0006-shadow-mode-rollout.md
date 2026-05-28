@@ -4,6 +4,8 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
 A new agent capability — a new lease-clause classifier, an updated tenant-screening model, a revised rent-optimization rule set — must be promoted from "works in the lab" to "live in production" without becoming the cause of the next settled case. The conventional approach is a canary: ship the new capability to a small percentage of traffic. The conventional approach is wrong for regulated decisions because even 1% of regulated traffic is a measurable settled-liability surface.
