@@ -87,7 +87,7 @@ from cre_agent_audit.governance.vendor_score_gate import (
     VendorScoreGate,
 )
 
-__version__ = "0.2.1.dev2"
+__version__ = "0.2.2.dev0"
 __all__ = [
     # Pattern 1 — DEFCON state machine (ADR-0001)
     "Capability",
