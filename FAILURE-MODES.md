@@ -58,7 +58,16 @@ The framework is **fail-closed for verify-side checks** and **best-effort with e
 - ADR-0011 — Vendor-output adapter pattern (precursor to the VendorScoreGate in Row 8)
 - ADR-0012 — Persistence + timestamp + witness anchor (the three Protocol seams)
 - ADR-0013 — MI Proxy (Module Integrity verifier chain-of-custody)
+- ADR-0014 — Operator-side AI governance for regulated industries (the category claim that the regulatory-incident replays in `examples/regulatory-incidents/` operationalize)
 - `docs/LIMITATIONS.md` — bounded claims for the v0.2.0 baseline this matrix extends
+
+## Motivating named matters
+
+The failure-mode classes above map to the runnable replays under [`examples/regulatory-incidents/`](examples/regulatory-incidents/):
+
+- **Row 8 — Vendor AI scoring drift** maps to [`01_transunion_rental_screening/`](examples/regulatory-incidents/01_transunion_rental_screening/) (FCRA accuracy failures + VendorScoreGate drift signals)
+- **Rows 1 + 2 — Storage drift + sequence gap** map to [`02_saferent_voucher_screening/`](examples/regulatory-incidents/02_saferent_voucher_screening/) where the operator could not produce chain-of-custody for the voucher-cohort decisions
+- **Row 7 — Verifier compromise** is the conceptual motivator for the MI Proxy hook the replays exercise; [`03_realpage_ongoing_litigation/`](examples/regulatory-incidents/03_realpage_ongoing_litigation/) (framed as ALLEGED conduct) surfaces cohort-coordination signals that an operator-attested verifier would have made operator-visible at decision time
 
 ---
 

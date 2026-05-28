@@ -59,6 +59,9 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 - [Citation](#citation)
 - [Related work + intellectual lineage](#related-work--intellectual-lineage)
 - [Failure modes](#failure-modes)
+- [Regulatory incidents](#regulatory-incidents)
+- [Engage](#engage)
+- [Thesis + publications](#thesis--publications)
 - [Limitations and what this stack does NOT do](#limitations-and-what-this-stack-does-not-do)
 - [License + trademark](#license--trademark)
 
@@ -314,6 +317,45 @@ These patterns build on prior work. The Autonomy Ladder A0→A4 ladder structure
 [`FAILURE-MODES.md`](FAILURE-MODES.md) is the repo-root matrix of 8 adversarial / partition / corruption failure-mode classes: storage drift, sequence gap / split-brain, adversarial replay in-trust-boundary, timestamp tampering, witness disagreement, backend permission revocation, **verifier compromise** (the Module Integrity Proxy in ADR-0013), and **vendor AI scoring drift** (the VendorScoreGate). Each row names the detection mechanism (resolved to a real callable in the codebase or marked `NOT YET IMPLEMENTED · tracking: ADR-XXXX`) and the recovery action. A companion test ([`tests/test_failure_modes_matrix.py`](tests/test_failure_modes_matrix.py)) enforces doc/code parity — the build fails on drift.
 
 The audit chain is **tamper-detecting within its trust boundary by default**. Tamper-*evidence* against an attacker who controls the ledger host requires the external witness pattern shipped in v0.2.1 (RFC 3161 trusted timestamps via `TimestampSource` + Sigstore Rekor / OpenTimestamps via `WitnessRegister`, per [`docs/adr/0012-persistence-witness-timestamp-pattern.md`](docs/adr/0012-persistence-witness-timestamp-pattern.md)). Tamper-detection of the *verifier itself* requires the MI Proxy hook shipped in v0.2.1 ([`docs/adr/0013-mi-proxy-module-integrity.md`](docs/adr/0013-mi-proxy-module-integrity.md)) — out-of-band SHA-256 + HMAC attestation by default, opt-in SLSA / in-toto / Sigstore cosign.
+
+## Regulatory incidents
+
+Three runnable replays of named CRE-AI matters under [`examples/regulatory-incidents/`](examples/regulatory-incidents/), implementing ADR-0014's operator-side category claim:
+
+- **TransUnion Rental Screening Solutions** — FTC + CFPB consent orders, October 2023, $15M civil money penalty, FCRA § 607(b) accuracy
+- ***Louis v. SafeRent Solutions, LLC*** — D. Mass. class settlement, November 20, 2024, approximately $2.275M with a five-year score-use injunction
+- ***U.S. v. RealPage, Inc. et al.*** — M.D.N.C., DOJ + 8 state AGs, **ongoing antitrust litigation** (framed as alleged conduct throughout)
+
+Each replay produces a six-artifact audit-evidence bundle (chain export + verify report + MI Proxy attestation + findings + controls description table + executive narrative). Run them:
+
+```bash
+cre-replay list                                    # show all matters
+cre-replay run 01_transunion_rental_screening      # run one matter
+cre-replay run-all                                 # run all matters
+cre-replay verify <bundle.zip>                     # re-validate a bundle
+```
+
+## Engage
+
+Seven productized-service templates under [`docs/services/`](docs/services/):
+
+| Service | Price | Shape |
+|---|---|---|
+| Diagnostic | $5K | 90-min interview + 20-page deliverable |
+| Audit | $40K | 4 weeks; full audit-evidence bundle |
+| Retainer | $15K/quarter | Quarterly rerun + new-incident + regulatory-update brief |
+| Workshop | $25K–$50K | 1-day on-site or 2-day virtual |
+| Cohort | $50K–$200K | 8-week program; 20–40 seats |
+| Private intel | $25K–$100K/yr | Gated newsletter + private failure-mode catalog + playbook library |
+| Practitioner bench | $10K–$50K/yr | Invite-only practitioner community |
+
+Email `contact@autonomy-ladder.io` with the service name in the subject.
+
+## Thesis + publications
+
+- [`THESIS.md`](THESIS.md) — three-year project commitment (2026–2028) — version roadmap, publishing cadence, productization commitment, what the project will NOT become
+- [`PUBLICATIONS.md`](PUBLICATIONS.md) — academic publication track — four target venues (ACM SEMS, ACM FAccT, Journal of Risk & Financial Management, SAFE consortium / NIST AI RMF profile), four draft outlines, citation discipline
+- [ADR-0014](docs/adr/0014-operator-side-ai-governance-category.md) — operator-side AI governance for regulated industries (the category claim)
 
 ## Limitations and what this stack does NOT do
 
