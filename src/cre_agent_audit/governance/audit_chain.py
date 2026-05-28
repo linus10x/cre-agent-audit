@@ -27,9 +27,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from enum import Enum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cre_agent_audit.governance.ledger_store import LedgerStore
 
 GENESIS_PRIOR_HASH = "0" * 64
 """Sentinel value for the first entry's ``prior_hash``. SHA-256 zeroes."""
@@ -130,14 +134,27 @@ class AuditLedger:
     The ledger is the system of record for every agent decision, every gate
     verdict, and every operator transition. There is no public delete or
     truncate API by design (ADR-0003 invariant).
+
+    Storage is pluggable via the `LedgerStore` Protocol (see ledger_store.py).
+    The default backend is in-memory; deployers can inject SqliteLedgerStore,
+    JsonlLedgerStore, or a custom backend (Postgres+WAL, S3+Object Lock,
+    DynamoDB) per ADR-0012.
     """
 
-    _entries: list[AuditEntry] = field(default_factory=list, init=False, repr=False)
+    store: LedgerStore | None = None
+
+    def __post_init__(self) -> None:
+        # Local import to avoid circular import at module load.
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+
+        if self.store is None:
+            self.store = InMemoryLedgerStore()
 
     @property
     def entries(self) -> tuple[AuditEntry, ...]:
         """Return an immutable view of the entries."""
-        return tuple(self._entries)
+        assert self.store is not None  # set in __post_init__
+        return tuple(self.store)
 
     def append(
         self,
@@ -151,7 +168,8 @@ class AuditLedger:
         corrects_sequence: int | None = None,
     ) -> AuditEntry:
         """Append a new entry to the ledger and return it."""
-        sequence = len(self._entries)
+        assert self.store is not None  # set in __post_init__
+        sequence = len(self.store)
         prior_hash = self.chain_head()
         timestamp = now or datetime.now(timezone.utc)
 
@@ -181,7 +199,7 @@ class AuditLedger:
             self_hash=self_hash,
             corrects_sequence=corrects_sequence,
         )
-        self._entries.append(entry)
+        self.store.append(entry)
         return entry
 
     def append_correction(
@@ -202,7 +220,8 @@ class AuditLedger:
         Reason is folded into ``gate_verdicts["correction_reason"]`` so it
         flows through the canonical hashing path.
         """
-        if corrects_sequence < 0 or corrects_sequence >= len(self._entries):
+        assert self.store is not None  # set in __post_init__
+        if corrects_sequence < 0 or corrects_sequence >= len(self.store):
             raise ValueError(f"corrects_sequence {corrects_sequence} not in ledger")
         if not reason.strip():
             raise ValueError("correction reason must be non-empty")
@@ -227,9 +246,8 @@ class AuditLedger:
         record. The genesis sentinel (SHA-256 zeroes) is returned for an
         empty ledger.
         """
-        if not self._entries:
-            return GENESIS_PRIOR_HASH
-        return self._entries[-1].self_hash
+        assert self.store is not None  # set in __post_init__
+        return self.store.head_self_hash()
 
     def verify_chain(self) -> None:
         """Raise ``AuditChainTamperError`` if any entry is inconsistent.
@@ -241,8 +259,9 @@ class AuditLedger:
         - ``prior_hash mismatch`` — the entry's ``prior_hash`` does not match the
           previous entry's ``self_hash`` (chain link broken).
         """
+        assert self.store is not None  # set in __post_init__
         previous_self_hash = GENESIS_PRIOR_HASH
-        for index, entry in enumerate(self._entries):
+        for index, entry in enumerate(self.store):
             recomputed = _compute_self_hash(
                 sequence=entry.sequence,
                 timestamp=entry.timestamp,
@@ -270,4 +289,11 @@ class AuditLedger:
     # Production callers should never invoke this method.                    #
     # --------------------------------------------------------------------- #
     def _replace_entry_for_tests(self, index: int, replacement: AuditEntry) -> None:
-        self._entries[index] = replacement
+        # Test-only seam. Requires the underlying store to expose mutation;
+        # only InMemoryLedgerStore does. Production stores (SQLite, JSONL)
+        # have no UPDATE path by Protocol design.
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+
+        if not isinstance(self.store, InMemoryLedgerStore):
+            raise TypeError("_replace_entry_for_tests only supported on InMemoryLedgerStore")
+        self.store._entries[index] = replacement

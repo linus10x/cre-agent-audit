@@ -1,4 +1,5 @@
 """Tests for the in-memory reference LedgerStore."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone

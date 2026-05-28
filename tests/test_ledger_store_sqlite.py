@@ -1,4 +1,5 @@
 """Tests for the SQLite-backed LedgerStore."""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
