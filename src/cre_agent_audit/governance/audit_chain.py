@@ -34,7 +34,11 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cre_agent_audit.governance.ledger_store import LedgerStore
+    from cre_agent_audit.governance.mi_proxy import MIProxy
     from cre_agent_audit.governance.timestamp_source import TimestampSource
+
+VERIFIER_COMPONENT_ID = "cre_agent_audit.governance.audit_chain"
+"""Stable identifier for this verifier; passed to MIProxy.attest()."""
 
 GENESIS_PRIOR_HASH = "0" * 64
 """Sentinel value for the first entry's ``prior_hash``. SHA-256 zeroes."""
@@ -294,16 +298,33 @@ class AuditLedger:
         assert self.store is not None  # set in __post_init__
         return self.store.head_self_hash()
 
-    def verify_chain(self) -> None:
+    def verify_chain(self, *, mi_proxy: MIProxy | None = None) -> None:
         """Raise ``AuditChainTamperError`` if any entry is inconsistent.
 
-        Two failure modes are detected:
+        Two in-chain failure modes are detected:
         - ``self_hash mismatch`` — the entry's stored ``self_hash`` does not match
           a freshly-computed hash of its canonical bytes (something inside the
           entry was changed after writing).
         - ``prior_hash mismatch`` — the entry's ``prior_hash`` does not match the
           previous entry's ``self_hash`` (chain link broken).
+
+        When ``mi_proxy`` is supplied (ADR-0013), the verifier's own integrity
+        is checked first: ``IntegrityVerificationError`` is raised when the
+        attestation fails. Fail-closed — the chain is not walked when the
+        verifier itself cannot be attested.
         """
+        if mi_proxy is not None:
+            from cre_agent_audit.governance.mi_proxy import (
+                IntegrityVerificationError,
+            )
+
+            attestation = mi_proxy.attest(VERIFIER_COMPONENT_ID)
+            if not mi_proxy.verify_attestation(attestation):
+                raise IntegrityVerificationError(
+                    f"MI Proxy attestation failed for {VERIFIER_COMPONENT_ID!r} "
+                    f"(backend={attestation.backend_id!r}); refusing to return "
+                    "a verified result"
+                )
         assert self.store is not None  # set in __post_init__
         previous_self_hash = GENESIS_PRIOR_HASH
         for index, entry in enumerate(self.store):

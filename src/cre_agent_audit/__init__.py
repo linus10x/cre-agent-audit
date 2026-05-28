@@ -47,6 +47,13 @@ from cre_agent_audit.governance.ledger_store import (
 )
 from cre_agent_audit.governance.ledger_store_jsonl import JsonlLedgerStore
 from cre_agent_audit.governance.ledger_store_sqlite import SqliteLedgerStore
+from cre_agent_audit.governance.mi_proxy import (
+    Attestation,
+    IntegrityVerificationError,
+    LocalMIProxy,
+    MIProxy,
+    MIProxyKeyMissingWarning,
+)
 from cre_agent_audit.governance.regulation_loader import (
     InvalidComplianceRulesError,
     RegulationCitation,
@@ -125,6 +132,12 @@ __all__ = [
     "LegalBasis",
     "TenantPIIAction",
     "TenantPIIResidencyCheck",
+    # MI Proxy — verifier chain-of-custody (ADR-0013)
+    "Attestation",
+    "IntegrityVerificationError",
+    "LocalMIProxy",
+    "MIProxy",
+    "MIProxyKeyMissingWarning",
     # Package metadata
     "__version__",
 ]
