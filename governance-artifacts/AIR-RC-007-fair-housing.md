@@ -33,7 +33,7 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 
 ## Severity classification
 
-**Severity: Critical.** Each named example carries either a settled-case precedent ($15M Trans Union Rental Screening Solutions · approximately $2.275M SafeRent class settlement · binding HUD guidance) or a binding regulatory standard (FHA, ECOA, CO SB 26-189, disparate-impact framework). The cost of an unmitigated failure is measured in millions per incident plus reputational damage and operational restrictions imposed by consent decree.
+**Severity: Critical.** Each named example carries either a settled-case precedent ($15M Trans Union Rental Screening Solutions · approximately $2.275M SafeRent class settlement · binding HUD guidance) or a binding regulatory standard (FHA, ECOA, CO SB 26-189, disparate-impact framework). The cost of an unmitigated failure is measured in millions per incident plus reputational damage and operational restrictions that may be imposed by regulatory settlement or enforcement action.
 
 ## Related research
 
