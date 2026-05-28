@@ -108,3 +108,37 @@ Session start: ~7:30 PM CT 2026-05-27
 Session end: ~9:15 PM CT 2026-05-27 (≈4h45m of focused execution after the planning + adversarial-review phases earlier in the conversation)
 
 The 5h10m original mission estimate held remarkably well even after the v2 adversarial-fold scope expansion — much of the expansion was parallelizable file creation that batched efficiently.
+
+---
+
+## Stage 17 — Post-launch audit (added after the initial 16-stage ship)
+
+Four parallel adversarial reviewers dispatched on the SHIPPED v0.2.0 state:
+
+1. **HN-frontpage reviewer (patio_eng voice).** Top critique: the Fair-Housing Pre-Flight Gate is lexical-only proxy detection — sophisticated vendor models with embedding-space proxies would bypass it. **Defense:** Already explicitly bounded in ADR-0008 "Scope of proxy detection" subsection + `docs/LIMITATIONS.md` Section 1; v0.3 MI-threshold detection on the v0.2.1 follow-up backlog. Verdict: would upvote ("disclaimers earn it"); top comment thread expected to be about the lexer.
+2. **Pull-quote audit.** All 10 surfaces yielded launch-grade quotes. Top 3 for the Mon 6/2 7:30 AM CT launch post: kicker — `CHANGELOG.md:10` *"Built to a single design philosophy: durable artifacts, not slideware."*; mid-thread — `ADR-0008:23` *"The conventional response to algorithmic discrimination is 'human in the loop.' At CRE-portfolio scale the conventional response is theatre."*; opener — `README.md:30` *"Each matter named the same operator-side gap: no audit trail of the model decision. No human-in-loop documentation. No way to prove the system stayed bounded."*
+3. **Cross-document consistency auditor.** Surfaced **3 Critical + 6 Important + 4 Minor** drift findings. **All Critical + 4 of 6 Important fixed in commit `770229a` and `ae25734`** — see fix list below.
+4. **Link-integrity auditor.** 41 external URLs + 112 internal markdown links + 7 image refs + 21 TOC anchors checked. **Zero broken links.** Non-200 external URLs were all bot-detection on FINOS / Treasury / LinkedIn (pages exist for browser users) — Severity: None.
+
+### Stage 17 fix log (3 commits post-v0.2.0 tag)
+
+- `770229a` — Critical accuracy fixes + cross-doc consistency:
+  - `governance-artifacts/AIR-RC-004` + `AIR-RC-007` — RealPage "consent decree (November 24, 2025)" framing was contradicting the README+ADR-0008 Stage 2c fact-check (the README correctly framed RealPage as ongoing litigation; the FINOS-format drafts retained the older pre-fact-check language). Fixed.
+  - `CHANGELOG.md` v0.2.0 file-inventory entries — updated 6 stale pre-rename paths (`fair_housing_gate.py` → `fair_housing_preflight.py`; `tenant_pii_partition.py` → `tenant_pii_residency.py`); the rename-note line preserved as historical record.
+  - All 9 `docs/controls/CTRL-*.md` — replaced glob-style ADR links (`../adr/0001-*.md`) with specific filenames; auditor-grade unambiguous citations.
+  - SafeRent dollar amount normalized to `approximately $2.275M` across `governance-artifacts/`.
+  - ADR-0003 title updated to canonical reframe: `# ADR-0003 · Internally-Consistent Hash-Chained Audit Ledger`.
+  - Banned-word "leverage" replaced in 3 real-use locations: `ARCHITECTURE.md` (→ "power"), `ADR-0011` line 117 (→ "highest-impact"), `ADR-0011` line 121 (→ "recourse"). Banned-word still appears in `PULL_REQUEST_TEMPLATE.md` (as the checklist item) and `SHIP-RECEIPT.md` line 74 ("Operator-with-leverage voice" — meta-prose describing the voice convention) — both intentional.
+  - Colorado statute citation canonicalized: ADR-0004 + ADR-0005 — `SB 189` → `SB 26-189` (matches Colorado official legislative naming convention + YAML + governance-artifacts).
+
+- `ae25734` — Follow-up: AIR-RC-007 line 36 "operational restrictions imposed by consent decree" softened to "regulatory settlement or enforcement action" — the prior commit had targeted this via an Edit call that didn't land (missing pre-Edit Read).
+
+### Cold-clone reproducibility test (Stage 17)
+
+`make verify` from a fresh `/tmp/cre-agent-audit-cold-clone` after `git clone https://github.com/linus10x/cre-agent-audit.git`: **3.39 seconds wall-clock real-time** (warm pip cache). All 7 verify subtargets green: ruff + ruff format + mypy --strict + pytest 142/142 at 89.18% coverage + JSON-sync + wheel build + public-API import smoke. The README's "under 60 seconds on warm pip cache" claim holds with substantial margin.
+
+### Minor items deferred to v0.2.1 (named here for completeness)
+
+- `README.md:113` — "Fair-Housing Preflight" capitalization inconsistency (missing the hyphen in "Pre-Flight"; missing "Gate")
+- `CHANGELOG.md:95` — historical 140-count entry (pre-rename baseline) could carry an `(updated to 142 after Stage 7.3)` annotation
+- Subordinate clause-level ISO/IEC 42001:2023 mappings (v0.2.0 ships pattern-level)
