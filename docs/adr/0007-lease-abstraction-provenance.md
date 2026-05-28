@@ -4,7 +4,11 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
+
+When a lease clause becomes contested in litigation, the question is: how was it extracted, what was the model's confidence, and who validated it? This pattern produces that audit trail by construction — **provided the lease-abstraction pipeline (typically a third-party vendor: Leverton/MRI AI, V7 Lease, Reonomy) exposes the clause-level provenance object.** For vendor-shipped outputs that do not expose provenance natively, the operator's procurement-side power is the answer; see [`docs/vendor-clauses/abstraction.md`](../../docs/vendor-clauses/abstraction.md) for the contractual SLA template that obligates clause-level provenance disclosure.
 
 AI lease abstraction is the highest-ROI CRE-AI use case. Leading firms report 10× deal-execution improvement. The number is real. The risk underneath is also real, and most operators are not pricing it.
 

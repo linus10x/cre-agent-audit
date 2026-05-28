@@ -4,6 +4,8 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
 
 Tenant data crosses jurisdictions in CRE operations as a matter of routine. A multi-state landlord with a centralized property-management platform processes data on tenants whose residency, lease jurisdiction, employment jurisdiction, and consent jurisdiction may not overlap. An international tenant in a US-based portfolio adds GDPR exposure. A vendor processing tenant data in a different state adds CCPA / CPRA exposure. Cross-jurisdiction flows that violate residency requirements are settled-liability territory under GDPR (EU tenants), under CCPA / CPRA (California), and under an increasing list of state-level tenant-data-protection statutes.
@@ -74,7 +76,7 @@ Exceptions to the residency veto require GC sign-off, not just managerial. The b
 
 Aggregate reads across jurisdictions (e.g., portfolio-wide delinquency-rate dashboard) require either:
 
-- **Anonymization at the gate** — the aggregator receives only counts and ratios, never per-tenant rows. Enforced by an aggregator-mode pattern in `src/governance/tenant_pii_partition.py` that returns a `JurisdictionAggregate` object containing only counts.
+- **Anonymization at the gate** — the aggregator receives only counts and ratios, never per-tenant rows. Enforced by an aggregator-mode pattern in `src/governance/tenant_pii_residency.py` that returns a `JurisdictionAggregate` object containing only counts.
 - **OR**: A blanket `LegalBasis` on the aggregating actor, GC-signed, with a documented retention policy on the aggregate.
 
 The default is anonymization. A blanket basis is a deliberate exception, logged.
@@ -102,7 +104,7 @@ The default is anonymization. A blanket basis is a deliberate exception, logged.
 
 ## Implementation notes
 
-See `src/governance/tenant_pii_partition.py` for the reference implementation, `src/schemas/` for `TenantRecord` and related typed objects, and `examples/` for the cross-jurisdiction demonstration paths.
+See `src/governance/tenant_pii_residency.py` for the reference implementation, `src/schemas/` for `TenantRecord` and related typed objects, and `examples/` for the cross-jurisdiction demonstration paths.
 
 ## Related
 

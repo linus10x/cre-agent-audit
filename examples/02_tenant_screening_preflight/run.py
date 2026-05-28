@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from cre_agent_audit.governance.audit_chain import AuditLedger
 from cre_agent_audit.governance.defcon import Capability, DefconController, DefconState
-from cre_agent_audit.governance.fair_housing_gate import (
+from cre_agent_audit.governance.fair_housing_preflight import (
     DisparateImpactMonitor,
     FairHousingPreflightGate,
     ScreeningDecisionAction,

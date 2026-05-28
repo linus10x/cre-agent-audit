@@ -1,0 +1,70 @@
+name: Pattern request
+description: Propose a new governance pattern or extension to an existing one
+title: "[pattern] "
+labels: ["enhancement", "pattern-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a pattern! Strong pattern proposals are anchored
+        to a regulatory citation, a named operator workflow, and (ideally) a
+        documented failure mode from a settled regulatory matter.
+
+  - type: input
+    id: workflow
+    attributes:
+      label: CRE operator workflow this pattern governs
+      description: e.g., tenant-screening, lease-abstraction, rent-optimization, vendor data exchange, etc.
+      placeholder: "tenant-screening"
+    validations:
+      required: true
+
+  - type: textarea
+    id: regulatory-anchor
+    attributes:
+      label: Regulatory anchor (primary-source citation required)
+      description: |
+        Cite the regulation, settlement, or court holding that motivates this
+        pattern. Provide the primary-source URL (statute text, DOJ/FTC/CFPB
+        press release, court docket, agency rulemaking) — secondary sources
+        (law-firm alerts, news articles) are not sufficient.
+      placeholder: |
+        Example: Colorado AI Act SB24-205, Colo. Rev. Stat. § ____ et seq.
+        Primary source: https://leg.colorado.gov/bills/sb24-205
+    validations:
+      required: true
+
+  - type: textarea
+    id: failure-mode
+    attributes:
+      label: Documented failure mode
+      description: |
+        What goes wrong without this pattern? Reference a named settlement
+        or matter if possible (e.g., SafeRent class settlement, RealPage
+        DOJ litigation).
+      placeholder: |
+        Example: A tenant-screening AI returns a deny decision without a
+        documented reason, exposing the operator to FCRA § 607(b)
+        accuracy claims.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-pattern
+    attributes:
+      label: Proposed pattern (sketch)
+      description: |
+        Sketch the pattern's mechanism. A code-level pseudocode is fine.
+        Note explicitly what the pattern does NOT do (boundary).
+      placeholder: |
+        At decision time, ensure all reason codes are populated; reject the
+        decision if any required code is missing. NOT a fairness check;
+        NOT a model-quality monitor.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context (optional)
+      description: ADR draft, sibling-repo cross-reference, related issues, etc.

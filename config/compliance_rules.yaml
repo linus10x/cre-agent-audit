@@ -58,6 +58,9 @@ patterns:
 
   defcon_state_machine:
     adr: "0001"
+    iso_42001_controls: ["A.6.1.2", "A.10.1.3"]
+    coso_icair_component: "Risk Assessment + Monitoring"
+    big4_taxonomy_bucket: "Operational Monitoring + Incident Response"
     regulations:
       - name: "NIST AI Risk Management Framework"
         statute: "NIST AI RMF 1.0 GOVERN 1.6"
@@ -72,6 +75,9 @@ patterns:
 
   sovereign_veto:
     adr: "0002"
+    iso_42001_controls: ["A.6.2.1", "A.9.4.1"]
+    coso_icair_component: "Control Activities + Information & Communication"
+    big4_taxonomy_bucket: "Human Oversight + Incident Response"
     regulations:
       - name: "NIST AI Risk Management Framework"
         statute: "NIST AI RMF 1.0 MANAGE 2.3"
@@ -96,6 +102,9 @@ patterns:
 
   hash_chain_audit_ledger:
     adr: "0003"
+    iso_42001_controls: ["A.12.4.1", "A.12.4.2", "A.12.4.3"]
+    coso_icair_component: "Information & Communication + Monitoring"
+    big4_taxonomy_bucket: "Data Lineage + Operational Monitoring"
     regulations:
       - name: "SOC 2 Trust Services Criteria"
         statute: "AICPA TSP 100 (2017) CC7.2"
@@ -120,6 +129,9 @@ patterns:
 
   autonomy_ladder_a0_a4:
     adr: "0004"
+    iso_42001_controls: ["A.6.1.2", "A.5.32"]
+    coso_icair_component: "Control Environment + Risk Assessment"
+    big4_taxonomy_bucket: "Lifecycle Governance + Human Oversight"
     regulations:
       - name: "EU AI Act"
         statute: "Regulation (EU) 2024/1689 Art. 14"
@@ -145,6 +157,9 @@ patterns:
 
   regulation_to_pattern_mapping:
     adr: "0005"
+    iso_42001_controls: ["A.5.36", "A.18.1.1"]
+    coso_icair_component: "Information & Communication + Monitoring"
+    big4_taxonomy_bucket: "Lifecycle Governance + Operational Monitoring"
     regulations:
       - name: "self-referential"
         statute: "this YAML file"
@@ -158,6 +173,9 @@ patterns:
 
   shadow_mode_rollout:
     adr: "0006"
+    iso_42001_controls: ["A.14.2.1", "A.14.2.8"]
+    coso_icair_component: "Risk Assessment + Control Activities"
+    big4_taxonomy_bucket: "Model Validation + Lifecycle Governance"
     regulations:
       - name: "SR 11-7 (Federal Reserve model risk guidance)"
         statute: "SR Letter 11-7"
@@ -187,6 +205,9 @@ patterns:
 
   lease_abstraction_provenance_chain:
     adr: "0007"
+    iso_42001_controls: ["A.8.2.2", "A.12.4.1", "A.18.1.3"]
+    coso_icair_component: "Control Activities + Monitoring"
+    big4_taxonomy_bucket: "Data Lineage + Model Validation"
     regulations:
       - name: "SOC 2 Trust Services Criteria"
         statute: "AICPA TSP 100 (2017) CC7.2"
@@ -210,6 +231,9 @@ patterns:
 
   fair_housing_preflight_gate:
     adr: "0008"
+    iso_42001_controls: ["A.5.33", "A.5.34"]
+    coso_icair_component: "Control Activities + Monitoring"
+    big4_taxonomy_bucket: "Human Oversight + Operational Monitoring"
     regulations:
       - name: "Fair Housing Act"
         statute: "42 U.S.C. § 3604"
@@ -271,19 +295,23 @@ patterns:
         treasury_fs_ai_rmf_controls: ["TFRMF-CF-08"]
         last_reviewed: "2026-05-22"
         notes: "Municipal layers exist beyond state floor — community PRs requested via issue #9"
-      - name: "DOJ-RealPage Restrictions"
-        statute: "United States v. RealPage Inc. consent decree (Nov 24, 2025)"
-        clause: "rent-pricing AI data must be >= 1 yr old, state-wide granularity, no user-meeting pricing discussions"
+      - name: "U.S. v. RealPage (DOJ Sherman § 1 litigation)"
+        statute: "United States v. RealPage Inc. (filed Aug 23, 2024 by DOJ + 8 state AGs)"
+        clause: "ongoing civil antitrust litigation alleging algorithmic rent-coordination; operators should retain process evidence supporting good-faith rule-of-reason defense; software-design choices do not cure per se data-pooling exposure"
         jurisdiction_level: federal
         jurisdictions: ["us_federal"]
-        effective_date: "2025-11-24"
+        effective_date: "2024-08-23"
         pattern_function: "RealPageAntitrustCheck.evaluate"
         nist_ai_rmf_function: "MANAGE"
         treasury_fs_ai_rmf_controls: ["TFRMF-CF-09"]
-        last_reviewed: "2026-05-22"
+        last_reviewed: "2026-05-27"
+        notes: "Stage 2c fact-check correction (2026-05-27): prior 'consent decree (Nov 24, 2025)' framing was factually incorrect per primary-source verification — the action is ongoing litigation, not a settled consent decree. Antitrust counsel must independently assess data-input topology; software governance does not substitute for input-side antitrust review."
 
   tenant_pii_data_residency_partitioning:
     adr: "0009"
+    iso_42001_controls: ["A.5.34", "A.5.36", "A.18.1.4"]
+    coso_icair_component: "Control Activities + Risk Assessment"
+    big4_taxonomy_bucket: "Data Lineage + Third-Party"
     regulations:
       - name: "GDPR"
         statute: "Regulation (EU) 2016/679 Art. 6"

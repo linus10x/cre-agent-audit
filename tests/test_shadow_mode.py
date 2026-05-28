@@ -95,7 +95,9 @@ class TestVetoDirection:
 
         def shadow_fn(action: str, *, now: datetime | None = None) -> DecisionOutcome:  # noqa: ARG001
             state["i"] += 1
-            return _outcome("VETO", reason="FHA-PROXY") if state["i"] % 2 == 0 else _outcome("APPROVE")
+            return (
+                _outcome("VETO", reason="FHA-PROXY") if state["i"] % 2 == 0 else _outcome("APPROVE")
+            )
 
         router = ShadowRouter(
             live_fn=lambda action, *, now=None: _outcome("APPROVE"),

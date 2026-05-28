@@ -88,16 +88,23 @@ class TestSelfHashDoesNotIncludeSelfHashField:
         self,
     ) -> None:
         ledger = AuditLedger()
-        kwargs = {
-            "actor_kind": ActorKind.AGENT,
-            "actor_id": "a",
-            "decision_type": "d",
-            "action_payload": b"p",
-            "gate_verdicts": {},
-            "now": _now(),
-        }
-        e1 = ledger.append(**kwargs)
-        e2 = ledger.append(**kwargs)
+        now = _now()
+        e1 = ledger.append(
+            actor_kind=ActorKind.AGENT,
+            actor_id="a",
+            decision_type="d",
+            action_payload=b"p",
+            gate_verdicts={},
+            now=now,
+        )
+        e2 = ledger.append(
+            actor_kind=ActorKind.AGENT,
+            actor_id="a",
+            decision_type="d",
+            action_payload=b"p",
+            gate_verdicts={},
+            now=now,
+        )
         assert e1.self_hash != e2.self_hash
 
 

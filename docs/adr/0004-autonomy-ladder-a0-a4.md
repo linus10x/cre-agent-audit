@@ -4,7 +4,11 @@
 **Date:** 2026-05-26
 **Decider:** Kunjar Bhaduri
 
+> **⚠ Reference pattern, not legal advice.** Regulatory characterizations are summaries; readers must consult qualified counsel. No attorney-client relationship is formed by use of this ADR. See repo-root [`DISCLAIMER.md`](../../DISCLAIMER.md).
+
 ## Context
+
+Three case-of-record regulatory matters — *In re Trans Union Rental Screening Solutions* (Oct 2023, $15M FTC/CFPB), *Louis v. SafeRent Solutions* (D. Mass., Nov 2024, ~$2.275M class settlement), *U.S. v. RealPage* (M.D.N.C., Aug 2024, ongoing Sherman § 1 litigation) — all involved AI operating above the autonomy level its **assurance case** (Kelly & Weaver 2004; Bloomfield et al. 2021) could defend. The pattern this ADR describes is how to size autonomy to the evidence stack a regulator, an opposing counsel, or an audit committee would actually accept.
 
 "Is this AI program ready for production?" is the wrong question. The question is "at what level of autonomy is this program ready, and what is the next promotable tier?" A program at full autonomy on a low-risk read-only task is shipping. A program at full autonomy on a sovereign-veto-required task is a settlement waiting to happen. A program at human-in-loop on every decision at portfolio scale is unscalable and underperforming the unit economics that justified the AI investment in the first place.
 
@@ -69,8 +73,31 @@ The promotion gate is the work, not the framework.
 
 Lease abstraction is naturally A1-A2 because the material clauses warrant reviewer signatures. Tenant screening can run A3 only with the Fair-Housing Pre-Flight Gate (ADR-0008) as the sovereign veto. Rent optimization should not exceed A3 in 2026 because of the antitrust-coordination surface RealPage exposed.
 
+## Prior art and relationship to existing frameworks
+
+The A0→A4 ladder structure is intentionally isomorphic to staged-autonomy frameworks already familiar to engineering and regulatory audiences. The contribution of this ADR is **not the ladder structure itself** — that is borrowed and acknowledged. The contribution is the **CRE-vertical mapping of autonomy tier to specific patterns and to specific regulatory matters** in the Context above. The ladder is the scaffolding; the per-tier-per-pattern + per-tier-per-matter mapping is the novel work.
+
+Prior art:
+
+- **SAE J3016** — *Taxonomy and Definitions for Terms Related to Driving Automation Systems for On-Road Motor Vehicles* (SAE International, 2014/2018/2021). The 0–5 ladder structure originates here. Autonomy Ladder A0→A4 is a five-tier adaptation for governed agentic AI in regulated workflows.
+- **OECD AI Principles** (2019) — staged-oversight language for AI systems.
+- **NIST AI RMF 1.0** (2023) — MANAGE 2.3 maturity scaffolding for human oversight scaling with risk.
+- **Shavit et al.** (2023) — *Practices for Governing Agentic AI Systems* (OpenAI) — tier-based agent-autonomy framing.
+- **Anderljung et al.** (2023) — *Frontier AI Regulation: Managing Emerging Risks to Public Safety* — staged-deployment framing.
+- **Assurance Case methodology** — Kelly & Weaver (2004); Bloomfield, Bishop, Penny (2021) — the safety-critical-systems framing for "evidence stack that defends operation at a given assurance level."
+
+See [`docs/PRIOR-ART.md`](../../docs/PRIOR-ART.md) for full intellectual lineage.
+
+## What this does NOT cover
+
+- **Per-task numerical scoring of autonomy** (each tier is qualitative + compose-pattern-defined, not a number; calibration is per-deployer)
+- **Cross-organization autonomy transferability** (an A3 in one operator's stack is not necessarily A3 in another's; the tier is local to the assurance case)
+- **Reverting from A4 back to A3** (this is operationally messy; documented in the operator's runbook, not the framework)
+- **The trademark itself** — *Autonomy Ladder™* is a common-law mark; USPTO registration planned (see repo-root README License + Trademark section)
+
 ## Related
 
 - All other ADRs — every pattern lives at a defined autonomy tier
 - ADR-0006 (Shadow Mode) — required for A2 → A3 promotion
-- autonomy-ladder.io — self-score web demo for the framework
+- ADR-0010 (Retention/Privilege) — privilege envelope on the A2→A3 promotion evidence pack
+- [autonomy-ladder.io](https://autonomy-ladder.io) — self-score web demo for the framework

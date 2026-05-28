@@ -1,8 +1,120 @@
-"""cre-agent-audit — Reference architecture for AI agent governance in commercial real estate operations.
+"""cre-agent-audit — governance patterns for AI in commercial real estate.
 
-Autonomy Ladder™ patterns. MIT-licensed.
+Nine MIT-licensed patterns, zero runtime dependencies, primary-source
+regulatory citations. Companion to ``finserv-agent-audit`` for financial
+services.
 
-See https://autonomy-ladder.io for the full framework.
+See https://autonomy-ladder.io for the full framework. Patterns documented
+in ``docs/adr/0001`` through ``docs/adr/0011``.
+
+This package is a **reference architecture, not legal, regulatory, audit,
+or fairness-testing advice.** See repo-root ``DISCLAIMER.md``.
 """
 
+from __future__ import annotations
+
+from cre_agent_audit.governance.audit_chain import (
+    ActorKind,
+    AuditChainTamperError,
+    AuditEntry,
+    AuditLedger,
+)
+from cre_agent_audit.governance.autonomy_ladder import (
+    AutonomyTier,
+    PromotionGateNotMet,
+    PromotionGateReport,
+    PromotionRequirements,
+)
+from cre_agent_audit.governance.defcon import (
+    Capability,
+    CapabilityRule,
+    DefconController,
+    DefconState,
+    DefconTransition,
+)
+from cre_agent_audit.governance.fair_housing_preflight import (
+    BypassRegistry,
+    DisparateImpactMonitor,
+    FairHousingPreflightGate,
+)
+from cre_agent_audit.governance.lease_provenance import (
+    LeaseProvenanceCheck,
+    LeaseRepository,
+)
+from cre_agent_audit.governance.regulation_loader import (
+    InvalidComplianceRulesError,
+    RegulationCitation,
+    RegulationLoader,
+)
+from cre_agent_audit.governance.shadow_mode import (
+    DecisionClass,
+    DecisionOutcome,
+    PromotionVerdict,
+    ShadowRouter,
+    VetoDirection,
+)
+from cre_agent_audit.governance.sovereign_veto import (
+    AgentAction,
+    ConstraintCheck,
+    SovereignBypass,
+    SovereignVeto,
+    VetoResult,
+    VetoVerdict,
+)
+from cre_agent_audit.governance.tenant_pii_residency import (
+    CrossJurisdictionRequest,
+    LegalBasis,
+    TenantPIIAction,
+    TenantPIIResidencyCheck,
+)
+
 __version__ = "0.2.0"
+__all__ = [
+    # Pattern 1 — DEFCON state machine (ADR-0001)
+    "Capability",
+    "CapabilityRule",
+    "DefconController",
+    "DefconState",
+    "DefconTransition",
+    # Pattern 2 — Sovereign Veto (ADR-0002)
+    "AgentAction",
+    "ConstraintCheck",
+    "SovereignBypass",
+    "SovereignVeto",
+    "VetoResult",
+    "VetoVerdict",
+    # Pattern 3 — Hash-chain Audit Ledger (ADR-0003)
+    "ActorKind",
+    "AuditChainTamperError",
+    "AuditEntry",
+    "AuditLedger",
+    # Pattern 4 — Autonomy Ladder A0→A4 (ADR-0004)
+    "AutonomyTier",
+    "PromotionGateNotMet",
+    "PromotionGateReport",
+    "PromotionRequirements",
+    # Pattern 5 — Regulation Mapping (ADR-0005)
+    "InvalidComplianceRulesError",
+    "RegulationCitation",
+    "RegulationLoader",
+    # Pattern 6 — Shadow-Mode Rollout (ADR-0006)
+    "DecisionClass",
+    "DecisionOutcome",
+    "PromotionVerdict",
+    "ShadowRouter",
+    "VetoDirection",
+    # Pattern 7 — Lease-Abstraction Provenance (ADR-0007)
+    "LeaseProvenanceCheck",
+    "LeaseRepository",
+    # Pattern 8 — Fair-Housing Pre-Flight Gate (ADR-0008)
+    "BypassRegistry",
+    "DisparateImpactMonitor",
+    "FairHousingPreflightGate",
+    # Pattern 9 — Tenant PII Data Residency (ADR-0009)
+    "CrossJurisdictionRequest",
+    "LegalBasis",
+    "TenantPIIAction",
+    "TenantPIIResidencyCheck",
+    # Package metadata
+    "__version__",
+]
