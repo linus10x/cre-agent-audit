@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cre-agent-audit"
-version = "0.2.1.dev1"
+version = "0.2.1.dev2"
 description = "Reference architecture for AI agent governance in commercial real estate operations — Autonomy Ladder™ patterns, MIT-licensed."
 readme = "README.md"
 license = { text = "MIT" }
