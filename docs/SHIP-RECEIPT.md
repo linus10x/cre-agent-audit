@@ -53,9 +53,9 @@
 
 **33 findings surfaced; 26 folded into v0.2.0** (see `docs/SESSION-AUDIT.md` Section 4 for the F1–F33 table); **7 explicitly deferred to v0.2.1** (see below).
 
-## v0.2.1 follow-up status (post-merge 2026-05-28 of PR #31)
+## v0.2.1 follow-up status (released 2026-05-28; tag `v0.2.1`; DOI [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575))
 
-**4 of 7 landed on `main` as `0.2.1.dev2` (PR 1 + 2 + 3 on the `feat/audit-system-hardening` branch):**
+**4 of 7 closed in `v0.2.1` (PR 1 + 2 + 3 on the `feat/audit-system-hardening` branch, PR #31):**
 
 - ✅ **F20 (Big-4)** — Pluggable persistence backend — shipped via `LedgerStore` Protocol + `InMemoryLedgerStore` / `SqliteLedgerStore` / `JsonlLedgerStore` (ADR-0012 § Seam 1).
 - ✅ **F20 (Big-4)** — RFC 3161 trusted-timestamp integration — shipped via `TimestampSource` Protocol + `LocalClockTimestampSource` / `RFC3161TimestampSource` + hand-rolled `rfc3161_codec.py` (ADR-0012 § Seam 2).
@@ -65,9 +65,9 @@
 
 **Plus one item not on the original list, added during PR 3:** ADR-0013 (MI Proxy / Module Integrity verifier chain-of-custody) — out-of-band verifier attestation; `LocalMIProxy` HMAC default backend; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed opt-in hook. Closes FAILURE-MODES.md § Row 7 (Verifier compromise).
 
-**3 of 7 still gate the v0.2.1 final tag:**
+**3 of 7 deferred to v0.2.2 (in flight on `main` as `0.2.2.dev0`):**
 
-1. **F11 (researcher)** — MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update). **Naming disambiguation:** this is distinct from the Module Integrity Proxy that shipped under ADR-0013 in PR 3.
+1. **F11 (researcher)** — MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update). **Naming disambiguation:** this is distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1.
 2. **F32 (Big-4)** — Named-GC reference quotes.
 3. **(implied by ADR-0012-A1)** — `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`).
 

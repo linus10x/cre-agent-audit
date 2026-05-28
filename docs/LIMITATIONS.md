@@ -75,7 +75,7 @@ The MIT license disclaims warranty. This `LIMITATIONS.md` extends that posture t
 
 ## Follow-up backlog
 
-### v0.2.1 in flight on `main` as `0.2.1.dev2` — 4 of 7 deferred items landed
+### v0.2.1 released 2026-05-28 — 4 of 7 deferred items closed (DOI [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575))
 
 - ✅ Pluggable persistence backend for `AuditLedger` — shipped (ADR-0012 § Seam 1)
 - ✅ RFC 3161 trusted-timestamp integration — shipped (ADR-0012 § Seam 2)
@@ -85,9 +85,9 @@ The MIT license disclaims warranty. This `LIMITATIONS.md` extends that posture t
 - ✅ (added in PR 3) ADR-0013 MI Proxy — shipped (verifier chain-of-custody)
 - ✅ (added in PR 3) Consolidated `AuditConsumer` base — shipped
 
-### v0.2.1 still gates the final tag
+### v0.2.2 candidate scope (in flight on `main` as `0.2.2.dev0`)
 
-- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. Distinct from the Module Integrity Proxy that shipped under ADR-0013.
+- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. Distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1.
 - `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`)
 - Named-GC reference quotes
 

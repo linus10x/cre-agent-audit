@@ -8,7 +8,7 @@
 
 Your hash chain can be perfect, and your verifier can still lie.
 
-cre-agent-audit v0.2.1.dev2: MI Proxy (out-of-band attestation, fail-closed) + vendor-drift gate.
+cre-agent-audit v0.2.1 (released): MI Proxy (out-of-band attestation, fail-closed) + vendor-drift gate.
 
 If your audit verifier is compromised, how would you know?
 
@@ -38,14 +38,14 @@ That is the gap behind every CRE-AI settled-liability anchor on the record.
 
 None had a missing chain. They had audit that could not prove bounded operation.
 
-**3/5** cre-agent-audit v0.2.1.dev2 (merged) closes 4 trust-boundary pieces:
+**3/5** cre-agent-audit v0.2.1 (released today) closes 4 trust-boundary pieces:
 
 · FAILURE-MODES.md matrix the build refuses to let drift
 · MI Proxy: fail-closed verifier attestation (ADR-0013)
 · VendorScoreGate: vendor-drift surface
 · consolidated AuditConsumer
 
-**4/5** Three items still gate the v0.2.1 tag: the fair-housing MI-threshold detector, named-GC reference quotes, the `audit-verify` extra wiring.
+**4/5** Three items move forward as v0.2.2 candidate scope: the fair-housing MI-threshold detector, named-GC reference quotes, the `audit-verify` extra wiring.
 
 Those land next. The framework matures in public.
 

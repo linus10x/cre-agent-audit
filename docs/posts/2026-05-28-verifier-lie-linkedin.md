@@ -8,9 +8,9 @@ Your hash chain can be perfect, and your verifier can still lie.
 
 That is the gap behind the three settled-liability anchors every CRE operator now writes against. TransUnion Rental Screening Solutions — joint FTC and CFPB consent orders, October 2023, $15M civil money penalty. Louis v. SafeRent Solutions — class settlement in the District of Massachusetts, November 2024, approximately $2.275M with a five-year score-use injunction on voucher-holder applicants. United States v. RealPage et al. — DOJ plus eight state attorneys general, August 2024, ongoing antitrust litigation. None of these defendants had a missing chain. They had audit that could not prove what the system was bounded to do.
 
-`cre-agent-audit` v0.2.0 shipped the foundation: nine MIT-licensed governance patterns, primary-source citations, zero runtime dependencies, hash-chained ledger. v0.2.1.dev2 — merged today — adds four pieces closer to the trust boundary. A `FAILURE-MODES.md` matrix the build refuses to let drift. An MI Proxy for verifier chain-of-custody (ADR-0013) — fail-closed when the verifier's own attestation does not check. A `VendorScoreGate` that surfaces silent vendor-model drift on the same input. A consolidated `AuditConsumer` so the three Protocol seams inject through one interface.
+`cre-agent-audit` v0.2.0 shipped the foundation: nine MIT-licensed governance patterns, primary-source citations, zero runtime dependencies, hash-chained ledger. v0.2.1 — released today (DOI 10.5281/zenodo.20434575) — adds four pieces closer to the trust boundary. A `FAILURE-MODES.md` matrix the build refuses to let drift. An MI Proxy for verifier chain-of-custody (ADR-0013) — fail-closed when the verifier's own attestation does not check. A `VendorScoreGate` that surfaces silent vendor-model drift on the same input. A consolidated `AuditConsumer` so the three Protocol seams inject through one interface.
 
-Three items still gate the v0.2.1 tag: the fair-housing MI-threshold detector, named-GC reference quotes, and the `audit-verify` extra wiring.
+Three items move forward as the v0.2.2 candidate scope: the fair-housing MI-threshold detector, named-GC reference quotes, and the `audit-verify` extra wiring.
 
 If your audit verifier itself is compromised, how would you know?
 

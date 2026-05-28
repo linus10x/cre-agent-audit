@@ -5,14 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — v0.2.1 in flight
+## [Unreleased] — v0.2.2 in flight
 
-**v0.2.1 hardening — PR 1 + PR 2 + PR 3** on PR [#31](https://github.com/linus10x/cre-agent-audit/pull/31).
+**v0.2.2 candidate scope** — the 3 items deferred from the original 7 `SHIP-RECEIPT.md` `v0.2.1` follow-up list:
 
-- **PR 1 + 2** (prior commits on this branch) — storage foundation + trusted timestamps + witness anchor. Closed 3 of the 7 [`docs/SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md) deferred items.
-- **PR 3** (this session — 6 commits, version bumped to `0.2.1.dev2`) — closes 4 more of the deferred 7: `FAILURE-MODES.md` adversarial matrix, ADR-0013 + `MIProxy` verifier chain-of-custody, `VendorScoreGate` concrete with score-drift detection, and the consolidated `AuditConsumer` base.
+- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update; mutual-information based; distinct from the Module Integrity Proxy that shipped under ADR-0013 in v0.2.1)
+- Named-GC reference quotes
+- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`)
 
-v0.2.1 tag is gated on the remaining items named under § "Still deferred before v0.2.1 tag" below.
+Marker on `main`: `0.2.2.dev0`.
+
+---
+
+## [0.2.1] — 2026-05-28 — Adversarial-review follow-ups (4 of 7 closed)
+
+**Released:** 2026-05-28 · **Tag:** `v0.2.1` at sha `680239a` · **DOI:** [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575) · **PR:** [#31](https://github.com/linus10x/cre-agent-audit/pull/31) (PR 1 + 2 + 3 on `feat/audit-system-hardening`)
+
+Closed 4 of the original 7 `docs/SHIP-RECEIPT.md` deferred items plus 2 added during PR 3 (ADR-0013 MI Proxy and the consolidated `AuditConsumer`). 3 items remain for v0.2.2; see `[Unreleased]` above.
+
+Build-time historical note: PR 3 bumped the in-flight marker to `0.2.1.dev2`; the published `v0.2.1` wheel built from sha `680239a` self-identifies as `0.2.1.dev2`. Public tag hashes are immutable per repo policy; the cosmetic drift is a one-time historical quirk preserved rather than rewritten.
 
 ### Added
 
@@ -64,17 +75,11 @@ v0.2.1 tag is gated on the remaining items named under § "Still deferred before
 - mypy `--strict`: clean.
 - ruff + ruff format: clean.
 
-### Still deferred before v0.2.1 tag
+### Deferred to v0.2.2
 
-The 3 remaining items from the original 7 `SHIP-RECEIPT.md` deferred list:
+The 3 remaining items from the original 7 `SHIP-RECEIPT.md` deferred list move forward as the v0.2.2 candidate scope (see `[Unreleased]` block above): the fair-housing MI-threshold detector, named-GC reference quotes, and the `audit-verify` extra wiring.
 
-- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update). **Note:** "MI-threshold proxy" here is mutual-information proxy detection for fair-housing, distinct from the Module Integrity Proxy that landed in this PR under ADR-0013.
-- Named-GC reference quotes.
-- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation).
-
-The agent topology pruning previously referenced as "ADR-0013 forthcoming" in PR 1+2's `[Unreleased]` block is **superseded by this PR's ADR-0013 (MI Proxy)**; the topology decision moves to a future ADR (likely ADR-0014). The consolidation of `AuditAgent` + `MonitorAgent` behind `AuditConsumer` is what landed in this PR's place.
-
-v0.2.1 tag waits until those land.
+The agent topology pruning previously forward-referenced as "(ADR-0013, forthcoming)" in PR 1+2's `[Unreleased]` block is **superseded by v0.2.1's ADR-0013 (MI Proxy)**; the topology decision moves to a future ADR (likely ADR-0014). The consolidation of `AuditAgent` + `MonitorAgent` behind `AuditConsumer` is what landed in this v0.2.1 release in its place.
 
 ---
 

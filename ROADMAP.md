@@ -16,11 +16,11 @@
 - DISCLAIMER.md, LIMITATIONS.md, PRIOR-ART.md
 - Sibling cross-link to `linus10x/finserv-agent-audit`
 
-## v0.2.1 — Adversarial-review follow-ups (in flight on `main` as `0.2.1.dev2`)
+## v0.2.1 — Adversarial-review follow-ups (released 2026-05-28; tag `v0.2.1`; DOI [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575))
 
-The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings; 26 folded into v0.2.0; 7 deferred to v0.2.1. As of 2026-05-28 (PR #31 merged), 4 of the 7 have landed plus 2 not on the original list.
+The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings; 26 folded into v0.2.0; 7 deferred to v0.2.1. PR #31 merged 2026-05-28 closed 4 of the 7 plus 2 added during PR 3 (ADR-0013 MI Proxy + the consolidated `AuditConsumer`). 3 items remain for v0.2.2.
 
-### Landed on `main` (`0.2.1.dev2`)
+### Landed in `v0.2.1`
 
 - ✅ **Pluggable persistence backend** for `AuditLedger` — `LedgerStore` Protocol + `InMemoryLedgerStore` / `SqliteLedgerStore` / `JsonlLedgerStore` (ADR-0012 § Seam 1)
 - ✅ **RFC 3161 trusted-timestamp integration** — `TimestampSource` Protocol + `LocalClockTimestampSource` / `RFC3161TimestampSource` + stdlib DER ASN.1 codec (ADR-0012 § Seam 2)
@@ -30,7 +30,9 @@ The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-gove
 - ✅ **(added in PR 3) ADR-0013 — MI Proxy** — out-of-band verifier chain-of-custody; `LocalMIProxy` HMAC default; `AuditLedger.verify_chain(mi_proxy=...)` fail-closed hook
 - ✅ **(added in PR 3) Consolidated `AuditConsumer` base** — the three ADR-0012 seams + MI Proxy + VendorScoreGate inject through one interface
 
-### Still gates the v0.2.1 final tag
+## v0.2.2 — In flight on `main` as `0.2.2.dev0` (target: 2026-Q3)
+
+The 3 items deferred from the original 7 `SHIP-RECEIPT.md` v0.2.1 follow-up list:
 
 - **MI-threshold learned-proxy detection** in `fair_housing_preflight.py` (mutual-information based; ADR-0008 update) + SafeRent-shaped synthetic fixture. **Distinct from the Module Integrity Proxy that shipped under ADR-0013.**
 - **`audit-verify` extra wiring** — `rfc3161_verify.py` signature-chain validation behind `pyca/cryptography`
