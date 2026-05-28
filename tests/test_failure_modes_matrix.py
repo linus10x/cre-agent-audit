@@ -20,9 +20,7 @@ FAILURE_MODES = REPO_ROOT / "FAILURE-MODES.md"
 # (F) module.path.callable — qualified Python ref the matrix points at.
 # Greedy match on the path stops at backtick to avoid eating prose around it.
 _CALLABLE_REF_RE = re.compile(r"\(F\)\s+`?([a-zA-Z_][\w.]*)`?")
-_DEFERRED_RE = re.compile(
-    r"NOT YET IMPLEMENTED\s+·\s+tracking:\s+([A-Za-z0-9 #_().-]+)"
-)
+_DEFERRED_RE = re.compile(r"NOT YET IMPLEMENTED\s+·\s+tracking:\s+([A-Za-z0-9 #_().-]+)")
 
 
 def _matrix_text() -> str:
@@ -81,13 +79,9 @@ def test_every_callable_reference_resolves() -> None:
             not_callable.append(qualified)
 
     assert not unresolved, (
-        "FAILURE-MODES.md references functions that do not resolve: "
-        f"{unresolved}"
+        f"FAILURE-MODES.md references functions that do not resolve: {unresolved}"
     )
-    assert not not_callable, (
-        "FAILURE-MODES.md references non-callable attributes: "
-        f"{not_callable}"
-    )
+    assert not not_callable, f"FAILURE-MODES.md references non-callable attributes: {not_callable}"
 
 
 def test_deferred_rows_carry_tracking_markers() -> None:
@@ -118,6 +112,4 @@ def test_matrix_covers_all_eight_classes() -> None:
     matrix_section = text.split("## Matrix", 1)[1].split("## Defaults", 1)[0]
     # Count `| N |` numbered rows.
     row_numbers = re.findall(r"^\|\s*(\d+)\s*\|", matrix_section, flags=re.MULTILINE)
-    assert row_numbers == [str(n) for n in range(1, 9)], (
-        f"Expected rows 1..8, got {row_numbers}"
-    )
+    assert row_numbers == [str(n) for n in range(1, 9)], f"Expected rows 1..8, got {row_numbers}"

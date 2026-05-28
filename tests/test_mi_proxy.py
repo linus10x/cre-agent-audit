@@ -91,14 +91,10 @@ def test_local_mi_proxy_round_trip_succeeds() -> None:
         ("backend_id", "spoofed-backend"),
     ],
 )
-def test_local_mi_proxy_rejects_tampered_attestation(
-    field: str, mutated_value: str
-) -> None:
+def test_local_mi_proxy_rejects_tampered_attestation(field: str, mutated_value: str) -> None:
     proxy = LocalMIProxy(signing_key=secrets.token_bytes(32))
     attestation = proxy.attest(component_id=VERIFIER_COMPONENT)
-    tampered = Attestation(
-        **{**attestation.__dict__, field: mutated_value}
-    )
+    tampered = Attestation(**{**attestation.__dict__, field: mutated_value})
     assert proxy.verify_attestation(tampered) is False
 
 

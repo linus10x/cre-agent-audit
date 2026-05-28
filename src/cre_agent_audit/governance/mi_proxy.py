@@ -210,9 +210,7 @@ class LocalMIProxy:
             return False
 
         try:
-            current_hash = _hash_component(
-                attestation.component_id, self._config_bytes
-            )
+            current_hash = _hash_component(attestation.component_id, self._config_bytes)
         except ImportError:
             return False
         return hmac.compare_digest(current_hash, attestation.sha256_hex)
@@ -280,9 +278,7 @@ def _hash_component(component_id: str, config_bytes: bytes) -> str:
     """SHA-256 over the component's source file + canonical config."""
     spec = importlib.util.find_spec(component_id)
     if spec is None or spec.origin is None or spec.origin == "built-in":
-        raise ImportError(
-            f"MIProxy cannot hash {component_id!r}: no source file on disk"
-        )
+        raise ImportError(f"MIProxy cannot hash {component_id!r}: no source file on disk")
     with open(spec.origin, "rb") as fh:
         source_bytes = fh.read()
     digest = hashlib.sha256()
@@ -313,9 +309,7 @@ def _sign(
     backend_id: str,
 ) -> str:
     """HMAC-SHA256 over the four-field payload; base64-encoded output."""
-    payload = "|".join(
-        (component_id, sha256_hex, timestamp_iso, backend_id)
-    ).encode("utf-8")
+    payload = "|".join((component_id, sha256_hex, timestamp_iso, backend_id)).encode("utf-8")
     mac = hmac.new(key, payload, hashlib.sha256).digest()
     return base64.b64encode(mac).decode("ascii")
 

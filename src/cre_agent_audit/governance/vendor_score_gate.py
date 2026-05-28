@@ -192,9 +192,7 @@ class InMemoryVendorScoreGate:
                     model_version=str(payload["model_version"]),
                     sequence=chain_entry.sequence,
                     drift_detected=chain_entry.decision_type == _DRIFT_DECISION,
-                    previous_score=(
-                        _as_float(previous_raw) if previous_raw is not None else None
-                    ),
+                    previous_score=(_as_float(previous_raw) if previous_raw is not None else None),
                 )
             )
         return out
@@ -266,8 +264,7 @@ def _validate_inputs(
         raise ValueError(f"score must be finite; got {score!r}")
     if not (0.0 <= score <= 1.0):
         raise ValueError(
-            f"score must be in [0.0, 1.0] (the canonical risk-score interval); "
-            f"got {score!r}"
+            f"score must be in [0.0, 1.0] (the canonical risk-score interval); got {score!r}"
         )
 
 
@@ -287,15 +284,11 @@ def _encode_payload(
     }
     if previous_score is not None:
         payload["previous_score"] = previous_score
-    return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode(
-        "utf-8"
-    )
+    return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
 def _decode_payload(chain_entry: AuditEntry) -> dict[str, object]:
-    payload: dict[str, object] = json.loads(
-        chain_entry.action_payload.decode("utf-8")
-    )
+    payload: dict[str, object] = json.loads(chain_entry.action_payload.decode("utf-8"))
     return payload
 
 
