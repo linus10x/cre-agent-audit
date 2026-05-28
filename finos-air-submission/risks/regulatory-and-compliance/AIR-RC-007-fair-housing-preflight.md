@@ -39,7 +39,7 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 ## Related research
 
 - Autonomy Ladder™ ADR-0008 (Fair-Housing Pre-Flight Gate, CRE-native) — `github.com/linus10x/cre-agent-audit/blob/main/docs/adr/0008-fair-housing-preflight-gate.md`
-- Reference implementation in MIT-licensed code — `github.com/linus10x/cre-agent-audit/blob/main/src/cre_agent_audit/governance/fair_housing_gate.py`
+- Reference implementation in MIT-licensed code — `github.com/linus10x/cre-agent-audit/blob/main/src/cre_agent_audit/governance/fair_housing_preflight.py`
 - Louis v. SafeRent Solutions consent order (D. Mass., November 20, 2024)
 - TransUnion Rental Screening Solutions FTC + CFPB settlement (October 2023)
 - HUD Fair Housing Act AI guidance (2024 HUD memorandum on AI and Fair Housing)

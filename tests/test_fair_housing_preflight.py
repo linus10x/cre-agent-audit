@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
-from cre_agent_audit.governance.fair_housing_gate import (
+from cre_agent_audit.governance.fair_housing_preflight import (
     BypassRegistry,
     DisparateImpactMonitor,
     FairHousingPreflightGate,

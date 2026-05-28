@@ -1,9 +1,22 @@
-"""Hash-chain Audit Ledger — ADR-0003.
+"""Internally-Consistent Hash-Chained Audit Ledger — ADR-0003.
 
 Every decision event is appended to a chain where each entry contains the
-SHA-256 hash of the previous entry. Tampering with any entry invalidates every
-entry that follows. The ledger is append-only — corrections are new entries
-that reference the prior entry's sequence, never edits.
+SHA-256 hash of the previous entry. Modifying any past entry breaks the
+SHA-256 link at the modified point and every entry that follows — detectable
+by an honest holder of the current chain head.
+
+**Important framing.** This ledger is *internally consistent* by construction.
+It is **not adversarially tamper-evident on its own**: an attacker with full
+write access to the storage layer can regenerate the entire chain end-to-end,
+and the regenerated chain will pass `verify_chain()`. For adversarial
+integrity, the chain head (`chain_head()`) must be periodically anchored to
+an **external witness register** that the deployer does not control alone:
+OpenTimestamps, Sigstore Rekor, a regulator-side append-only log, or a
+notarized blockchain anchor. Then post-incident the deployer can prove what
+the chain head was at time T.
+
+See ADR-0003 § "Audit evidence properties" for the SOC 2 / SOX 404 / FFIEC
+framing, and ADR-0010 for retention, privilege, and discovery posture.
 
 The implementation is intentionally dependency-free (stdlib only) so the
 governance ledger keeps writing even when the rest of the system is in
@@ -206,7 +219,14 @@ class AuditLedger:
         )
 
     def chain_head(self) -> str:
-        """Return ``self_hash`` of the last entry, or the genesis sentinel if empty."""
+        """Return ``self_hash`` of the last entry (the chain head digest).
+
+        Publish this value periodically to an external witness register
+        (OpenTimestamps, Sigstore Rekor, regulator log) to convert the
+        internally-consistent chain into an adversarially tamper-evident
+        record. The genesis sentinel (SHA-256 zeroes) is returned for an
+        empty ledger.
+        """
         if not self._entries:
             return GENESIS_PRIOR_HASH
         return self._entries[-1].self_hash

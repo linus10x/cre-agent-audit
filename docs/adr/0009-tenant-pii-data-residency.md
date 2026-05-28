@@ -74,7 +74,7 @@ Exceptions to the residency veto require GC sign-off, not just managerial. The b
 
 Aggregate reads across jurisdictions (e.g., portfolio-wide delinquency-rate dashboard) require either:
 
-- **Anonymization at the gate** — the aggregator receives only counts and ratios, never per-tenant rows. Enforced by an aggregator-mode pattern in `src/governance/tenant_pii_partition.py` that returns a `JurisdictionAggregate` object containing only counts.
+- **Anonymization at the gate** — the aggregator receives only counts and ratios, never per-tenant rows. Enforced by an aggregator-mode pattern in `src/governance/tenant_pii_residency.py` that returns a `JurisdictionAggregate` object containing only counts.
 - **OR**: A blanket `LegalBasis` on the aggregating actor, GC-signed, with a documented retention policy on the aggregate.
 
 The default is anonymization. A blanket basis is a deliberate exception, logged.
@@ -102,7 +102,7 @@ The default is anonymization. A blanket basis is a deliberate exception, logged.
 
 ## Implementation notes
 
-See `src/governance/tenant_pii_partition.py` for the reference implementation, `src/schemas/` for `TenantRecord` and related typed objects, and `examples/` for the cross-jurisdiction demonstration paths.
+See `src/governance/tenant_pii_residency.py` for the reference implementation, `src/schemas/` for `TenantRecord` and related typed objects, and `examples/` for the cross-jurisdiction demonstration paths.
 
 ## Related
 

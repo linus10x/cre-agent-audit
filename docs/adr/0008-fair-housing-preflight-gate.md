@@ -108,7 +108,7 @@ These are issue placeholders, not architectural failures. The repo is open for t
 
 ## Implementation notes
 
-See `src/governance/fair_housing_gate.py` for the reference implementation, `src/schemas/screening_decision.py` for the typed objects, and `examples/02_tenant_screening_preflight/` for the runnable demo.
+See `src/governance/fair_housing_preflight.py` for the reference implementation, `src/schemas/screening_decision.py` for the typed objects, and `examples/02_tenant_screening_preflight/` for the runnable demo.
 
 ## Related
 

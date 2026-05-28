@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 
 from cre_agent_audit.governance.sovereign_veto import VetoVerdict
-from cre_agent_audit.governance.tenant_pii_partition import (
+from cre_agent_audit.governance.tenant_pii_residency import (
     CrossJurisdictionRequest,
     LegalBasis,
     TenantPIIAction,
