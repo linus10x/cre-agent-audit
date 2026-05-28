@@ -12,7 +12,7 @@
 | **Frequency** | Continuous (runtime queries) + per-PR (CI verifies JSON-YAML sync) + annual (full mapping review) |
 | **Type** | Detective (queryable evidence of pattern→regulation coverage) + Compliance (supports audit-program mapping) |
 | **Evidence of operation** | `compliance_rules.json` (committed); `compliance_rules.yaml` (author-time source); CI sync-check log; annual mapping-review minutes |
-| **ADR** | [`docs/adr/0005-regulation-loader.md`](../adr/0005-*.md) |
+| **ADR** | [`docs/adr/0005-regulation-loader.md`](../adr/0005-eu-ai-act-mapping.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/regulation_loader.py`](../../src/cre_agent_audit/governance/regulation_loader.py) |
 
 ## Test of design

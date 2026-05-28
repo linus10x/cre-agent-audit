@@ -174,7 +174,7 @@ The patterns map into Big-4 AI-assurance frameworks via:
 
 ## Procurement-clause companion (for vendor-mediated AI)
 
-Most CRE-operator AI surface is vendor-mediated. The patterns translate to procurement-clause leverage via `docs/vendor-clauses/{screening,abstraction,pricing}.md` — drop-in contract addenda for tenant-screening vendors (DPA + model-risk addendum + four-fifths-rule reporting SLA), lease-abstraction vendors (clause-level provenance-disclosure SLA), and revenue-management vendors (independent-decision contract clause + data-input-topology disclosure).
+Most CRE-operator AI surface is vendor-mediated. The patterns translate to procurement-clause power via `docs/vendor-clauses/{screening,abstraction,pricing}.md` — drop-in contract addenda for tenant-screening vendors (DPA + model-risk addendum + four-fifths-rule reporting SLA), lease-abstraction vendors (clause-level provenance-disclosure SLA), and revenue-management vendors (independent-decision contract clause + data-input-topology disclosure).
 
 ---
 

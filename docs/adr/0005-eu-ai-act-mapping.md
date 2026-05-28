@@ -31,7 +31,7 @@ patterns:
         clause: "discrimination in any aspect of a credit transaction"
         pattern_function: "voucher_status_non_discrimination"
       - name: Colorado AI Act
-        statute: SB 189 (signed 2026-03-14)
+        statute: SB 26-189 (signed 2026-03-14)
         clause: "impact assessments for consequential decisions"
         effective_date: 2027-01-01
         pattern_function: "disparate_impact_monitor"

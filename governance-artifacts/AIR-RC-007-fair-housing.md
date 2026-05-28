@@ -24,7 +24,7 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 
 ## CRE-specific examples
 
-- Tenant-screening AI scoring voucher applicants negatively → SafeRent failure mode ($2.3M settlement, November 20, 2024, 5-year prohibition on score-based screening)
+- Tenant-screening AI scoring voucher applicants negatively → SafeRent failure mode (approximately $2.275M class settlement, November 20, 2024, 5-year prohibition on score-based screening)
 - Tenant-screening AI relying on inaccurate eviction-record data → TransUnion failure mode ($15M FTC + CFPB settlement, October 2023)
 - Renewal-pricing AI using zip-code as a primary feature → race proxy
 - Marketing audience-targeting AI using preferred-language as a feature → national-origin proxy
@@ -33,7 +33,7 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 
 ## Severity classification
 
-**Severity: Critical.** Each named example carries either a settled-case precedent ($15M TransUnion · $2.3M SafeRent · binding HUD guidance) or a binding regulatory standard (FHA, ECOA, CO SB 26-189, disparate-impact framework). The cost of an unmitigated failure is measured in millions per incident plus reputational damage and operational restrictions imposed by consent decree.
+**Severity: Critical.** Each named example carries either a settled-case precedent ($15M Trans Union Rental Screening Solutions · approximately $2.275M SafeRent class settlement · binding HUD guidance) or a binding regulatory standard (FHA, ECOA, CO SB 26-189, disparate-impact framework). The cost of an unmitigated failure is measured in millions per incident plus reputational damage and operational restrictions imposed by consent decree.
 
 ## Related research
 
@@ -44,7 +44,7 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 - HUD Fair Housing Act AI guidance (2024 HUD memorandum on AI and Fair Housing)
 - Colorado AI Act SB 26-189 (signed 2026 · effective January 1, 2027)
 - HUD 2016 criminal-history-screening guidance
-- DOJ-RealPage consent decree (parallel antitrust surface · November 24, 2025)
+- U.S. v. RealPage, M.D.N.C., DOJ + 8 state AGs, filed August 23, 2024 — ongoing civil antitrust litigation (parallel antitrust surface)
 
 ## Detection
 

@@ -114,11 +114,11 @@ The adapter only works if the vendor exposes the data it needs. The contractual 
 
 **Negative.** The adapter cannot detect proxy features the operator does not see. The four-fifths-rule monitor on the operator-side decision is necessary-but-insufficient — if the vendor's model has a learned proxy bias, the four-fifths-rule check on the operator's accept/decline ratio may pass while the vendor-side scoring is the actual discriminatory signal. The mitigation is on the contracting side (vendor-side fairness reporting SLA) plus regulatory-discovery insistence on vendor-side model documentation.
 
-**Architectural.** The adapter is the seam between the operator's stack and the vendor's stack. In a production deployment, it is the highest-leverage governance boundary because it converts an opaque third-party signal into an operator-side, audit-chain-recorded decision. The seam should be loud (heavily logged) and explicit (configured per vendor, not implicit).
+**Architectural.** The adapter is the seam between the operator's stack and the vendor's stack. In a production deployment, it is the highest-impact governance boundary because it converts an opaque third-party signal into an operator-side, audit-chain-recorded decision. The seam should be loud (heavily logged) and explicit (configured per vendor, not implicit).
 
 ## What this does NOT cover
 
-- **Vendor-side training-time controls.** Out of operator control by definition; the operator's leverage is contractual (model-risk addendum) and regulatory-discovery (Big-4 vendor-due-diligence on the model lifecycle).
+- **Vendor-side training-time controls.** Out of operator control by definition; the operator's recourse is contractual (model-risk addendum) and regulatory-discovery (Big-4 vendor-due-diligence on the model lifecycle).
 - **Vendor-internal proxy-feature usage.** The operator cannot inspect the vendor's feature engineering; the operator requires the four-fifths-rule output as contractually-disclosed signal.
 - **Reference implementation.** v0.2.0 ships the design (Protocol sketch + interface contract). v0.3 ships the reference implementation, a SafeRent-shaped synthetic test example, and an integration test against a mock vendor.
 - **Vendor SLA enforcement at runtime.** If the vendor fails to provide the four-fifths-rule report the contract obligates, the operator's runtime cannot synthesize the missing data — the failure becomes a contract-breach issue, not a runtime fallback.

@@ -67,7 +67,7 @@ The promotion gate is the work, not the framework.
 
 - EU AI Act Article 14 (human oversight requirements scale by risk class)
 - NIST AI RMF Manage function (MANAGE 2.3 — risk decisions documented)
-- CO AI Act SB 189 (impact assessments for consequential decisions — A2 → A3 promotion is the audit-trigger event)
+- CO AI Act SB 26-189 (impact assessments for consequential decisions — A2 → A3 promotion is the audit-trigger event)
 
 ## CRE-specific notes
 

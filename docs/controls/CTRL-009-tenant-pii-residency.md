@@ -12,7 +12,7 @@
 | **Frequency** | Per-read (continuous) + per-cross-jurisdiction request (LegalBasis check) |
 | **Type** | Preventive (blocks untagged cross-jurisdiction reads) + Detective (records every cross-jurisdiction request) |
 | **Evidence of operation** | `CrossJurisdictionRequest` records on every cross-boundary read; `LegalBasis` tags on every request; logged exceptions require GC sign-off |
-| **ADR** | [`docs/adr/0009-tenant-pii-residency.md`](../adr/0009-*.md) |
+| **ADR** | [`docs/adr/0009-tenant-pii-residency.md`](../adr/0009-tenant-pii-data-residency.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/tenant_pii_residency.py`](../../src/cre_agent_audit/governance/tenant_pii_residency.py) |
 
 ## Test of design

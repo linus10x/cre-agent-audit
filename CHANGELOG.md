@@ -109,11 +109,11 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 ### Added (third pass — 2026-05-22 PM)
 - `src/cre_agent_audit/governance/shadow_mode.py` — `ShadowRouter` per ADR-0006 with aggregate divergence rate · veto-direction classification (SHADOW_MORE_CONSERVATIVE / SHADOW_MORE_AGGRESSIVE / EQUIVALENT) · cohort-specific divergence · 4-class promotion-gate matrix (INFORMATIONAL 7d · MATERIAL_LEASE 30d · FAIR_HOUSING 60d + zero-worse-direction-per-cohort · RENT_OPTIMIZATION 90d)
 - `src/cre_agent_audit/governance/regulation_loader.py` — `RegulationLoader` per ADR-0005 reading `config/compliance_rules.yaml` with `RegulationCitation` typed lookups + reverse lookup (patterns satisfying a regulation) + schema validation (`InvalidComplianceRulesError`)
-- `src/cre_agent_audit/governance/tenant_pii_partition.py` — `TenantPIIResidencyCheck` per ADR-0009 with all 5 RESIDENCY-* veto codes (CROSS-JURISDICTION-UNTAGGED · CONSENT-MISSING · LIA-MISSING · STATUTE-MISSING · PURPOSE-VAGUE) + `CrossJurisdictionRequest` typed object + `LegalBasis` enum (GDPR Art. 6 taxonomy)
+- `src/cre_agent_audit/governance/tenant_pii_residency.py` — `TenantPIIResidencyCheck` per ADR-0009 with all 5 RESIDENCY-* veto codes (CROSS-JURISDICTION-UNTAGGED · CONSENT-MISSING · LIA-MISSING · STATUTE-MISSING · PURPOSE-VAGUE) + `CrossJurisdictionRequest` typed object + `LegalBasis` enum (GDPR Art. 6 taxonomy)
 - `src/cre_agent_audit/agents/` — 6 agent stubs per ARCHITECTURE.md topology: `DomainIntelligenceAgent` · `StrategyAgent` · `RiskAgent` · `AuditAgent` (functional — filters ledger by decision_type / actor_id / sequence) · `OrchestratorAgent` · `MonitorAgent`. Shared `Agent[InputT, OutputT]` ABC in `agents/base.py`.
 - `tests/test_shadow_mode.py` — 16 unit tests
 - `tests/test_regulation_loader.py` — 12 unit tests (including malformed-YAML validation)
-- `tests/test_tenant_pii_partition.py` — 15 unit tests
+- `tests/test_tenant_pii_residency.py` — 15 unit tests
 - `tests/test_agents.py` — 5 smoke tests for the agent topology + AuditAgent filter behavior
 
 ### Verified (third pass)
@@ -146,9 +146,9 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - `src/cre_agent_audit/schemas/lease_clause.py` — typed `Provenance`, `ReviewerSignature`, `BoundingBox`, `ExtractedClause`, `ClauseCriticality` enum (3 tiers) per ADR-0007
 - `src/cre_agent_audit/schemas/screening_decision.py` — typed `ScreeningDecision`, `FairHousingException`, `JurisdictionRules`, `ProtectedSurface` + `Decision` + `AuthorityLevel` enums, default SOI-protected jurisdiction set per ADR-0008
 - `src/cre_agent_audit/governance/lease_provenance.py` — `LeaseProvenanceCheck` per ADR-0007 with all 5 veto codes (PROV-INCOMPLETE-MATERIAL · PROV-INCOMPLETE-SIGNIFICANT · PROV-LOW-CONFIDENCE-MATERIAL · PROV-HASH-MISMATCH · PROV-STALE-MODEL) + `LeaseRepository` + `compute_reviewer_sigil` SHA-256 binding
-- `src/cre_agent_audit/governance/fair_housing_gate.py` — `FairHousingPreflightGate` per ADR-0008 with all 5 ordered checks (FHA-PROXY · FHA-VOUCHER · FHA-SOI · FHA-CRIM · FHA-DISPARATE) + `DisparateImpactMonitor` (four-fifths-rule) + `BypassRegistry` (3-bypasses-same-owner-90d → GC, 5-bypasses-same-reason-90d → DEFCON-4)
+- `src/cre_agent_audit/governance/fair_housing_preflight.py` — `FairHousingPreflightGate` per ADR-0008 with all 5 ordered checks (FHA-PROXY · FHA-VOUCHER · FHA-SOI · FHA-CRIM · FHA-DISPARATE) + `DisparateImpactMonitor` (four-fifths-rule) + `BypassRegistry` (3-bypasses-same-owner-90d → GC, 5-bypasses-same-reason-90d → DEFCON-4)
 - `tests/test_lease_provenance.py` — 13 unit tests
-- `tests/test_fair_housing_gate.py` — 17 unit tests
+- `tests/test_fair_housing_preflight.py` — 17 unit tests
 - Full realization of `examples/01_lease_abstraction_provenance/run.py` and `examples/02_tenant_screening_preflight/run.py` against the live `LeaseProvenanceCheck` and `FairHousingPreflightGate` implementations (replaced stubs from the morning shipment)
 
 ### Verified (second pass)
@@ -185,8 +185,8 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - `src/cre_agent_audit/governance/shadow_mode.py` (ADR-0006)
 - `src/cre_agent_audit/governance/regulation_loader.py` (ADR-0005 — load `compliance_rules.yaml` + Treasury FS AI RMF 230-control mapping per v3.1 Amendment)
 - `src/cre_agent_audit/governance/lease_provenance.py` (ADR-0007)
-- `src/cre_agent_audit/governance/fair_housing_gate.py` (ADR-0008 — heaviest module, 5 ordered checks + auto-escalation + disparate-impact monitor)
-- `src/cre_agent_audit/governance/tenant_pii_partition.py` (ADR-0009)
+- `src/cre_agent_audit/governance/fair_housing_preflight.py` (ADR-0008 — heaviest module, 5 ordered checks + auto-escalation + disparate-impact monitor)
+- `src/cre_agent_audit/governance/tenant_pii_residency.py` (ADR-0009)
 - 6 agent stubs under `src/cre_agent_audit/agents/`
 - 3 typed schemas under `src/cre_agent_audit/schemas/` (lease_clause · screening_decision · pricing_recommendation)
 - Full realization of examples 01 + 02

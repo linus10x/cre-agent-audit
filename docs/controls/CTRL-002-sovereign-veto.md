@@ -12,7 +12,7 @@
 | **Frequency** | Per-decision (every agent action that touches a constraint surface) |
 | **Type** | Preventive (blocks unauthorized decisions) + Detective (records every veto + every bypass) |
 | **Evidence of operation** | Veto events and `SovereignBypass` records in `AuditLedger`; bypass-justification fields tagged with privilege metadata per ADR-0010 |
-| **ADR** | [`docs/adr/0002-sovereign-veto.md`](../adr/0002-*.md) |
+| **ADR** | [`docs/adr/0002-sovereign-veto.md`](../adr/0002-sovereign-veto.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/sovereign_veto.py`](../../src/cre_agent_audit/governance/sovereign_veto.py) |
 
 ## Test of design

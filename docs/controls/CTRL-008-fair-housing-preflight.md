@@ -12,7 +12,7 @@
 | **Frequency** | Per-decision on every protected surface (continuous) |
 | **Type** | Preventive (blocks discriminatory features at gate) + Detective (DisparateImpactMonitor on outputs in 90-day window) |
 | **Evidence of operation** | `FairHousingException` records on every bypass; cohort-specific selection-rate reports from `DisparateImpactMonitor`; per-jurisdiction blocklist version-controlled in `config/compliance_rules.yaml` |
-| **ADR** | [`docs/adr/0008-fair-housing-preflight.md`](../adr/0008-*.md) |
+| **ADR** | [`docs/adr/0008-fair-housing-preflight-gate.md`](../adr/0008-fair-housing-preflight-gate.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/fair_housing_preflight.py`](../../src/cre_agent_audit/governance/fair_housing_preflight.py) |
 
 ## Test of design

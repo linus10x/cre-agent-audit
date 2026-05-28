@@ -12,7 +12,7 @@
 | **Frequency** | Per-clause (continuous as leases are abstracted) |
 | **Type** | Preventive (blocks system-of-record write on missing provenance) + Detective (records every veto'd clause) |
 | **Evidence of operation** | `Provenance` objects on every extracted clause; reviewer signatures on material clauses; veto'd clauses logged to audit chain with full provenance |
-| **ADR** | [`docs/adr/0007-lease-provenance.md`](../adr/0007-*.md) |
+| **ADR** | [`docs/adr/0007-lease-provenance.md`](../adr/0007-lease-abstraction-provenance.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/lease_provenance.py`](../../src/cre_agent_audit/governance/lease_provenance.py) |
 
 ## Test of design

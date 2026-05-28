@@ -12,7 +12,7 @@
 | **Frequency** | Per-workflow (initial classification) + per-promotion-request (gate-evidence review) + annual (re-classification review) |
 | **Type** | Preventive (blocks under-evidenced promotions) + Detective (records every promotion decision + every blocked promotion) |
 | **Evidence of operation** | `PromotionGateReport` artifacts; A2→A3 four-criterion evidence pack; annual re-classification record |
-| **ADR** | [`docs/adr/0004-autonomy-ladder.md`](../adr/0004-*.md) |
+| **ADR** | [`docs/adr/0004-autonomy-ladder.md`](../adr/0004-autonomy-ladder-a0-a4.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/autonomy_ladder.py`](../../src/cre_agent_audit/governance/autonomy_ladder.py) |
 
 ## Test of design

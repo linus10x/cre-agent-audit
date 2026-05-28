@@ -12,7 +12,7 @@
 | **Frequency** | Continuous (state transitions are event-driven; capability checks fire on every agent action) |
 | **Type** | Preventive (denies capabilities) + Detective (records state transitions) |
 | **Evidence of operation** | DEFCON state transitions and capability-denial events in `AuditLedger` (ADR-0003); weekly DEFCON-state report to the operating-partner review |
-| **ADR** | [`docs/adr/0001-defcon.md`](../adr/0001-*.md) |
+| **ADR** | [`docs/adr/0001-defcon.md`](../adr/0001-defcon-state-machine.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/defcon.py`](../../src/cre_agent_audit/governance/defcon.py) |
 
 ## Test of design

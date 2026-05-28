@@ -15,7 +15,7 @@ In agentic AI workflows operating inside regulated financial-services or commerc
 
 Examples in financial services: an autonomous allocator proposes a portfolio rebalance that exceeds a board-approved Value-at-Risk cap. A buy-side options-strategy agent recommends a position size that exceeds a FINRA threshold limit.
 
-Examples in commercial real estate: a rent-pricing AI recommends prices across owners in the same market in a way that creates the antitrust-coordination surface the DOJ-RealPage consent decree (November 24, 2025) targeted. A tenant-screening AI scores housing-voucher applicants negatively in violation of the Fair Housing Act (the SafeRent failure mode, $2.3M settlement, November 2024).
+Examples in commercial real estate: a rent-pricing AI recommends prices across owners in the same market in a way that creates the antitrust-coordination surface the ongoing U.S. v. RealPage litigation (DOJ + 8 state AGs, filed August 23, 2024) alleges. A tenant-screening AI scores housing-voucher applicants negatively in violation of the Fair Housing Act (the SafeRent failure mode, approximately $2.275M class settlement, November 2024).
 
 ## Contributing factors and root causes
 
@@ -35,7 +35,7 @@ Examples in commercial real estate: a rent-pricing AI recommends prices across o
 
 ## Severity classification
 
-**Severity: Critical.** Each named example above carries either a settled-case precedent ($15M TransUnion · $2.3M SafeRent · 7-year DOJ-RealPage structural restrictions) or a binding regulatory standard (FINRA position limits · board-approved VaR). The cost of an unmitigated failure is measured in millions per incident.
+**Severity: Critical.** Each named example above carries either a settled-case precedent ($15M TransUnion · approximately $2.275M SafeRent · ongoing DOJ Sherman § 1 litigation against RealPage) or a binding regulatory standard (FINRA position limits · board-approved VaR). The cost of an unmitigated failure is measured in millions per incident.
 
 ## Related research
 
@@ -43,7 +43,7 @@ Examples in commercial real estate: a rent-pricing AI recommends prices across o
 - Reference implementation in MIT-licensed code — `github.com/linus10x/cre-agent-audit/blob/main/src/cre_agent_audit/governance/sovereign_veto.py`
 - Bessemer Venture Partners "AI Agent Autonomy Scale" (July 2025)
 - Knight First Amendment Institute, Feng/McDonald/Zhang, "Levels of Autonomy for AI Agents" (July 28, 2025)
-- DOJ-RealPage consent decree (United States v. RealPage Inc., November 24, 2025)
+- U.S. v. RealPage (M.D.N.C., DOJ + 8 state AGs, filed August 23, 2024 — ongoing civil antitrust litigation, not a settled consent decree)
 - SafeRent class settlement (Louis v. SafeRent Solutions, D. Mass., November 20, 2024)
 - FTC + CFPB consent order with TransUnion Rental Screening Solutions (October 2023)
 

@@ -12,7 +12,7 @@
 | **Frequency** | Per-promotion (any model change touching an A2+ surface) |
 | **Type** | Preventive (blocks under-evidenced promotion) + Detective (records divergence per cohort) |
 | **Evidence of operation** | `PromotionVerdict` artifacts; shadow-run divergence reports per decision class (7d / 30d / 60d / 90d windows); zero-worse-direction proof per protected cohort |
-| **ADR** | [`docs/adr/0006-shadow-mode.md`](../adr/0006-*.md) |
+| **ADR** | [`docs/adr/0006-shadow-mode.md`](../adr/0006-shadow-mode-rollout.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/shadow_mode.py`](../../src/cre_agent_audit/governance/shadow_mode.py) |
 
 ## Test of design

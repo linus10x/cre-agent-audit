@@ -12,7 +12,7 @@
 | **Frequency** | Per-decision (continuous append) + periodic (chain-head digest publication to external witness, recommended weekly) |
 | **Type** | Detective (records what happened) + Forensic (chain integrity supports post-incident reconstruction) |
 | **Evidence of operation** | The ledger itself; the witness-anchor publication record (OpenTimestamps / Sigstore Rekor / regulator log); periodic `verify_chain()` reports |
-| **ADR** | [`docs/adr/0003-audit-ledger.md`](../adr/0003-*.md) |
+| **ADR** | [`docs/adr/0003-audit-ledger.md`](../adr/0003-hash-chain-audit.md) |
 | **Implementation** | [`src/cre_agent_audit/governance/audit_chain.py`](../../src/cre_agent_audit/governance/audit_chain.py) |
 
 ## Test of design

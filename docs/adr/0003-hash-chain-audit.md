@@ -1,4 +1,4 @@
-# ADR-0003 · Hash-chain Audit Ledger
+# ADR-0003 · Internally-Consistent Hash-Chained Audit Ledger
 
 **Status:** Accepted · inherited from finserv-agent-audit
 **Date:** 2026-05-26
