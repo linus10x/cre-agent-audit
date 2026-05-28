@@ -9,6 +9,12 @@
   "patterns": {
     "autonomy_ladder_a0_a4": {
       "adr": "0004",
+      "big4_taxonomy_bucket": "Lifecycle Governance + Human Oversight",
+      "coso_icair_component": "Control Environment + Risk Assessment",
+      "iso_42001_controls": [
+        "A.6.1.2",
+        "A.5.32"
+      ],
       "regulations": [
         {
           "clause": "human oversight requirements scale by risk class",
@@ -54,6 +60,12 @@
     },
     "defcon_state_machine": {
       "adr": "0001",
+      "big4_taxonomy_bucket": "Operational Monitoring + Incident Response",
+      "coso_icair_component": "Risk Assessment + Monitoring",
+      "iso_42001_controls": [
+        "A.6.1.2",
+        "A.10.1.3"
+      ],
       "regulations": [
         {
           "clause": "incident response procedures documented and tested",
@@ -77,6 +89,12 @@
     },
     "fair_housing_preflight_gate": {
       "adr": "0008",
+      "big4_taxonomy_bucket": "Human Oversight + Operational Monitoring",
+      "coso_icair_component": "Control Activities + Monitoring",
+      "iso_42001_controls": [
+        "A.5.33",
+        "A.5.34"
+      ],
       "regulations": [
         {
           "clause": "discrimination in the sale or rental of housing",
@@ -206,6 +224,13 @@
     },
     "hash_chain_audit_ledger": {
       "adr": "0003",
+      "big4_taxonomy_bucket": "Data Lineage + Operational Monitoring",
+      "coso_icair_component": "Information & Communication + Monitoring",
+      "iso_42001_controls": [
+        "A.12.4.1",
+        "A.12.4.2",
+        "A.12.4.3"
+      ],
       "regulations": [
         {
           "clause": "system monitoring and evidence preservation",
@@ -250,6 +275,13 @@
     },
     "lease_abstraction_provenance_chain": {
       "adr": "0007",
+      "big4_taxonomy_bucket": "Data Lineage + Model Validation",
+      "coso_icair_component": "Control Activities + Monitoring",
+      "iso_42001_controls": [
+        "A.8.2.2",
+        "A.12.4.1",
+        "A.18.1.3"
+      ],
       "regulations": [
         {
           "clause": "evidence preservation for system outputs",
@@ -288,6 +320,12 @@
     },
     "regulation_to_pattern_mapping": {
       "adr": "0005",
+      "big4_taxonomy_bucket": "Lifecycle Governance + Operational Monitoring",
+      "coso_icair_component": "Information & Communication + Monitoring",
+      "iso_42001_controls": [
+        "A.5.36",
+        "A.18.1.1"
+      ],
       "regulations": [
         {
           "clause": "the mapping IS the artifact",
@@ -309,6 +347,12 @@
     },
     "shadow_mode_rollout": {
       "adr": "0006",
+      "big4_taxonomy_bucket": "Model Validation + Lifecycle Governance",
+      "coso_icair_component": "Risk Assessment + Control Activities",
+      "iso_42001_controls": [
+        "A.14.2.1",
+        "A.14.2.8"
+      ],
       "regulations": [
         {
           "clause": "model validation including parallel testing",
@@ -352,6 +396,12 @@
     },
     "sovereign_veto": {
       "adr": "0002",
+      "big4_taxonomy_bucket": "Human Oversight + Incident Response",
+      "coso_icair_component": "Control Activities + Information & Communication",
+      "iso_42001_controls": [
+        "A.6.2.1",
+        "A.9.4.1"
+      ],
       "regulations": [
         {
           "clause": "risk decisions and tradeoffs documented",
@@ -392,6 +442,13 @@
     },
     "tenant_pii_data_residency_partitioning": {
       "adr": "0009",
+      "big4_taxonomy_bucket": "Data Lineage + Third-Party",
+      "coso_icair_component": "Control Activities + Risk Assessment",
+      "iso_42001_controls": [
+        "A.5.34",
+        "A.5.36",
+        "A.18.1.4"
+      ],
       "regulations": [
         {
           "clause": "lawful basis required for personal data processing",
