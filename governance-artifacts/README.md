@@ -36,7 +36,11 @@ The numbers in this folder are the author's internal IDs from the working-group 
 
 ## What's NOT in this folder by design
 
-The full 19-artifact submission package — including 16 additional risk and mitigation files in author-draft form — is under separate working-group-bound development on a private branch (`finos-submission-wip`). Publishing those drafts unilaterally on a personal GitHub repository would front-run the FINOS WG review process; the three files in this folder are the only three that are author-complete to a release-defensible standard. The remainder will be contributed through the FINOS PR + working-group review path on their own timeline.
+The full 19-artifact submission package — including 16 additional risk and mitigation files in author-draft form — is held in **local working copies only**, pending Week-7 fill-in and the FINOS Working-Group PR + review process. The three files in this folder are the only three that are author-complete to a release-defensible standard. The remainder will be contributed through the FINOS PR + working-group review path on their own timeline.
+
+**Historical-commit acknowledgement (transparency note).** The 16 draft files were committed to this repository's main branch *before* the public-visibility flip on 2026-05-28 and therefore exist in the repository's git history at commit `e9d2f6e` (the pre-Stage-5-removal main HEAD). They are not part of the current main tree (removed in the Stage 5 governance carve-out — see [`docs/SHIP-RECEIPT.md`](../docs/SHIP-RECEIPT.md)) and are not browsable from the default tree view. The author chose not to rewrite git history to remove the historical commit — public hashes are permanent references and rewriting history breaks downstream consumers. The draft files in that historical commit are author-draft only; they have not been reviewed, endorsed, or accepted by FINOS or the AIR Working Group at any point. Adopters who encounter the historical commit content should treat those 16 files as identical in status to any author-draft work — useful as design context, not as adopted catalog entries.
+
+See [`docs/FINOS-SUBMISSION-CADENCE.md`](../docs/FINOS-SUBMISSION-CADENCE.md) for the Week-7 fill-in workflow and the WG-bound submission path.
 
 ## Relation to this repo's patterns
 

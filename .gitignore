@@ -35,3 +35,6 @@ ENV/
 # Generated audit chains (do not commit example runs)
 examples/*/audit_chain.jsonl
 examples/*/output/
+
+# User audit-prompt tooling — internal, do not ship
+creaudit*.md

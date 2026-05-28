@@ -18,7 +18,7 @@
 | 6 | v0.2.0 release published as `--latest` | ✅ |
 | 7 | Topics set | 15 topics ✅ |
 | 8 | Good-first-issues seeded | 8 issues with `good first issue` label (7 new from Stage 13 + 1 pre-existing) ✅ |
-| 9 | `finos-air-submission/` absent on main | absent ✅ (preserved on private `finos-submission-wip` branch) |
+| 9 | `finos-air-submission/` absent on main HEAD | absent ✅ (folder preserved in pre-Stage-5 git history at commit `e9d2f6e`; the previously-pushed `finos-submission-wip` branch was deleted from origin 2026-05-28 after Stage 17 verified the "private branch" framing was structurally incorrect on a public repo — see `docs/FINOS-SUBMISSION-CADENCE.md` for the local-only Week-7 workflow) |
 | 10 | `governance-artifacts/` has 4 files | README + 3 cleaned FINOS-format control drafts ✅ |
 | 11 | Public-API import smoke (9 patterns reachable) | ✅ |
 | 12 | gitleaks scan | no leaks found ✅ |
@@ -85,7 +85,7 @@ Most-likely defect classes pre-Mon-launch:
 | 1 | Upload social-preview banner via web UI | https://github.com/linus10x/cre-agent-audit/settings → Social preview. Use `~/Documents/110 - Kunjar's Resume/Applications-May-2026/v2-Refresh/Content/CRE-Track/_brand_assets/linkedin_banner_v1.png` (preferred) or `~/Documents/110 - Kunjar's Resume/Applications-May-2026/v2-Refresh/_linkedin_May2026/banner_V-Creator_2x.png` (backup). 1280×640 PNG. | Before Mon 2026-06-02 7:00 AM CT |
 | 2 | Mint Zenodo DOI | https://zenodo.org/account/settings/github/ → enable `linus10x/cre-agent-audit` toggle → re-publish v0.2.0 release (or push a new tag) to trigger DOI mint. Add ORCID to your Zenodo account if not yet linked. | Surface DOI back here; will then PR update to `CITATION.cff` + README badge |
 | 3 | Review + merge sibling cross-link PR | https://github.com/linus10x/finserv-agent-audit/pull/16 | Recommend merging before Mon 2026-06-02 launch — the symmetric cross-link compounds positioning the moment the launch post drives traffic |
-| 4 | Confirm `finos-submission-wip` branch state for Week-7 fill-in cadence | https://github.com/linus10x/cre-agent-audit/tree/finos-submission-wip — branch holds the full 19-file FINOS AIR submission package; 16 stubs still need fill-in before FINOS WG-bound submission | Per existing Week-7 deliverable timeline |
+| 4 | ~~Confirm `finos-submission-wip` branch state~~ — **CLOSED 2026-05-28.** Branch deleted from origin; full 19-file working copy held locally (branch + tag + tarball — three-way DR backup). Week-7 fill-in workflow documented at [`docs/FINOS-SUBMISSION-CADENCE.md`](FINOS-SUBMISSION-CADENCE.md). | n/a — no longer manual; archived state. |
 
 ## What this session built (artifact inventory)
 
@@ -93,7 +93,7 @@ Most-likely defect classes pre-Mon-launch:
 - 26 new files created (9 control docs + 4 docs/* files + 3 vendor-clauses + 2 new ADRs + 3 sibling-parity .github/* + CITATION.cff + CODE_OF_CONDUCT.md + ROADMAP.md + .pre-commit-config.yaml + Makefile + DISCLAIMER.md + governance-artifacts/{README + 3 files} + 3 docs/SESSION-* files + .github/releases/v0.2.0-notes.md)
 - 16 files modified (README full rewrite + 9 ADR disclaimer headers + ADR-0002/0003/0004/0007/0008 substantive edits + ARCHITECTURE.md + CHANGELOG.md + pyproject.toml + regulation_loader.py + 2 test-file path updates + .github/workflows/test.yml)
 - 4 files renamed (`fair_housing_gate.py` → `fair_housing_preflight.py`; `tenant_pii_partition.py` → `tenant_pii_residency.py`; matching test files)
-- 19 files moved off main to private `finos-submission-wip` branch (preserved)
+- 19 files moved off main to `finos-submission-wip` branch (preserved); branch later deleted from origin 2026-05-28 after Stage 17 verified the structural flaw in "private branch on a public repo" — local archive at `~/Documents/110 - Kunjar's Resume/_archives/finos-submission-wip-snapshot-20260528T044124Z.tar.gz` + local branch + local safety tag
 - 3 files cleaned + copied with rewritten provenance headers to `governance-artifacts/` on main
 - 7 GitHub issues created (good-first-issues #24–#30)
 - 1 sibling repo PR opened (finserv-agent-audit #16)
@@ -136,6 +136,22 @@ Four parallel adversarial reviewers dispatched on the SHIPPED v0.2.0 state:
 ### Cold-clone reproducibility test (Stage 17)
 
 `make verify` from a fresh `/tmp/cre-agent-audit-cold-clone` after `git clone https://github.com/linus10x/cre-agent-audit.git`: **3.39 seconds wall-clock real-time** (warm pip cache). All 7 verify subtargets green: ruff + ruff format + mypy --strict + pytest 142/142 at 89.18% coverage + JSON-sync + wheel build + public-API import smoke. The README's "under 60 seconds on warm pip cache" claim holds with substantial margin.
+
+### Stage 17.5 — `finos-submission-wip` branch resolution (post-Stage-17, 2026-05-28)
+
+**Finding (post-verification):** the Stage 5 council intent ("preserve on private branch") was structurally flawed — GitHub has no concept of a private branch on a public repository. From the moment of the Stage 11 visibility flip until the Stage 17.5 deletion, the `finos-submission-wip` branch (and all 19 FINOS-AIR draft files on it) was publicly accessible via `https://github.com/linus10x/cre-agent-audit/tree/finos-submission-wip/`. Anonymous `curl` could retrieve any of the 16 stub files. This is the exact failure mode the Stage 5 council vote (4/5 chambers) tried to prevent.
+
+**Resolution (Stage 17.5):**
+1. **Tarball archive created** at `~/Documents/110 - Kunjar's Resume/_archives/finos-submission-wip-snapshot-20260528T044124Z.tar.gz` (90KB; 19 files + dir entries). Disaster-recovery snapshot.
+2. **Local-only git tag created:** `archive/finos-submission-wip-20260528T044124Z` points at the branch HEAD SHA `e9d2f6e`. NOT pushed to origin. Recovery reference.
+3. **Branch deleted from origin** via `gh api -X DELETE repos/linus10x/cre-agent-audit/git/refs/heads/finos-submission-wip`. Verified: origin branches list now `["main"]` only; anonymous tree URL returns 404.
+4. **Local branch preserved.** The active working copy for Week-7 fill-in lives on the maintainer's machine.
+
+**Residual exposure (acknowledged transparently, not fixed):** the historical commit `e9d2f6e` on origin/main still contains the `finos-air-submission/` folder via git history. Anonymous `curl` against the SHA-keyed URL (`https://github.com/linus10x/cre-agent-audit/tree/e9d2f6e/finos-air-submission/`) still resolves. The author chose NOT to rewrite git history because: (a) the repo's published rules explicitly prohibit rewriting public hashes; (b) the historical content is consistent in framing with the rest of the repo; (c) discoverability is low (you need to know the SHA, which appears only in session-docs not in the README/lede surfaces); (d) acknowledging the constraint is more honest than pretending git history is mutable.
+
+**Week-7 fill-in workflow** is documented at [`docs/FINOS-SUBMISSION-CADENCE.md`](FINOS-SUBMISSION-CADENCE.md) — covers the 16 files awaiting fill-in, the local DR backup tiers, the WG-bound submission path, and the "do NOT push the branch back to origin" discipline.
+
+**Lesson for future structural decisions:** When the council reasons about a "private" surface inside a soon-to-be-public artifact, verify the GitHub-native interpretation of "private" before treating the framing as adequate. "Private branch on a public repo" is not a real category. The next time a similar carve-out is needed, the right answer is either (a) a separate private repository or (b) a local-only working copy from day one — not a branch on the public repo.
 
 ### Minor items deferred to v0.2.1 (named here for completeness)
 
