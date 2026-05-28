@@ -39,10 +39,21 @@ PUBLIC_DOC_PATHS = [
     "ARCHITECTURE.md",
     "ROADMAP.md",
     "FAILURE-MODES.md",
+    "THESIS.md",
+    "PUBLICATIONS.md",
     "docs/LIMITATIONS.md",
     "docs/SHIP-RECEIPT.md",
     "docs/PRIOR-ART.md",
     "docs/MAPPING-MATRICES.md",
+    "docs/services/README.md",
+    "docs/services/01-diagnostic-5k.md",
+    "docs/services/02-audit-40k.md",
+    "docs/services/03-retainer-15k-quarterly.md",
+    "docs/services/04-workshop-25k-50k.md",
+    "docs/services/05-cohort-50k-200k.md",
+    "docs/services/06-private-intel-subscription.md",
+    "docs/services/07-practitioner-bench.md",
+    "examples/regulatory-incidents/README.md",
 ]
 
 # ADR files are included with a more permissive rule (they may legitimately
