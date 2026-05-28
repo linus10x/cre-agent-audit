@@ -1,0 +1,37 @@
+{
+  "matter_id": "01_transunion_rental_screening",
+  "findings": [
+    {
+      "pattern": "ADR-0003",
+      "severity": "High",
+      "evidence": {
+        "chain_sequence_range": [0, 22],
+        "verdict": "chain-of-custody break on 12 entries lacking source-document hash"
+      },
+      "regulatory_anchor": {
+        "case_name": "In re Trans Union Rental Screening Solutions",
+        "court": "FTC + CFPB",
+        "docket": "C-4810 + 2023-CFPB-0008",
+        "date_iso": "2023-10-12",
+        "url": null
+      },
+      "remediation": "Require source-document hash field on every screening-report ingest"
+    },
+    {
+      "pattern": "ADR-0011",
+      "severity": "High",
+      "evidence": {
+        "chain_sequence_range": [0, 999],
+        "verdict": "VendorScoreGate flagged 47 entries where same input_hash + same model_version produced divergent scores"
+      },
+      "regulatory_anchor": {
+        "case_name": "In re Trans Union Rental Screening Solutions",
+        "court": "FTC + CFPB",
+        "docket": "C-4810 + 2023-CFPB-0008",
+        "date_iso": "2023-10-12",
+        "url": null
+      },
+      "remediation": "Quarantine the vendor's signal until the score-divergence root cause is identified"
+    }
+  ]
+}

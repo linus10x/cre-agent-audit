@@ -89,9 +89,9 @@ _STUB_CIT = Citation(
 class _StubReplay(IncidentReplayBase):
     matter_id = "00_stub"
     matter_title = "Stub matter for harness conformance"
-    primary_sources = (_STUB_CIT,)
+    primary_sources: tuple[Citation, ...] = (_STUB_CIT,)
     failure_shape = "Stub failure for harness testing"
-    patterns_engaged = (ADRRef(number=3, title="Audit Ledger"),)
+    patterns_engaged: tuple[ADRRef, ...] = (ADRRef(number=3, title="Audit Ledger"),)
 
     def synthetic_dataset(self) -> Iterable[dict[str, object]]:
         return [{"applicant_id": "A-001"}]

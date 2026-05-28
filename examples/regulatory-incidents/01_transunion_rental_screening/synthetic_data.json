@@ -1,0 +1,12 @@
+{
+  "matter": "01_transunion_rental_screening",
+  "description": "500 synthetic rental-screening records. 12 lack source_document_hash (chain-of-custody breaks). 47 share an input_hash with another record but produce a divergent score under the same model_version (vendor score drift).",
+  "generation_seed": "v1.0-deterministic-2026-05-28",
+  "applications": [
+    {"applicant_id": "A-0001", "credit_score": 720, "input_hash": "h-001", "vendor_score": 0.85, "model_version": "v3.1.0", "source_document_hash": "sha256:doc-0001"},
+    {"applicant_id": "A-0002", "credit_score": 680, "input_hash": "h-001", "vendor_score": 0.72, "model_version": "v3.1.0", "source_document_hash": "sha256:doc-0002"},
+    {"applicant_id": "A-0003", "credit_score": 700, "input_hash": "h-002", "vendor_score": 0.78, "model_version": "v3.1.0", "source_document_hash": null},
+    {"applicant_id": "A-0004", "credit_score": 650, "input_hash": "h-003", "vendor_score": 0.65, "model_version": "v3.1.0", "source_document_hash": "sha256:doc-0004"}
+  ],
+  "_synthetic_note": "Full 500-record dataset would be deterministically generated; this README excerpt shows the schema. The replay.py module synthesizes the full dataset programmatically in synthetic_dataset() for repeatability without committing 500 JSON records to the repo."
+}

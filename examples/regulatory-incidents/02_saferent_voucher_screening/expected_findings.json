@@ -1,0 +1,37 @@
+{
+  "matter_id": "02_saferent_voucher_screening",
+  "findings": [
+    {
+      "pattern": "ADR-0008",
+      "severity": "High",
+      "evidence": {
+        "chain_sequence_range": [0, 88],
+        "verdict": "FairHousingPreflightGate flagged 89 entries with voucher-status proxy features (FHA-VOUCHER)"
+      },
+      "regulatory_anchor": {
+        "case_name": "Louis v. SafeRent Solutions, LLC",
+        "court": "D. Mass.",
+        "docket": "No. 1:22-cv-10800",
+        "date_iso": "2024-11-20",
+        "url": null
+      },
+      "remediation": "Block voucher-proxy decisions at preflight; require documented override per HUD source-of-income guidance"
+    },
+    {
+      "pattern": "ADR-0002",
+      "severity": "Critical",
+      "evidence": {
+        "chain_sequence_range": [89, 100],
+        "verdict": "SovereignVeto blocked 12 blanket criminal-history exclusion attempts (FHA-CRIM-BLANKET; HUD April 2016 guidance)"
+      },
+      "regulatory_anchor": {
+        "case_name": "Louis v. SafeRent Solutions, LLC",
+        "court": "D. Mass.",
+        "docket": "No. 1:22-cv-10800",
+        "date_iso": "2024-11-20",
+        "url": null
+      },
+      "remediation": "Replace blanket criminal-history exclusion with the HUD-aligned individualized-assessment workflow"
+    }
+  ]
+}

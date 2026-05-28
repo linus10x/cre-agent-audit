@@ -1,0 +1,6 @@
+{
+  "matter": "02_saferent_voucher_screening",
+  "description": "1,000 synthetic applicant records. 89 carry voucher-status proxy features (zip-code level surrogate). 12 carry blanket criminal-history exclusion attempts (HUD-prohibited pattern).",
+  "generation_seed": "v1.0-deterministic-2026-05-28",
+  "_synthetic_note": "Full 1,000-record dataset is synthesized programmatically by replay.synthetic_dataset(). The JSON file documents the schema and engineering counts; the replay generates the dataset deterministically for repeatability."
+}
