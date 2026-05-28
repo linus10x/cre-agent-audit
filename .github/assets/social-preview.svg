@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-label="cre-agent-audit — Nine governance patterns for AI in commercial real estate operations">
+
+  <!-- ============================================ -->
+  <!-- Background — warm cream, matches             -->
+  <!-- autonomy-ladder.io brand                     -->
+  <!-- ============================================ -->
+  <rect width="1280" height="640" fill="#FAFAF7"/>
+
+  <!-- ============================================ -->
+  <!-- Top-left coral accent rule (60×3px)          -->
+  <!-- single accent color — used for $ amounts +   -->
+  <!-- this rule + the bottom rule. Nothing else.   -->
+  <!-- ============================================ -->
+  <rect x="80" y="64" width="60" height="3" fill="#B8421C"/>
+
+  <!-- ============================================ -->
+  <!-- WORDMARK — repo name, code-style mono        -->
+  <!-- ============================================ -->
+  <text x="80" y="148"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="72" font-weight="700" fill="#0E1B3D"
+        letter-spacing="-2">cre-agent-audit</text>
+
+  <!-- ============================================ -->
+  <!-- TAGLINE — two lines, serif Georgia for       -->
+  <!-- gravitas + contrast with code mono           -->
+  <!-- ============================================ -->
+  <text x="80" y="218"
+        font-family="Georgia, 'Times New Roman', 'DejaVu Serif', serif"
+        font-size="32" font-weight="500" fill="#0E1B3D">Nine governance patterns for AI</text>
+  <text x="80" y="262"
+        font-family="Georgia, 'Times New Roman', 'DejaVu Serif', serif"
+        font-size="32" font-weight="500" fill="#0E1B3D">in commercial real estate operations.</text>
+
+  <!-- ============================================ -->
+  <!-- FAMILY ATTRIBUTION — sans italic, mid navy   -->
+  <!-- ============================================ -->
+  <text x="80" y="310"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', sans-serif"
+        font-size="18" font-weight="400" font-style="italic" fill="#3A4A6B">Part of the Autonomy Ladder™ family · companion to finserv-agent-audit</text>
+
+  <!-- ============================================ -->
+  <!-- ANCHOR BLOCK — three settled / pending       -->
+  <!-- regulatory matters that motivate the repo    -->
+  <!-- ============================================ -->
+
+  <!-- Anchor block label — uppercase, letter-spaced, slate -->
+  <text x="80" y="378"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', sans-serif"
+        font-size="13" font-weight="700" fill="#6B7280" letter-spacing="3">OPERATOR-SIDE GAP THESE PATTERNS ADDRESS</text>
+
+  <!-- Vertical coral rule along left edge of anchor block -->
+  <rect x="80" y="395" width="3" height="140" fill="#B8421C"/>
+
+  <!-- Anchor row 1 — TransUnion -->
+  <text x="108" y="432"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', sans-serif"
+        font-size="26" font-weight="600" fill="#0E1B3D">TransUnion</text>
+  <text x="950" y="432"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="26" font-weight="700" fill="#B8421C" text-anchor="end">$15M</text>
+  <text x="1200" y="432"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="22" font-weight="500" fill="#3A4A6B" text-anchor="end">Oct 2023</text>
+
+  <!-- Anchor row 2 — SafeRent -->
+  <text x="108" y="476"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', sans-serif"
+        font-size="26" font-weight="600" fill="#0E1B3D">SafeRent</text>
+  <text x="950" y="476"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="26" font-weight="700" fill="#B8421C" text-anchor="end">~$2.275M</text>
+  <text x="1200" y="476"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="22" font-weight="500" fill="#3A4A6B" text-anchor="end">Nov 2024</text>
+
+  <!-- Anchor row 3 — RealPage -->
+  <text x="108" y="520"
+        font-family="'Helvetica Neue', Helvetica, Arial, 'DejaVu Sans', sans-serif"
+        font-size="26" font-weight="600" fill="#0E1B3D">RealPage</text>
+  <text x="950" y="520"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="26" font-weight="700" fill="#B8421C" text-anchor="end">ongoing</text>
+  <text x="1200" y="520"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="22" font-weight="500" fill="#3A4A6B" text-anchor="end">Aug 2024</text>
+
+  <!-- ============================================ -->
+  <!-- BOTTOM ROW — stats + URL                     -->
+  <!-- ============================================ -->
+
+  <!-- Stat strip — left-aligned, mono, semibold -->
+  <text x="80" y="595"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="16" font-weight="600" fill="#3A4A6B">MIT  ·  Zero runtime deps  ·  9 patterns  ·  142 tests  ·  89% branch coverage</text>
+
+  <!-- URL — right-aligned, mono, dark navy -->
+  <text x="1200" y="595"
+        font-family="'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+        font-size="16" font-weight="700" fill="#0E1B3D" text-anchor="end">github.com/linus10x/cre-agent-audit</text>
+
+  <!-- ============================================ -->
+  <!-- Bottom navy rule — 6px tall, full width      -->
+  <!-- ============================================ -->
+  <rect x="0" y="634" width="1280" height="6" fill="#0E1B3D"/>
+
+</svg>
