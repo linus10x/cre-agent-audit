@@ -41,6 +41,19 @@ from cre_agent_audit.governance.lease_provenance import (
     LeaseProvenanceCheck,
     LeaseRepository,
 )
+from cre_agent_audit.governance.ledger_store import (
+    InMemoryLedgerStore,
+    LedgerStore,
+)
+from cre_agent_audit.governance.ledger_store_jsonl import JsonlLedgerStore
+from cre_agent_audit.governance.ledger_store_sqlite import SqliteLedgerStore
+from cre_agent_audit.governance.mi_proxy import (
+    Attestation,
+    IntegrityVerificationError,
+    LocalMIProxy,
+    MIProxy,
+    MIProxyKeyMissingWarning,
+)
 from cre_agent_audit.governance.regulation_loader import (
     InvalidComplianceRulesError,
     RegulationCitation,
@@ -67,8 +80,14 @@ from cre_agent_audit.governance.tenant_pii_residency import (
     TenantPIIAction,
     TenantPIIResidencyCheck,
 )
+from cre_agent_audit.governance.vendor_score_gate import (
+    InMemoryVendorScoreGate,
+    VendorScoreDriftDetected,
+    VendorScoreEntry,
+    VendorScoreGate,
+)
 
-__version__ = "0.2.0"
+__version__ = "0.2.1.dev2"
 __all__ = [
     # Pattern 1 — DEFCON state machine (ADR-0001)
     "Capability",
@@ -88,6 +107,10 @@ __all__ = [
     "AuditChainTamperError",
     "AuditEntry",
     "AuditLedger",
+    "InMemoryLedgerStore",
+    "JsonlLedgerStore",
+    "LedgerStore",
+    "SqliteLedgerStore",
     # Pattern 4 — Autonomy Ladder A0→A4 (ADR-0004)
     "AutonomyTier",
     "PromotionGateNotMet",
@@ -115,6 +138,17 @@ __all__ = [
     "LegalBasis",
     "TenantPIIAction",
     "TenantPIIResidencyCheck",
+    # MI Proxy — verifier chain-of-custody (ADR-0013)
+    "Attestation",
+    "IntegrityVerificationError",
+    "LocalMIProxy",
+    "MIProxy",
+    "MIProxyKeyMissingWarning",
+    # VendorScoreGate — third-party AI scoring (ADR-0011 update)
+    "InMemoryVendorScoreGate",
+    "VendorScoreDriftDetected",
+    "VendorScoreEntry",
+    "VendorScoreGate",
     # Package metadata
     "__version__",
 ]

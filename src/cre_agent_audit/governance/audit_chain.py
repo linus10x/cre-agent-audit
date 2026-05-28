@@ -27,9 +27,18 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cre_agent_audit.governance.ledger_store import LedgerStore
+    from cre_agent_audit.governance.mi_proxy import MIProxy
+    from cre_agent_audit.governance.timestamp_source import TimestampSource
+
+VERIFIER_COMPONENT_ID = "cre_agent_audit.governance.audit_chain"
+"""Stable identifier for this verifier; passed to MIProxy.attest()."""
 
 GENESIS_PRIOR_HASH = "0" * 64
 """Sentinel value for the first entry's ``prior_hash``. SHA-256 zeroes."""
@@ -69,6 +78,9 @@ class AuditEntry:
     prior_hash: str
     self_hash: str
     corrects_sequence: int | None = None
+    timestamp_token_b64: str | None = None
+    """Base64-encoded RFC 3161 TSR token (if a trusted TSA was used).
+    None for local-clock entries (backward-compatible default)."""
 
     def canonical_bytes_for_hashing(self) -> bytes:
         """Return the bytes whose SHA-256 is ``self_hash``.
@@ -78,7 +90,7 @@ class AuditEntry:
         actor_kind value, actor_id, decision_type, action_payload (raw bytes),
         gate_verdicts (sorted JSON), prior_hash, corrects_sequence.
         """
-        payload = {
+        payload: dict[str, object] = {
             "sequence": self.sequence,
             "timestamp": self.timestamp.isoformat(),
             "actor_kind": self.actor_kind.value,
@@ -91,6 +103,11 @@ class AuditEntry:
             "prior_hash": self.prior_hash,
             "corrects_sequence": self.corrects_sequence,
         }
+        # Include token only when present — preserves backward-compat with
+        # v0.2.0 ledgers that never had this field. Mixing local-clock and
+        # TSA-stamped entries in the same ledger is supported.
+        if self.timestamp_token_b64 is not None:
+            payload["timestamp_token_b64"] = self.timestamp_token_b64
         return json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
@@ -105,9 +122,10 @@ def _compute_self_hash(
     gate_verdicts: dict[str, str],
     prior_hash: str,
     corrects_sequence: int | None,
+    timestamp_token_b64: str | None = None,
 ) -> str:
     """Internal helper — compute self_hash before constructing the frozen entry."""
-    payload = {
+    payload: dict[str, object] = {
         "sequence": sequence,
         "timestamp": timestamp.isoformat(),
         "actor_kind": actor_kind.value,
@@ -118,6 +136,8 @@ def _compute_self_hash(
         "prior_hash": prior_hash,
         "corrects_sequence": corrects_sequence,
     }
+    if timestamp_token_b64 is not None:
+        payload["timestamp_token_b64"] = timestamp_token_b64
     return hashlib.sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
@@ -130,14 +150,31 @@ class AuditLedger:
     The ledger is the system of record for every agent decision, every gate
     verdict, and every operator transition. There is no public delete or
     truncate API by design (ADR-0003 invariant).
+
+    Storage is pluggable via the `LedgerStore` Protocol (see ledger_store.py).
+    The default backend is in-memory; deployers can inject SqliteLedgerStore,
+    JsonlLedgerStore, or a custom backend (Postgres+WAL, S3+Object Lock,
+    DynamoDB) per ADR-0012.
     """
 
-    _entries: list[AuditEntry] = field(default_factory=list, init=False, repr=False)
+    store: LedgerStore | None = None
+    timestamp_source: TimestampSource | None = None
+
+    def __post_init__(self) -> None:
+        # Local imports to avoid circular imports at module load.
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+        from cre_agent_audit.governance.timestamp_source import LocalClockTimestampSource
+
+        if self.store is None:
+            self.store = InMemoryLedgerStore()
+        if self.timestamp_source is None:
+            self.timestamp_source = LocalClockTimestampSource()
 
     @property
     def entries(self) -> tuple[AuditEntry, ...]:
         """Return an immutable view of the entries."""
-        return tuple(self._entries)
+        assert self.store is not None  # set in __post_init__
+        return tuple(self.store)
 
     def append(
         self,
@@ -151,12 +188,40 @@ class AuditLedger:
         corrects_sequence: int | None = None,
     ) -> AuditEntry:
         """Append a new entry to the ledger and return it."""
-        sequence = len(self._entries)
+        assert self.store is not None  # set in __post_init__
+        assert self.timestamp_source is not None  # set in __post_init__
+        sequence = len(self.store)
         prior_hash = self.chain_head()
-        timestamp = now or datetime.now(timezone.utc)
 
         # Defensive copy so the ledger entry cannot be mutated via caller-held dicts.
         gate_verdicts_copy = dict(gate_verdicts)
+
+        # The TSA attests to the payload BEFORE the timestamp is bound. The
+        # token + timestamp are then folded into the canonical self_hash so
+        # the chain binds both.
+        if now is not None:
+            timestamp = now
+            timestamp_token: str | None = None
+        else:
+            payload_digest = hashlib.sha256(
+                json.dumps(
+                    {
+                        "sequence": sequence,
+                        "actor_kind": actor_kind.value,
+                        "actor_id": actor_id,
+                        "decision_type": decision_type,
+                        "action_payload_hex": action_payload.hex(),
+                        "gate_verdicts": dict(sorted(gate_verdicts_copy.items())),
+                        "prior_hash": prior_hash,
+                        "corrects_sequence": corrects_sequence,
+                    },
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).digest()
+            attested = self.timestamp_source.stamp(payload_digest)
+            timestamp = attested.asserted_at
+            timestamp_token = attested.tsr_token_b64
 
         self_hash = _compute_self_hash(
             sequence=sequence,
@@ -168,6 +233,7 @@ class AuditLedger:
             gate_verdicts=gate_verdicts_copy,
             prior_hash=prior_hash,
             corrects_sequence=corrects_sequence,
+            timestamp_token_b64=timestamp_token,
         )
         entry = AuditEntry(
             sequence=sequence,
@@ -180,8 +246,9 @@ class AuditLedger:
             prior_hash=prior_hash,
             self_hash=self_hash,
             corrects_sequence=corrects_sequence,
+            timestamp_token_b64=timestamp_token,
         )
-        self._entries.append(entry)
+        self.store.append(entry)
         return entry
 
     def append_correction(
@@ -202,7 +269,8 @@ class AuditLedger:
         Reason is folded into ``gate_verdicts["correction_reason"]`` so it
         flows through the canonical hashing path.
         """
-        if corrects_sequence < 0 or corrects_sequence >= len(self._entries):
+        assert self.store is not None  # set in __post_init__
+        if corrects_sequence < 0 or corrects_sequence >= len(self.store):
             raise ValueError(f"corrects_sequence {corrects_sequence} not in ledger")
         if not reason.strip():
             raise ValueError("correction reason must be non-empty")
@@ -227,22 +295,39 @@ class AuditLedger:
         record. The genesis sentinel (SHA-256 zeroes) is returned for an
         empty ledger.
         """
-        if not self._entries:
-            return GENESIS_PRIOR_HASH
-        return self._entries[-1].self_hash
+        assert self.store is not None  # set in __post_init__
+        return self.store.head_self_hash()
 
-    def verify_chain(self) -> None:
+    def verify_chain(self, *, mi_proxy: MIProxy | None = None) -> None:
         """Raise ``AuditChainTamperError`` if any entry is inconsistent.
 
-        Two failure modes are detected:
+        Two in-chain failure modes are detected:
         - ``self_hash mismatch`` — the entry's stored ``self_hash`` does not match
           a freshly-computed hash of its canonical bytes (something inside the
           entry was changed after writing).
         - ``prior_hash mismatch`` — the entry's ``prior_hash`` does not match the
           previous entry's ``self_hash`` (chain link broken).
+
+        When ``mi_proxy`` is supplied (ADR-0013), the verifier's own integrity
+        is checked first: ``IntegrityVerificationError`` is raised when the
+        attestation fails. Fail-closed — the chain is not walked when the
+        verifier itself cannot be attested.
         """
+        if mi_proxy is not None:
+            from cre_agent_audit.governance.mi_proxy import (
+                IntegrityVerificationError,
+            )
+
+            attestation = mi_proxy.attest(VERIFIER_COMPONENT_ID)
+            if not mi_proxy.verify_attestation(attestation):
+                raise IntegrityVerificationError(
+                    f"MI Proxy attestation failed for {VERIFIER_COMPONENT_ID!r} "
+                    f"(backend={attestation.backend_id!r}); refusing to return "
+                    "a verified result"
+                )
+        assert self.store is not None  # set in __post_init__
         previous_self_hash = GENESIS_PRIOR_HASH
-        for index, entry in enumerate(self._entries):
+        for index, entry in enumerate(self.store):
             recomputed = _compute_self_hash(
                 sequence=entry.sequence,
                 timestamp=entry.timestamp,
@@ -253,6 +338,7 @@ class AuditLedger:
                 gate_verdicts=entry.gate_verdicts,
                 prior_hash=entry.prior_hash,
                 corrects_sequence=entry.corrects_sequence,
+                timestamp_token_b64=entry.timestamp_token_b64,
             )
             if recomputed != entry.self_hash:
                 raise AuditChainTamperError(
@@ -270,4 +356,11 @@ class AuditLedger:
     # Production callers should never invoke this method.                    #
     # --------------------------------------------------------------------- #
     def _replace_entry_for_tests(self, index: int, replacement: AuditEntry) -> None:
-        self._entries[index] = replacement
+        # Test-only seam. Requires the underlying store to expose mutation;
+        # only InMemoryLedgerStore does. Production stores (SQLite, JSONL)
+        # have no UPDATE path by Protocol design.
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+
+        if not isinstance(self.store, InMemoryLedgerStore):
+            raise TypeError("_replace_entry_for_tests only supported on InMemoryLedgerStore")
+        self.store._entries[index] = replacement

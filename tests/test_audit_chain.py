@@ -260,3 +260,109 @@ class TestAnchorCheckpoint:
     def test_chain_head_returns_genesis_when_empty(self) -> None:
         ledger = AuditLedger()
         assert ledger.chain_head() == GENESIS_HASH
+
+
+# ---------------------------------------------------------------------------
+# Pluggable LedgerStore (Task B4)
+# ---------------------------------------------------------------------------
+
+
+class TestPluggableLedgerStore:
+    """v0.2.1 — verifies AuditLedger accepts an injected LedgerStore."""
+
+    def test_default_store_is_in_memory(self) -> None:
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+
+        ledger = AuditLedger()
+        assert isinstance(ledger.store, InMemoryLedgerStore)
+
+    def test_accepts_injected_in_memory_store(self) -> None:
+        from cre_agent_audit.governance.ledger_store import InMemoryLedgerStore
+
+        store = InMemoryLedgerStore()
+        ledger = AuditLedger(store=store)
+        entry = ledger.append(
+            actor_kind=ActorKind.SYSTEM,
+            actor_id="test",
+            decision_type="t",
+            action_payload=b"",
+            gate_verdicts={},
+        )
+        assert len(store) == 1
+        assert store.get(0) == entry
+
+    def test_accepts_injected_sqlite_store(self, tmp_path) -> None:  # type: ignore[no-untyped-def]
+        from cre_agent_audit.governance.ledger_store_sqlite import SqliteLedgerStore
+
+        store = SqliteLedgerStore(tmp_path / "ledger.db")
+        ledger = AuditLedger(store=store)
+        ledger.append(
+            actor_kind=ActorKind.SYSTEM,
+            actor_id="test",
+            decision_type="t",
+            action_payload=b"",
+            gate_verdicts={},
+        )
+        # Survives verify_chain over the injected store.
+        ledger.verify_chain()
+        assert len(store) == 1
+
+
+class TestPluggableTimestampSource:
+    """v0.2.1 — verifies AuditLedger threads TimestampSource through append."""
+
+    def test_default_timestamp_source_is_local_clock(self) -> None:
+        from cre_agent_audit.governance.timestamp_source import LocalClockTimestampSource
+
+        ledger = AuditLedger()
+        assert isinstance(ledger.timestamp_source, LocalClockTimestampSource)
+
+    def test_injected_source_supplies_timestamp_and_token(self) -> None:
+        from cre_agent_audit.governance.timestamp_source import (
+            TimestampSource,
+            TrustedTimestamp,
+        )
+
+        fixed = datetime(2026, 1, 1, 12, 0, tzinfo=timezone.utc)
+
+        class _Fake:
+            def stamp(self, payload_digest: bytes) -> TrustedTimestamp:
+                return TrustedTimestamp(
+                    asserted_at=fixed,
+                    tsa_url="test://tsa",
+                    tsr_token_b64="ZmFrZQ==",
+                )
+
+        ts: TimestampSource = _Fake()
+        ledger = AuditLedger(timestamp_source=ts)
+        entry = ledger.append(
+            actor_kind=ActorKind.SYSTEM,
+            actor_id="test",
+            decision_type="t",
+            action_payload=b"",
+            gate_verdicts={},
+        )
+        assert entry.timestamp == fixed
+        assert entry.timestamp_token_b64 == "ZmFrZQ=="
+        # Token is bound into the canonical hash.
+        ledger.verify_chain()
+
+    def test_explicit_now_skips_source_and_omits_token(self) -> None:
+        from cre_agent_audit.governance.timestamp_source import TrustedTimestamp
+
+        class _Fake:
+            def stamp(self, payload_digest: bytes) -> TrustedTimestamp:
+                raise AssertionError("should not be called when now= is passed")
+
+        ledger = AuditLedger(timestamp_source=_Fake())
+        explicit = datetime(2026, 3, 1, tzinfo=timezone.utc)
+        entry = ledger.append(
+            actor_kind=ActorKind.SYSTEM,
+            actor_id="test",
+            decision_type="t",
+            action_payload=b"",
+            gate_verdicts={},
+            now=explicit,
+        )
+        assert entry.timestamp == explicit
+        assert entry.timestamp_token_b64 is None
