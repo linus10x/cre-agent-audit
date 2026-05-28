@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] — v0.2.1 in flight
 
-**v0.2.1 hardening — PR 1 + PR 2 (storage foundation + trusted timestamps + witness anchor).** Closes 3 of the 7 deferred items named in [`docs/SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md). Remaining v0.2.1 items (MI-threshold proxy detection, `VendorScoreGate` concrete implementation, agent topology pruning, full `docs/FAILURE-MODES.md` appendix) tracked for subsequent PRs before v0.2.1 tag.
+**v0.2.1 hardening — PR 1 + PR 2 + PR 3** on PR [#31](https://github.com/linus10x/cre-agent-audit/pull/31).
+
+- **PR 1 + 2** (prior commits on this branch) — storage foundation + trusted timestamps + witness anchor. Closed 3 of the 7 [`docs/SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md) deferred items.
+- **PR 3** (this session — 6 commits, version bumped to `0.2.1.dev2`) — closes 4 more of the deferred 7: `FAILURE-MODES.md` adversarial matrix, ADR-0013 + `MIProxy` verifier chain-of-custody, `VendorScoreGate` concrete with score-drift detection, and the consolidated `AuditConsumer` base.
+
+v0.2.1 tag is gated on the remaining items named under § "Still deferred before v0.2.1 tag" below.
 
 ### Added
 
@@ -26,30 +31,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `OpenTimestampsWitness` — OTS calendar API client with multi-calendar redundancy; pending-commitment receipt upgradable to Bitcoin attestation.
   - `anchor_to_witness(ledger, witness)` writes the receipt back to the ledger as a `decision_type="witness_anchor"` entry — binding the anchor record into the same hash chain it protects.
 - **`docs/adr/0012-persistence-witness-timestamp-pattern.md`** documenting the three Protocol seams, the integration shape per non-stdlib backend, and the regulatory mapping (SOC 2 CC6.1 / CC7.2, SOX 404 ITGC, FFIEC Audit Booklet, RFC 3161, RFC 6962).
+- **`FAILURE-MODES.md`** (repo root, new) — adversarial / partition / corruption matrix across 8 failure-mode classes with detection mechanism + recovery action + regulatory mapping per row. Companion test `tests/test_failure_modes_matrix.py` enforces doc/code parity: every `(F)` callable reference in the matrix must resolve, every `NOT YET IMPLEMENTED` row must carry a tracking marker. Build fails on drift.
+- **MI Proxy — Module Integrity verifier chain-of-custody** (ADR-0013, new).
+  - `MIProxy` Protocol with `attest` + `verify_attestation`; default backend `LocalMIProxy` is stdlib-only (SHA-256 over verifier source + canonical config; HMAC-SHA256 signature with a deployer-provided 32+ byte key via `CRE_AUDIT_MI_PROXY_KEY`).
+  - Time-bounded attestations (`max_age_seconds`, default 86_400).
+  - `LocalMIProxy.from_env()` emits `MIProxyKeyMissingWarning` when the key env var is absent and signs with a zero key — fail-closed at verify time against any real-keyed proxy. Non-suppressible by design.
+  - `AuditLedger.verify_chain(mi_proxy=...)` is the opt-in hook; raises `IntegrityVerificationError` when attestation fails and refuses to return a verified result. v0.2.0 callers (`verify_chain()` with no kwarg) see no change.
+  - Opt-in external-attestation backends (SLSA / in-toto / Sigstore cosign) documented in ADR-0013; will ship under the `[attestation]` extra in a forthcoming release.
+- **`VendorScoreGate` — third-party AI scoring with audit-chain emit** (ADR-0011 update; closes FAILURE-MODES.md § Row 8).
+  - Protocol surface: `emit(vendor_id, input_hash, score, model_version)` + `history_for(vendor_id, input_hash)`.
+  - `InMemoryVendorScoreGate` default backend writes through to a caller-provided `AuditLedger`. Two chain decision types: `vendor_score_emit` (normal path) and `vendor_score_drift` (flagged when same `(vendor_id, input_hash, model_version)` returns a different score).
+  - Score-drift posture (default `raise_on_drift=True`): the flagged chain entry hits the ledger BEFORE `VendorScoreDriftDetected` propagates, so drift is auditable even when the caller swallows the exception. `raise_on_drift=False` available for shadow-mode rollouts.
+  - Score-range and field validation at the gate boundary (score finite + in `[0.0, 1.0]`, non-empty string fields).
+  - A new `model_version` is not drift (vendor patch with version bump is the legitimate path); same `model_version` + score change IS drift (the silent vendor-patch failure FAILURE-MODES.md Row 8 names).
+- **Consolidated `AuditConsumer` base for agents that touch the chain** (`src/cre_agent_audit/agents/base.py`).
+  - Captures the v0.2.1 dependency-injection contract in one place: `ledger` + `mi_proxy` + `vendor_score_gate`.
+  - `verify_integrity()` — wraps `AuditLedger.verify_chain(mi_proxy=self.mi_proxy)`; fail-closed.
+  - `record_vendor_score(...)` — delegates to the injected gate; raises `RuntimeError` when no gate wired (no silent no-op on a vendor signal).
+  - `AuditAgent` and `MonitorAgent` extend the base; both accept the three seams through one constructor. Public method signatures preserved (`process` returns the same types as v0.2.0; `MonitorAgent()` no-arg call still works).
 
 ### Changed
 
 - `AuditLedger.__init__` accepts `store: LedgerStore | None = None` and `timestamp_source: TimestampSource | None = None`. Both default to the v0.2.0 reference implementations via `__post_init__`. **Existing `AuditLedger()` callers see no behavior change.**
-- Public API surface (`__init__.py`) re-exports `LedgerStore`, `InMemoryLedgerStore`, `SqliteLedgerStore`, `JsonlLedgerStore` from the package root.
+- `AuditLedger.verify_chain` gains an optional `mi_proxy: MIProxy | None = None` keyword argument; when supplied, attestation runs before the chain walk and `IntegrityVerificationError` is raised on failure. **`verify_chain()` without the kwarg is unchanged from v0.2.0 / PR 1+2.**
+- `AuditAgent` constructor: `AuditAgent(ledger)` → `AuditAgent(ledger, *, mi_proxy=None, vendor_score_gate=None)`. v0.2.0 callers see no change.
+- `MonitorAgent` constructor: `MonitorAgent()` → `MonitorAgent(ledger=None, *, mi_proxy=None, vendor_score_gate=None)`. v0.2.0 no-arg callers see no change.
+- Public API surface (`__init__.py`) re-exports `LedgerStore`, `InMemoryLedgerStore`, `SqliteLedgerStore`, `JsonlLedgerStore`, `Attestation`, `IntegrityVerificationError`, `LocalMIProxy`, `MIProxy`, `MIProxyKeyMissingWarning`, `InMemoryVendorScoreGate`, `VendorScoreDriftDetected`, `VendorScoreEntry`, `VendorScoreGate` from the package root.
 
 ### Tests
 
-- pytest: **185 / 185 passing** (was 142; +43 new tests across in-memory / SQLite / JSONL stores, timestamp source, RFC 3161 codec, witness anchor + AuditLedger integration)
-- pytest-cov: **88%** branch coverage (above 85% gate); covers the v0.2.0 baseline plus all new modules
-- mypy `--strict`: clean across 27+ source files
-- ruff + ruff format: clean
-- `make verify` end-to-end green (lint + format + typecheck + test + json-sync + wheel build + quickstart imports)
+- pytest: **234 / 234 passing** (was 142 at v0.2.0; was 185 at the end of PR 1+2; +49 new tests across this session — 5 failure-modes matrix, 17 MI Proxy, 14 VendorScoreGate, 13 AuditConsumer integration).
+- mypy `--strict`: clean.
+- ruff + ruff format: clean.
 
-### Deferred to subsequent v0.2.1 PRs
+### Still deferred before v0.2.1 tag
 
-The remaining 4 of 7 [`SHIP-RECEIPT.md`](docs/SHIP-RECEIPT.md) deferred items:
+The 3 remaining items from the original 7 `SHIP-RECEIPT.md` deferred list:
 
-- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update)
-- `VendorScoreGate` concrete implementation (ADR-0011 update) + SafeRent-shaped synthetic fixture
-- Agent topology pruning (`strategy`, `risk`, `domain_intelligence` stubs removed with deprecation; `orchestrator` + `monitor` promoted to functional implementations) (ADR-0013, forthcoming)
-- `docs/FAILURE-MODES.md` per-pattern negative-results appendix
-- Named-GC reference quotes
-- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation)
+- MI-threshold learned-proxy detection in `fair_housing_preflight.py` (ADR-0008 update). **Note:** "MI-threshold proxy" here is mutual-information proxy detection for fair-housing, distinct from the Module Integrity Proxy that landed in this PR under ADR-0013.
+- Named-GC reference quotes.
+- `audit-verify` extra wiring (`rfc3161_verify.py` signature-chain validation).
+
+The agent topology pruning previously referenced as "ADR-0013 forthcoming" in PR 1+2's `[Unreleased]` block is **superseded by this PR's ADR-0013 (MI Proxy)**; the topology decision moves to a future ADR (likely ADR-0014). The consolidation of `AuditAgent` + `MonitorAgent` behind `AuditConsumer` is what landed in this PR's place.
 
 v0.2.1 tag waits until those land.
 
