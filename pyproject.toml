@@ -37,6 +37,9 @@ dev = [
   "build>=1.0",
 ]
 
+[project.scripts]
+cre-replay = "cre_agent_audit.regulatory_replay.cli:main"
+
 [project.urls]
 Homepage = "https://autonomy-ladder.io"
 Repository = "https://github.com/linus10x/cre-agent-audit"

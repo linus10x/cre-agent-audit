@@ -36,5 +36,8 @@ ENV/
 examples/*/audit_chain.jsonl
 examples/*/output/
 
+# Generated audit-evidence bundles per matter (do not commit example runs)
+examples/regulatory-incidents/*/audit-evidence/
+
 # User audit-prompt tooling — internal, do not ship
 creaudit*.md

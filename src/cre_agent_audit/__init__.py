@@ -86,6 +86,18 @@ from cre_agent_audit.governance.vendor_score_gate import (
     VendorScoreEntry,
     VendorScoreGate,
 )
+from cre_agent_audit.regulatory_replay import (
+    ADRRef,
+    Citation,
+    Evidence,
+    EvidenceBundle,
+    Finding,
+    IncidentReplay,
+    IncidentReplayBase,
+    ReplayResult,
+    Severity,
+    pattern_coverage_score,
+)
 
 __version__ = "0.2.2.dev0"
 __all__ = [
@@ -149,6 +161,17 @@ __all__ = [
     "VendorScoreDriftDetected",
     "VendorScoreEntry",
     "VendorScoreGate",
+    # Regulatory-incident replay framework (ADR-0014)
+    "ADRRef",
+    "Citation",
+    "Evidence",
+    "EvidenceBundle",
+    "Finding",
+    "IncidentReplay",
+    "IncidentReplayBase",
+    "ReplayResult",
+    "Severity",
+    "pattern_coverage_score",
     # Package metadata
     "__version__",
 ]
