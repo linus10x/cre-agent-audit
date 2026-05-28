@@ -88,47 +88,51 @@ def main() -> int:
         return 1
 
     cases = [
-        ("Clean recommendation (state + 14mo data + uncoordinated)",
-         RentOptimizationAction(
-             action_class="rent_optimization",
-             market_geo_granularity="state",
-             training_data_age_months=14,
-             coordinated_with_other_owners=False,
-             recommended_rent=2450.0,
-         )),
-        ("Submarket granularity (RealPage prohibition)",
-         RentOptimizationAction(
-             action_class="rent_optimization",
-             market_geo_granularity="submarket",
-             training_data_age_months=14,
-             coordinated_with_other_owners=False,
-             recommended_rent=2475.0,
-         )),
-        ("Data 6 months old (RealPage prohibition)",
-         RentOptimizationAction(
-             action_class="rent_optimization",
-             market_geo_granularity="state",
-             training_data_age_months=6,
-             coordinated_with_other_owners=False,
-             recommended_rent=2480.0,
-         )),
-        ("Coordinated signal (direct RealPage violation)",
-         RentOptimizationAction(
-             action_class="rent_optimization",
-             market_geo_granularity="state",
-             training_data_age_months=14,
-             coordinated_with_other_owners=True,
-             recommended_rent=2520.0,
-         )),
+        (
+            "Clean recommendation (state + 14mo data + uncoordinated)",
+            RentOptimizationAction(
+                action_class="rent_optimization",
+                market_geo_granularity="state",
+                training_data_age_months=14,
+                coordinated_with_other_owners=False,
+                recommended_rent=2450.0,
+            ),
+        ),
+        (
+            "Submarket granularity (RealPage prohibition)",
+            RentOptimizationAction(
+                action_class="rent_optimization",
+                market_geo_granularity="submarket",
+                training_data_age_months=14,
+                coordinated_with_other_owners=False,
+                recommended_rent=2475.0,
+            ),
+        ),
+        (
+            "Data 6 months old (RealPage prohibition)",
+            RentOptimizationAction(
+                action_class="rent_optimization",
+                market_geo_granularity="state",
+                training_data_age_months=6,
+                coordinated_with_other_owners=False,
+                recommended_rent=2480.0,
+            ),
+        ),
+        (
+            "Coordinated signal (direct RealPage violation)",
+            RentOptimizationAction(
+                action_class="rent_optimization",
+                market_geo_granularity="state",
+                training_data_age_months=14,
+                coordinated_with_other_owners=True,
+                recommended_rent=2520.0,
+            ),
+        ),
     ]
 
     for label, action in cases:
         result = veto.check(action)
-        suffix = (
-            f" reason: {result.reason_code}"
-            if result.reason_code
-            else ""
-        )
+        suffix = f" reason: {result.reason_code}" if result.reason_code else ""
         print(f"{label}")
         print(f"  → {result.verdict.value}{suffix}")
 

@@ -108,20 +108,16 @@ def check_a2_to_a3_promotion(requirements: PromotionRequirements) -> PromotionGa
     """
     failures: list[str] = []
     if not requirements.sovereign_veto_load_tested:
-        failures.append(
-            "sovereign_veto not load-tested under representative traffic"
-        )
+        failures.append("sovereign_veto not load-tested under representative traffic")
     if requirements.audit_ledger_running_for < timedelta(days=_MIN_AUDIT_LEDGER_DAYS):
         days = requirements.audit_ledger_running_for.days
         failures.append(
-            f"audit_ledger has been running for {days}d; "
-            f"minimum is {_MIN_AUDIT_LEDGER_DAYS}d"
+            f"audit_ledger has been running for {days}d; minimum is {_MIN_AUDIT_LEDGER_DAYS}d"
         )
     if requirements.shadow_mode_running_for < timedelta(days=_MIN_SHADOW_MODE_DAYS):
         days = requirements.shadow_mode_running_for.days
         failures.append(
-            f"shadow_mode has been running for {days}d; "
-            f"minimum is {_MIN_SHADOW_MODE_DAYS}d"
+            f"shadow_mode has been running for {days}d; minimum is {_MIN_SHADOW_MODE_DAYS}d"
         )
     if not requirements.circuit_breaker_test_recent:
         failures.append("circuit_breaker test not recent (must be tested ≥ quarterly)")

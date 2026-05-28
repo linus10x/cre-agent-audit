@@ -24,10 +24,16 @@ jobs:
           pip install -e ".[dev]"
       - name: Lint with ruff
         run: ruff check src/ tests/
-      - name: Type check with mypy
-        run: mypy src/
+      - name: Ruff format check
+        run: ruff format --check src/ tests/ scripts/
+      - name: Type check with mypy (strict)
+        run: mypy --strict src/ tests/
       - name: Run pytest
-        run: pytest --cov=src --cov-report=term-missing
+        run: pytest --cov=src/cre_agent_audit --cov-report=term-missing --cov-fail-under=85
+      - name: Verify compliance_rules.json is in sync with .yaml
+        run: |
+          python scripts/build_compliance_json.py
+          git diff --exit-code config/compliance_rules.json
 
   examples:
     runs-on: ubuntu-latest

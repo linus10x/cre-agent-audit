@@ -165,9 +165,7 @@ class ShadowRouter:
 
     # ---------------------------- promotion ----------------------------- #
 
-    def promotion_check(
-        self, decision_class: DecisionClass, *, now: datetime
-    ) -> PromotionVerdict:
+    def promotion_check(self, decision_class: DecisionClass, *, now: datetime) -> PromotionVerdict:
         config = _GATE_MATRIX[decision_class]
         failures: list[str] = []
 
@@ -191,11 +189,7 @@ class ShadowRouter:
             # is itself a fair-housing concern.
             cohorts: set[str] = {
                 o.live.cohort for o in self.observations if o.live.cohort is not None
-            } | {
-                o.shadow.cohort
-                for o in self.observations
-                if o.shadow.cohort is not None
-            }
+            } | {o.shadow.cohort for o in self.observations if o.shadow.cohort is not None}
             for cohort in cohorts:
                 live_vetoes = sum(
                     1

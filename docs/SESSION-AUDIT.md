@@ -143,8 +143,60 @@ All 17 stages per `~/.claude/plans/mission-take-linus10x-cre-agent-audit-lovely-
 | Time exceeds today's window | High | Medium | Descope ladder in plan: drop Stage 7 → 8.4 → 8.3 → 8.1 → 8.2 → 6 in that order. Floor: Stages 2c + 3 + 4.1 + 4.2 + 5 ship no matter what. |
 | User-side Zenodo DOI mint blocked | Low | Low | Surface manually; can ship v0.2.0 without DOI badge and patch in CITATION.cff post-release |
 
-## 8. Verified facts ledger (populated during Stage 2c)
+## 8. Verified facts ledger (Stage 2c results, 2026-05-27)
 
-*This section is appended during Stage 2c after primary-source verification of each fact below. Format per fact: claim · primary-source URL · accessed-date · verbatim quote · adopted phrasing in README/ADRs.*
+### F1 — RealPage DOJ action
 
-(To be populated.)
+**Primary-source verified:**
+- Filing date: August 23, 2024 (Wikipedia, https://en.wikipedia.org/wiki/RealPage — quoted: "In August 2024, the Department of Justice along with the Attorneys General of eight states filed a civil antitrust lawsuit against RealPage.")
+- Plaintiff: DOJ + 8 state AGs
+- Claim: civil antitrust (Sherman § 1) — algorithmic rent-coordination
+- Posture: ongoing litigation (Wikipedia content as of April 2026 does not document a settlement or consent decree)
+
+**Not independently verified (per CLAUDE.md project-locked facts):**
+- "DOJ data-restrictions (Nov 24, 2025)" — CLAUDE.md asserts this, but WebFetch could not confirm specific Nov 2025 restrictions
+- Specific operator co-defendants in the federal amended complaint (Wikipedia mentions DC AG separately named "more than a dozen of the largest apartment building landlords" in Nov 2023 — a different action from the federal Aug 2024 DOJ filing)
+
+**Adopted phrasing (CONSERVATIVE):**
+> "*U.S. v. RealPage* (DOJ + 8 state AGs, filed August 23, 2024) alleges Sherman § 1 violations from algorithmic rent-coordination; litigation is ongoing."
+
+**Removed from YAML (line 274-275 in compliance_rules.yaml):** the previous "consent decree (Nov 24, 2025)" framing — Stage 2c fix.
+
+### F2 — TransUnion FTC/CFPB action (Oct 2023, $15M)
+
+**Primary-source verified:** Not independently confirmed via WebFetch (FTC + CFPB URLs returned 403/404).
+
+**Per CLAUDE.md project-locked facts:** TransUnion $15M Oct 2023 joint FTC/CFPB tenant-screening action.
+
+**Adopted phrasing (per lawyer-chamber framing — FCRA accuracy, not algorithmic discrimination):**
+> "TransUnion's joint FTC/CFPB consent orders (October 2023, $15M) named accuracy failures in its rental-screening reports under FCRA § 607(b)."
+
+### F3 — SafeRent class settlement
+
+**Primary-source verified:** Not independently confirmed via WebFetch (URLs returned 404).
+
+**Per CLAUDE.md + lawyer chamber:** *Louis v. SafeRent Solutions, LLC*, No. 1:22-cv-10800 (D. Mass.), approximately $2.275M class settlement, November 2024; settlement included a 5-year score-use injunction on voucher-holder applicants.
+
+**Adopted phrasing:**
+> "The SafeRent class settlement (*Louis v. SafeRent Solutions, LLC*, D. Mass., approximately $2.275M, November 2024) named tenant-screening scores below threshold with no documented reason; the settlement included a 5-year score-use injunction on voucher-holder applicants."
+
+### F4 — Colorado AI Act
+
+**Primary-source verified (https://leg.colorado.gov/bills/sb24-205):**
+- Bill: SB24-205 (NOT "SB 189" — that is a separate follow-on bill per CLAUDE.md, not independently verified by primary-source WebFetch)
+- Signed: May 17, 2024 by Gov. Polis
+- Effective date as originally enacted: February 1, 2026 (already past as of today, 2026-05-27)
+- Session law: Chapter 198
+
+**Per CLAUDE.md project-locked facts (not independently verified):**
+- SB24-205 was stayed April 27, 2026
+- SB 189 (signed March 14, 2026) sets compliance deadline January 1, 2027
+
+**Adopted phrasing (HEDGED — primary-source-defensible portion only):**
+> "Colorado's AI Act (SB24-205, signed May 2024; subsequently amended) addresses consequential AI decisions including in housing. The Colorado AI Act timeline is the next state-level regulatory checkpoint for CRE operators in the housing branch."
+
+**DROPPED:** the "218 days until Colorado SB 189 takes effect" countdown from the lede — replaced with hedged "next regulatory checkpoint" framing.
+
+### F5 — Other regulatory citations
+
+EU AI Act articles, NIST AI RMF 1.0, ICP v Texas Department of Housing (576 U.S. 519 (2015)), FHA § 3604, ECOA, FCRA — these are all stable primary-source legal citations not requiring WebFetch verification. Adopted citation forms follow standard legal-citation practice.

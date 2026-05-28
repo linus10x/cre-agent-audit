@@ -88,7 +88,9 @@ def main() -> int:
             make_clause(
                 text="Base rent: $42.50/sqft, escalating 3% annually.",
                 criticality=ClauseCriticality.MATERIAL,
-                reviewer=signature("reviewer:alice", "Base rent: $42.50/sqft, escalating 3% annually."),
+                reviewer=signature(
+                    "reviewer:alice", "Base rent: $42.50/sqft, escalating 3% annually."
+                ),
             ),
         ),
         (
@@ -105,7 +107,9 @@ def main() -> int:
                 text="Co-tenancy clause: anchor vacancy triggers rent abatement.",
                 criticality=ClauseCriticality.MATERIAL,
                 doc_hash=UNKNOWN_DOC_HASH,
-                reviewer=signature("reviewer:bob", "Co-tenancy clause: anchor vacancy triggers rent abatement."),
+                reviewer=signature(
+                    "reviewer:bob", "Co-tenancy clause: anchor vacancy triggers rent abatement."
+                ),
             ),
         ),
         (

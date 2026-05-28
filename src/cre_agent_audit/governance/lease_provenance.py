@@ -101,10 +101,7 @@ class LeaseProvenanceCheck(ConstraintCheck):
             return VetoResult.veto(
                 reason_code="UNKNOWN-ACTION-CLASS",
                 owner_required=self._DEFAULT_OWNER,
-                detail=(
-                    "LeaseProvenanceCheck received an action that is not a "
-                    "LeaseClauseAction."
-                ),
+                detail=("LeaseProvenanceCheck received an action that is not a LeaseClauseAction."),
             )
 
         clause = action.clause

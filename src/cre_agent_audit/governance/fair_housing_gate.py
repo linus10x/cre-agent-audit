@@ -129,9 +129,7 @@ class BypassRegistry:
     """
 
     window_days: int = _DEFAULT_LOOKBACK_DAYS
-    _exceptions: list[FairHousingException] = field(
-        default_factory=list, init=False, repr=False
-    )
+    _exceptions: list[FairHousingException] = field(default_factory=list, init=False, repr=False)
 
     def record(self, exception: FairHousingException) -> None:
         self._exceptions.append(exception)

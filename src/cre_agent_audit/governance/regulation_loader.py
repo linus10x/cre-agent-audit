@@ -1,25 +1,29 @@
 """Regulation Loader — ADR-0005.
 
-Loads the source-of-truth `compliance_rules.yaml` and exposes a structured
+Loads the source-of-truth `compliance_rules.json` and exposes a structured
 lookup from governance patterns to the regulations they satisfy (and the
 reverse direction: regulations to patterns).
 
-The runtime reads this to label every audit-ledger entry with the
-regulations satisfied by the gates that passed. A vetoed entry records
-which regulation triggered the veto.
+The runtime reads this to label every audit-ledger entry with the regulations
+satisfied by the gates that passed. A vetoed entry records which regulation
+triggered the veto.
+
+Format note: the runtime loader is **JSON-only** so the package has zero
+runtime dependencies. The human-edited source of truth is YAML
+(`config/compliance_rules.yaml`); `scripts/build_compliance_json.py` emits
+the checked-in JSON artifact. CI verifies the two stay in sync.
 """
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 
 class InvalidComplianceRulesError(ValueError):
-    """Raised when ``compliance_rules.yaml`` does not conform to ADR-0005's schema."""
+    """Raised when ``compliance_rules.json`` does not conform to ADR-0005's schema."""
 
 
 @dataclass(frozen=True)
@@ -61,8 +65,15 @@ class RegulationLoader:
 
     @classmethod
     def from_file(cls, path: Path | str) -> RegulationLoader:
-        with open(path, encoding="utf-8") as f:
-            data = yaml.safe_load(f)
+        p = Path(path)
+        if p.suffix.lower() != ".json":
+            raise ValueError(
+                f"RegulationLoader.from_file is JSON-only at runtime "
+                f"(got {p.suffix!r}); use scripts/build_compliance_json.py "
+                f"to convert author-time YAML to runtime JSON"
+            )
+        with p.open(encoding="utf-8") as f:
+            data = json.load(f)
         return cls.from_dict(data)
 
     @classmethod

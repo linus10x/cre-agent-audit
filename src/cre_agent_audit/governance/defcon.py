@@ -69,9 +69,7 @@ class CapabilityRule:
 # Per-state allowlist matrix. Codified directly from ADR-0001's state semantics.
 # Capability rules default to (allowed=True, requires_cosign=False) when omitted.
 _ALLOWLIST: dict[DefconState, dict[Capability, CapabilityRule]] = {
-    DefconState.NORMAL: {
-        capability: CapabilityRule(allowed=True) for capability in Capability
-    },
+    DefconState.NORMAL: {capability: CapabilityRule(allowed=True) for capability in Capability},
     DefconState.HEIGHTENED: {
         **{capability: CapabilityRule(allowed=True) for capability in Capability},
         Capability.LEASE_MATERIAL_WRITE: CapabilityRule(allowed=True, requires_cosign=True),
@@ -94,9 +92,8 @@ _ALLOWLIST: dict[DefconState, dict[Capability, CapabilityRule]] = {
         Capability.RENT_OPTIMIZATION: CapabilityRule(allowed=False),
         Capability.AUDIT_WRITE: CapabilityRule(allowed=True),
     },
-    DefconState.SHUTDOWN: {
-        capability: CapabilityRule(allowed=False) for capability in Capability
-    } | {Capability.AUDIT_WRITE: CapabilityRule(allowed=True)},
+    DefconState.SHUTDOWN: {capability: CapabilityRule(allowed=False) for capability in Capability}
+    | {Capability.AUDIT_WRITE: CapabilityRule(allowed=True)},
 }
 
 

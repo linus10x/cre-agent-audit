@@ -89,9 +89,7 @@ class TestA2ToA3PromotionGate:
 
     def test_circuit_breaker_not_tested_blocks(self) -> None:
         reqs = self._passing_requirements()
-        reqs = PromotionRequirements(
-            **{**reqs.__dict__, "circuit_breaker_test_recent": False}
-        )
+        reqs = PromotionRequirements(**{**reqs.__dict__, "circuit_breaker_test_recent": False})
         report = check_a2_to_a3_promotion(reqs)
         assert report.passed is False
         assert any("circuit_breaker" in failure for failure in report.failures)

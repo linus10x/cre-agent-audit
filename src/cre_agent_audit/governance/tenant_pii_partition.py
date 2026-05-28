@@ -123,8 +123,7 @@ class TenantPIIResidencyCheck(ConstraintCheck):
                 reason_code="UNKNOWN-ACTION-CLASS",
                 owner_required=self._DEFAULT_OWNER,
                 detail=(
-                    "TenantPIIResidencyCheck received an action that is not a "
-                    "TenantPIIAction."
+                    "TenantPIIResidencyCheck received an action that is not a TenantPIIAction."
                 ),
             )
 

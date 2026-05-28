@@ -75,7 +75,7 @@ def _action(clause: ExtractedClause) -> LeaseClauseAction:
 
 class TestMaterialClauseRequiresAllFields:
     def test_material_with_full_provenance_passes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
@@ -86,7 +86,7 @@ class TestMaterialClauseRequiresAllFields:
         assert result.verdict is VetoVerdict.PASS
 
     def test_material_missing_reviewer_signature_vetoes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
@@ -97,13 +97,11 @@ class TestMaterialClauseRequiresAllFields:
         assert result.reason_code == "PROV-INCOMPLETE-MATERIAL"
 
     def test_low_confidence_material_vetoes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
-            provenance=_provenance(
-                confidence=0.81, reviewer=_signature("reviewer:alice", "x")
-            ),
+            provenance=_provenance(confidence=0.81, reviewer=_signature("reviewer:alice", "x")),
             text="x",
         )
         result = check.evaluate(_action(clause))
@@ -111,13 +109,11 @@ class TestMaterialClauseRequiresAllFields:
         assert result.reason_code == "PROV-LOW-CONFIDENCE-MATERIAL"
 
     def test_low_confidence_material_threshold_is_configurable(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo, material_min_confidence=0.70)
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
-            provenance=_provenance(
-                confidence=0.72, reviewer=_signature("reviewer:alice", "x")
-            ),
+            provenance=_provenance(confidence=0.72, reviewer=_signature("reviewer:alice", "x")),
             text="x",
         )
         result = check.evaluate(_action(clause))
@@ -126,7 +122,7 @@ class TestMaterialClauseRequiresAllFields:
 
 class TestSignificantClause:
     def test_significant_with_full_provenance_passes_without_signature(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.SIGNIFICANT,
@@ -136,7 +132,7 @@ class TestSignificantClause:
         assert result.verdict is VetoVerdict.PASS
 
     def test_significant_missing_confidence_zero_vetoes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.SIGNIFICANT,
@@ -149,7 +145,7 @@ class TestSignificantClause:
 
 class TestRoutineClause:
     def test_routine_with_full_provenance_passes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.ROUTINE,
@@ -161,7 +157,7 @@ class TestRoutineClause:
 
 class TestHashMismatch:
     def test_unknown_document_hash_vetoes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(repository=repo)
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
@@ -178,11 +174,11 @@ class TestHashMismatch:
 
 class TestStaleModel:
     def test_stale_model_for_material_vetoes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(
             repository=repo,
             min_model_version_material="claude-opus-4-6",
-            allowed_model_versions={"claude-opus-4-6", "claude-opus-4-7"},
+            allowed_model_versions=frozenset({"claude-opus-4-6", "claude-opus-4-7"}),
         )
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
@@ -197,11 +193,11 @@ class TestStaleModel:
         assert result.reason_code == "PROV-STALE-MODEL"
 
     def test_model_at_or_above_min_passes(self) -> None:
-        repo = LeaseRepository(known_hashes={_DOC_HASH})
+        repo = LeaseRepository(known_hashes=frozenset({_DOC_HASH}))
         check = LeaseProvenanceCheck(
             repository=repo,
             min_model_version_material="claude-opus-4-6",
-            allowed_model_versions={"claude-opus-4-6", "claude-opus-4-7"},
+            allowed_model_versions=frozenset({"claude-opus-4-6", "claude-opus-4-7"}),
         )
         clause = _clause(
             criticality=ClauseCriticality.MATERIAL,
