@@ -1,10 +1,12 @@
 """Example 03 — Rent Optimization with Sovereign Veto.
 
 This example exercises the full DEFCON + Sovereign Veto + Audit Ledger stack
-on a rent-optimization action. The constraint check applies the DOJ-RealPage
-consent decree restrictions: data older than 12 months only, state-level
-granularity only, no coordinated price recommendations across owners in the
-same market.
+on a rent-optimization action. The constraint check models operator-side
+controls relevant to U.S. v. RealPage, Inc. et al., M.D.N.C., filed
+August 23, 2024 (ongoing antitrust litigation, alleged Sherman § 1 violations,
+not adjudicated). Restrictions modeled: data older than 12 months only,
+state-level granularity only, no coordinated price recommendations across
+owners in the same market. Not legal advice — consult antitrust counsel.
 
 Run:
     python examples/03_rent_optimization_sovereign_veto/run.py
@@ -33,7 +35,7 @@ class RentOptimizationAction(AgentAction):
 
 
 class RealPageAntitrustCheck(ConstraintCheck):
-    """Pre-flight constraint check applying the DOJ-RealPage consent decree."""
+    """Pre-flight constraint check modeling operator-side controls relevant to U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — ongoing antitrust litigation, not adjudicated."""
 
     MAX_GRANULARITY = "state"
     MIN_DATA_AGE_MONTHS = 12
@@ -49,9 +51,11 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 reason_code="ANTITRUST-GEO-GRANULARITY",
                 owner_required="legal:antitrust_counsel",
                 detail=(
-                    f"Rent-pricing AI emitted recommendation at {granularity!r} "
-                    f"granularity. DOJ-RealPage consent decree (Nov 2025) restricts "
-                    f"recommendations to {self.MAX_GRANULARITY!r}-level granularity."
+                    f"Rent-pricing AI emitted recommendation at {granularity!r} granularity. "
+                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
+                    f"ongoing antitrust litigation, ALLEGED conduct. Operator control "
+                    f"restricts recommendations to {self.MAX_GRANULARITY!r}-level granularity. "
+                    f"Consult antitrust counsel re: Sherman § 1 exposure."
                 ),
             )
         if data_age < self.MIN_DATA_AGE_MONTHS:
@@ -59,8 +63,11 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 reason_code="ANTITRUST-DATA-FRESHNESS",
                 owner_required="legal:antitrust_counsel",
                 detail=(
-                    f"Training data is {data_age} months old. DOJ-RealPage requires "
-                    f"data ≥ {self.MIN_DATA_AGE_MONTHS} months old."
+                    f"Training data is {data_age} months old. Operator control requires "
+                    f"data ≥ {self.MIN_DATA_AGE_MONTHS} months old. "
+                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
+                    f"ongoing antitrust litigation, ALLEGED conduct. "
+                    f"Consult antitrust counsel re: Sherman § 1 exposure."
                 ),
             )
         if coordinated:
@@ -68,8 +75,10 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 reason_code="ANTITRUST-COORDINATION",
                 owner_required="legal:antitrust_counsel",
                 detail=(
-                    "Recommendation includes coordination signal across owners "
-                    "in the same market. Direct DOJ-RealPage prohibition."
+                    "Recommendation includes coordination signal across owners in the same market. "
+                    "U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
+                    "ongoing antitrust litigation, ALLEGED conduct re: coordinated pricing. "
+                    "Consult antitrust counsel re: Sherman § 1 exposure."
                 ),
             )
         return VetoResult.passing()
