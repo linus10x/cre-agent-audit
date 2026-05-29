@@ -41,3 +41,6 @@ examples/regulatory-incidents/*/audit-evidence/
 
 # User audit-prompt tooling — internal, do not ship
 creaudit*.md
+
+# Claude Code session files — internal, do not ship
+.claude/

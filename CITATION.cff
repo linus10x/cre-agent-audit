@@ -38,8 +38,8 @@ keywords:
   - eu-ai-act
   - colorado-ai-act
 license: MIT
-version: 0.2.0
-date-released: 2026-06-02
-# DOI is minted via Zenodo on every tagged GitHub release; populated
-# post-release in Stage 12 of the v0.2.0 launch plan.
+version: 0.2.2
+date-released: 2026-05-28
+# DOI minted via Zenodo on every tagged GitHub release.
+# v0.2.2 DOI pending Zenodo webhook — update in follow-up commit.
 doi: ""

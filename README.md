@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
-[![v0.2.1](https://img.shields.io/badge/release-v0.2.1-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.1)
+[![v0.2.2](https://img.shields.io/badge/release-v0.2.2-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.2)
 [![Autonomy Ladder™ family](https://img.shields.io/badge/family-Autonomy%20Ladder%E2%84%A2-purple)](https://autonomy-ladder.io)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20434575.svg)](https://doi.org/10.5281/zenodo.20434575)
 
