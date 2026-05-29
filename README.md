@@ -70,7 +70,7 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 | | |
 |---|---|
 | Patterns | 9 core (ADR-0001 → ADR-0009) + 4 hardening (ADR-0010 retention; ADR-0011 vendor adapter; ADR-0012 persistence / timestamps / witness anchor; ADR-0013 MI Proxy) + 1 category-claim (ADR-0014 operator-side AI governance) |
-| Tests | 335 passing — 318 deterministic + 17 Hypothesis property/fuzz tests totaling 50,000 generated examples (enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`) |
+| Tests | 336 passing — 318 deterministic + 18 Hypothesis property/fuzz tests totaling 51,000 generated examples (enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`) |
 | Branch coverage | 86% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
 | Runtime dependencies | 0 (stdlib only) |
 | Python | 3.10, 3.11, 3.12 (CI matrix) |

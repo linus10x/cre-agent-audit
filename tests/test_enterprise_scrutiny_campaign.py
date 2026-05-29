@@ -16,7 +16,8 @@ Execution count audit (sum of ``settings(max_examples=N)``):
     AuditLedger append + verify_chain invariant                     3,000
     AuditLedger tamper-detection on mutated entry                   2,000
     AuditLedger chain_head == last self_hash                        2,000
-    ProtectedClassReference construction validation                 2,000
+    ProtectedClassReference rejects malformed                       2,000
+    ProtectedClassReference accepts well-shaped                     1,000
     MIThresholdDetector finding-count invariant                     3,000
     Quartile bin monotonicity                                       2,000
     Severity ladder monotonicity                                    2,000
@@ -24,7 +25,7 @@ Execution count audit (sum of ``settings(max_examples=N)``):
     InMemoryLedgerStore round-trip                                  1,000
     SqliteLedgerStore round-trip                                    1,000
     --------------------------------------------------------------- ------
-    TOTAL                                                          50,000
+    TOTAL                                                          51,000
 
 The campaign is profiled for determinism (``derandomize=True``) so the
 results are reproducible CI-side and citation-side.
@@ -509,6 +510,36 @@ def test_protected_class_reference_too_small(feature_count: int, label_count: in
 
 
 # ---------------------------------------------------------------------------
+# Category 10b: ProtectedClassReference ACCEPTS well-shaped inputs (paired
+# acceptance property — without this, the rejection test above is vacuous).
+# ---------------------------------------------------------------------------
+
+
+@given(
+    bundle=_reference_samples_strategy(min_size=30, max_size=60),
+)
+@settings(
+    max_examples=1_000,
+    derandomize=True,
+    deadline=None,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.function_scoped_fixture],
+)
+def test_protected_class_reference_accepts_well_shaped(
+    bundle: tuple[tuple[Mapping[str, object], ...], tuple[int, ...]],
+) -> None:
+    samples, labels = bundle
+    with pytest.warns(MIReferenceUndersizedWarning):
+        ref = ProtectedClassReference(
+            feature_samples=samples,
+            protected_class_labels=labels,
+            protected_class_name="probe",
+        )
+    assert ref.size == len(samples)
+    assert ref.size == len(labels)
+    assert ref.protected_class_name == "probe"
+
+
+# ---------------------------------------------------------------------------
 # Category 11: MIThresholdDetector finding count <= number of features
 # evaluated, and every finding's score exceeds the threshold.
 # ---------------------------------------------------------------------------
@@ -729,7 +760,7 @@ def test_sqlite_ledger_store_roundtrip(
 
 
 def test_campaign_execution_count_meta() -> None:
-    """Sum the documented per-test execution counts; must equal 50,000."""
+    """Sum the documented per-test execution counts; must equal 51,000."""
     counts = {
         "mi_score_in_unit_interval": 10_000,
         "mi_score_permutation_invariant": 5_000,
@@ -741,6 +772,7 @@ def test_campaign_execution_count_meta() -> None:
         "audit_ledger_tamper_detection": 2_000,
         "audit_ledger_chain_head_consistency": 2_000,
         "protected_class_reference_too_small": 2_000,
+        "protected_class_reference_accepts_well_shaped": 1_000,
         "mi_threshold_detector_finding_invariant": 3_000,
         "quartile_bin_monotone": 2_000,
         "severity_from_mi_monotone": 2_000,
@@ -748,4 +780,4 @@ def test_campaign_execution_count_meta() -> None:
         "inmemory_ledger_store_roundtrip": 1_000,
         "sqlite_ledger_store_roundtrip": 1_000,
     }
-    assert sum(counts.values()) == 50_000
+    assert sum(counts.values()) == 51_000

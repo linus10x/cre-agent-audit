@@ -22,7 +22,7 @@ import json
 import ssl
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 from urllib.parse import urlparse
 
 from cre_agent_audit.governance.audit_chain import ActorKind, AuditEntry, AuditLedger
@@ -38,7 +38,15 @@ class WitnessReceipt:
     log_index: int | None
 
 
+@runtime_checkable
 class WitnessRegister(Protocol):
+    """Protocol — anchors a chain-head digest to an external witness register.
+
+    Marked ``@runtime_checkable`` (parity with the other four ADR-0011 /
+    ADR-0012 / ADR-0013 Protocol seams) so deployers can validate custom
+    backends with ``isinstance(my_impl, WitnessRegister)`` at injection time.
+    """
+
     def anchor(self, chain_head_hex: str) -> WitnessReceipt: ...
 
 

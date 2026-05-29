@@ -9,6 +9,31 @@ This module is the "build the request, parse the timestamp" path — the
 opaque token is preserved verbatim so a downstream verifier can validate
 the TSA signature chain.
 
+**Threat-model framing — read before relying on this parser alone.**
+
+``parse_timestamp_response`` scans the TSR bytes linearly for the first
+GeneralizedTime tag. This is intentional and is sufficient for *well-formed*
+TSRs from a *signature-verified* TSA. The scan does NOT walk the DER TLV
+tree, so a maliciously-constructed TSR (e.g., an OCTET STRING containing
+crafted bytes that look like a GeneralizedTime tag preceding the real
+``TSTInfo.genTime``) could mislead the scanner into returning a date drawn
+from the wrong location.
+
+Adversarial integrity is the job of ``rfc3161_verify`` (audit-verify
+extra), which validates the TSA's CMS SignedData signature against an
+operator-trusted root. If the deployer has installed audit-verify and
+populated ``trusted_tsa_certs``, a forged TSR fails signature
+verification before any timestamp it carries is bound into the audit
+chain. Deployers anchoring to untrusted TSAs without the verifier wired
+in MUST treat the codec's output as unauthenticated input.
+
+The 50,000-example property + fuzz campaign in
+``tests/test_enterprise_scrutiny_campaign.py`` asserts that the scanner
+never crashes on arbitrary bytes — it returns either a UTC datetime or a
+well-formed exception. The buyer-trust property the campaign enforces
+is "no silent corruption, no parser crash" — not "rejects adversarial
+TSRs in isolation."
+
 RFC 3161 references:
 - Section 2.4.1 — TimeStampReq
 - Section 2.4.2 — TimeStampResp

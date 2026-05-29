@@ -109,6 +109,16 @@ class LocalMIProxy:
     Symmetric on purpose: asymmetric signatures would pull in
     ``cryptography``, violating Zero-Deps. Deployers requiring
     non-repudiation wire the opt-in backend documented in ADR-0013.
+
+    **Key-material memory posture.** Python strings and bytes are immutable;
+    ``del`` only drops references and does NOT zero the underlying memory.
+    The same constraint applies to every Python crypto library. ``from_env``
+    reads ``CRE_AUDIT_MI_PROXY_KEY`` and constructs a fresh ``bytes`` object
+    from it; both the env-var string and the copied bytes may persist in the
+    process heap until garbage collection (and possibly beyond, due to
+    interning and slab allocators). For production-grade key isolation,
+    inject the proxy directly via the constructor with keys sourced from
+    an HSM, OS keyring, or vault rather than from environment variables.
     """
 
     def __init__(

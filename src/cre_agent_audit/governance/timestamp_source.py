@@ -18,7 +18,7 @@ import ssl
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 from urllib.parse import ParseResult, urlparse
 
 
@@ -32,8 +32,14 @@ class TrustedTimestamp:
     hash_algorithm: str = "sha256"
 
 
+@runtime_checkable
 class TimestampSource(Protocol):
-    """Protocol — returns a `TrustedTimestamp` for a payload digest."""
+    """Protocol — returns a `TrustedTimestamp` for a payload digest.
+
+    Marked ``@runtime_checkable`` (parity with the other four ADR-0011 /
+    ADR-0012 / ADR-0013 Protocol seams) so deployers can validate custom
+    backends with ``isinstance(my_impl, TimestampSource)`` at injection time.
+    """
 
     def stamp(self, payload_digest: bytes) -> TrustedTimestamp: ...
 
