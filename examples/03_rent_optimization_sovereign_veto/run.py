@@ -35,7 +35,9 @@ class RentOptimizationAction(AgentAction):
 
 
 class RealPageAntitrustCheck(ConstraintCheck):
-    """Pre-flight constraint check modeling operator-side controls relevant to U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — ongoing antitrust litigation, not adjudicated."""
+    """Pre-flight constraint check modeling operator-side controls relevant to
+    U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 —
+    ongoing antitrust litigation, not adjudicated."""
 
     MAX_GRANULARITY = "state"
     MIN_DATA_AGE_MONTHS = 12
