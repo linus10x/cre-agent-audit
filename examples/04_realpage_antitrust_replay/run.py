@@ -130,7 +130,10 @@ def main() -> int:
     defcon = DefconController(initial_state=DefconState.NORMAL)
     allowed = defcon.is_allowed(Capability.RENT_OPTIMIZATION)
     status = "ALLOWED" if allowed else "BLOCKED"
-    print(f"[DEFCON] RENT_OPTIMIZATION capability: {status} (DEFCON-{defcon.state.value} {defcon.state.name})")
+    print(
+        f"[DEFCON] RENT_OPTIMIZATION capability: {status} "
+        f"(DEFCON-{defcon.state.value} {defcon.state.name})"
+    )
     if not allowed:
         print(f"  DEFCON-{defcon.state.value} blocks RENT_OPTIMIZATION — aborting.")
         return 1
