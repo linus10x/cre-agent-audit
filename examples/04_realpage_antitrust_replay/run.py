@@ -2,7 +2,7 @@
 
 Operator-side governance signals relevant to U.S. v. RealPage, Inc. et al.,
 M.D.N.C., filed August 23, 2024. DOJ + 8 state AGs filed under Sherman § 1.
-ONGOING antitrust litigation — allegations NOT adjudicated, no consent decree.
+ONGOING antitrust litigation — allegations NOT adjudicated.
 
 Patterns engaged:
 - ADR-0001: DEFCON State Machine (RENT_OPTIMIZATION capability check)
