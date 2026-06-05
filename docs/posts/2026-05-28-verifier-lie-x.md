@@ -1,6 +1,6 @@
 # X drafts — verifier lie · 2026-05-28
 
-**Status:** Drafts. Not published. Two variants below. Council-pass blocks per variant.
+**Status:** Drafts. HELD (2026-06-04). Variant (b) corrected — RealPage no longer labeled "settled." The appended council passes PREDATE this fix and missed the settled/ongoing contradiction, so they are INVALID — re-run the content bar before publishing.
 
 ---
 
@@ -32,22 +32,22 @@ If your audit verifier is compromised, how would you know?
 
 **1/5** Your hash chain can be perfect, and your verifier can still lie.
 
-That is the gap behind every CRE-AI settled-liability anchor on the record.
+That is the gap behind the CRE-AI accountability anchors on the record — two settled, one in active litigation.
 
 **2/5** TransUnion Rental Screening — FTC + CFPB, $15M, Oct 2023. SafeRent — D. Mass. class settlement, ~$2.275M, Nov 2024. RealPage — DOJ + 8 state AGs, ongoing.
 
 None had a missing chain. They had audit that could not prove bounded operation.
 
-**3/5** cre-agent-audit v0.2.1 (released today) closes 4 trust-boundary pieces:
+**3/5** cre-agent-audit v0.2.1 (released 2026-05-28) closes 4 trust-boundary pieces:
 
 · FAILURE-MODES.md matrix the build refuses to let drift
 · MI Proxy: fail-closed verifier attestation (ADR-0013)
 · VendorScoreGate: vendor-drift surface
 · consolidated AuditConsumer
 
-**4/5** Three items move forward as v0.2.2 candidate scope: the fair-housing MI-threshold detector, named-GC reference quotes, the `audit-verify` extra wiring.
+**4/5** v0.2.2 shipped the same day — MI-threshold detector and audit-verify wiring closed; named-GC reference quotes remain open as research.
 
-Those land next. The framework matures in public.
+The framework matures in public.
 
 **5/5** If your audit verifier itself is compromised, how would you know?
 
