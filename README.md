@@ -7,8 +7,9 @@ Nine MIT-licensed governance patterns for AI agents in commercial real estate op
 [![Tests 336](https://img.shields.io/badge/tests-336%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
+[![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20437081.svg)](https://doi.org/10.5281/zenodo.20437081)
-[![v0.2.4](https://img.shields.io/badge/release-v0.2.4-blue)](https://github.com/linus10x/cre-agent-audit/releases)
+[![v0.3.0](https://img.shields.io/badge/release-v0.3.0-blue)](https://github.com/linus10x/cre-agent-audit/releases)
 [![Autonomy Ladder family](https://img.shields.io/badge/family-Autonomy%20Ladder-purple)](https://github.com/linus10x/autonomy-ladder-libraries)
 
 > **What this is:** a reference architecture — production Python, zero runtime dependencies — for governing AI agents in CRE operations: a DEFCON state machine, a non-overridable sovereign veto, a hash-chained audit ledger, a Fair-Housing Pre-Flight Gate, and the A0→A4 Autonomy Ladder.

@@ -21,14 +21,18 @@ from cre_agent_audit.governance.audit_chain import (
 )
 from cre_agent_audit.governance.autonomy_ladder import (
     AutonomyTier,
+    CriterionAttestation,
     PromotionGateNotMet,
     PromotionGateReport,
     PromotionRequirements,
 )
 from cre_agent_audit.governance.defcon import (
+    Authorizer,
     Capability,
     CapabilityRule,
     DefconController,
+    DefconDeEscalationError,
+    DefconOverrideRejectedError,
     DefconState,
     DefconTransition,
 )
@@ -107,12 +111,15 @@ from cre_agent_audit.regulatory_replay import (
     pattern_coverage_score,
 )
 
-__version__ = "0.2.5"
+__version__ = "0.3.0"
 __all__ = [
     # Pattern 1 — DEFCON state machine (ADR-0001)
+    "Authorizer",
     "Capability",
     "CapabilityRule",
     "DefconController",
+    "DefconDeEscalationError",
+    "DefconOverrideRejectedError",
     "DefconState",
     "DefconTransition",
     # Pattern 2 — Sovereign Veto (ADR-0002)
@@ -133,6 +140,7 @@ __all__ = [
     "SqliteLedgerStore",
     # Pattern 4 — Autonomy Ladder A0→A4 (ADR-0004)
     "AutonomyTier",
+    "CriterionAttestation",
     "PromotionGateNotMet",
     "PromotionGateReport",
     "PromotionRequirements",

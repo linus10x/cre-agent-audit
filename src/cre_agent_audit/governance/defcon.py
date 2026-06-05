@@ -22,6 +22,28 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from enum import Enum
+from typing import Any, Protocol, runtime_checkable
+
+
+@runtime_checkable
+class Authorizer(Protocol):
+    """Protocol for authorizing a privileged DEFCON de-escalation (P4).
+
+    Wired into :meth:`DefconController.manual_override`. The audit trail
+    records the asserted ``operator_id``, but it can only be TRUSTED when
+    the ``authorize()`` check passed. De-escalation toward NORMAL is a
+    privileged operation; without a wired Authorizer it fails closed.
+    """
+
+    def authorize(self, operator_id: str, action: str, context: dict[str, Any]) -> bool: ...
+
+
+class DefconDeEscalationError(RuntimeError):
+    """Raised when a de-escalation is attempted via the unguarded ``transition_to`` path (P4)."""
+
+
+class DefconOverrideRejectedError(RuntimeError):
+    """Raised when ``manual_override`` lacks/loses Authorizer approval (P4, fail-closed)."""
 
 
 class DefconState(Enum):
@@ -161,12 +183,95 @@ class DefconController:
         are still recorded — they carry operator intent. ADR-0001 is silent on the
         idempotency case; the convention here is "record everything, the ledger
         decides what to surface."
+
+        **P4 — transition-direction guard.** ``transition_to`` permits only
+        ESCALATION (to a more severe / lower-level state) and idempotent
+        same-state transitions. A DE-ESCALATION toward NORMAL (e.g. the
+        ``SHUTDOWN → NORMAL`` Knight-Capital footgun) is REFUSED here with
+        :class:`DefconDeEscalationError`: no actor may relax containment in one
+        unguarded call. De-escalation must go through :meth:`manual_override`,
+        which requires a wired :class:`Authorizer` (fail-closed). A more-severe
+        state has a LOWER ``level`` value, so a de-escalation is
+        ``new_state.level > self._state.level``.
         """
         if not actor.strip():
             raise ValueError("actor must be non-empty")
         if not reason.strip():
             raise ValueError("reason must be non-empty")
 
+        if new_state.level > self._state.level:
+            raise DefconDeEscalationError(
+                f"de-escalation {self._state.name} -> {new_state.name} is not "
+                "permitted via transition_to (transition-direction guard); relaxing "
+                "containment requires manual_override() with a wired Authorizer."
+            )
+
+        return self._record_transition(
+            new_state,
+            actor=actor,
+            reason=reason,
+            estimated_duration=estimated_duration,
+            now=now,
+        )
+
+    def manual_override(
+        self,
+        new_state: DefconState,
+        *,
+        authorizer: Authorizer | None,
+        operator_id: str,
+        reason: str,
+        estimated_duration: timedelta | None = None,
+        now: datetime | None = None,
+    ) -> DefconTransition:
+        """Human-in-the-loop de-escalation (P4). Fail-closed.
+
+        The ONLY path that may relax containment (move toward NORMAL). A wired
+        :class:`Authorizer` is MANDATORY — its ``authorize()`` must return True
+        or the override is rejected with :class:`DefconOverrideRejectedError`,
+        and the state is unchanged. Without an Authorizer the override is
+        refused outright (an unauthenticated ``operator_id`` cannot relax
+        containment). Escalation may also go through this path, but does not
+        require it.
+        """
+        if not operator_id.strip():
+            raise ValueError("operator_id must be non-empty")
+        if not reason.strip():
+            raise ValueError("reason must be non-empty")
+
+        if authorizer is None:
+            raise DefconOverrideRejectedError(
+                "manual_override requires a wired Authorizer; an unauthenticated "
+                f"operator_id={operator_id!r} cannot relax DEFCON containment "
+                "(fail-closed)."
+            )
+        context: dict[str, Any] = {
+            "from_state": self._state.name,
+            "target_state": new_state.name,
+            "reason": reason,
+        }
+        if not authorizer.authorize(operator_id, "defcon_manual_override", context):
+            raise DefconOverrideRejectedError(
+                f"Authorizer rejected defcon_manual_override by operator_id="
+                f"{operator_id!r} to {new_state.name}; state unchanged ({self._state.name})."
+            )
+        return self._record_transition(
+            new_state,
+            actor=operator_id,
+            reason=reason,
+            estimated_duration=estimated_duration,
+            now=now,
+        )
+
+    def _record_transition(
+        self,
+        new_state: DefconState,
+        *,
+        actor: str,
+        reason: str,
+        estimated_duration: timedelta | None,
+        now: datetime | None,
+    ) -> DefconTransition:
         transition = DefconTransition(
             prior_state=self._state,
             new_state=new_state,

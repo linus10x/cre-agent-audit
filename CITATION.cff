@@ -39,8 +39,9 @@ keywords:
   - eu-ai-act
   - colorado-ai-act
 license: MIT
-version: "0.2.5"
-date-released: 2026-06-27
+version: "0.3.0"
+date-released: 2026-06-05  # STAGED — owner confirms the actual date at tag time (owner gate)
 # Concept DOI (below) resolves to the latest archived version on Zenodo;
-# the author mints a version DOI on Zenodo for selected releases.
+# the author mints a version DOI on Zenodo for selected releases. NEVER
+# re-tag an already-DOI'd version.
 doi: "10.5281/zenodo.20437081"
