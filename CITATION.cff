@@ -39,7 +39,7 @@ keywords:
   - eu-ai-act
   - colorado-ai-act
 license: MIT
-version: 0.2.3
+version: "0.2.4"
 date-released: 2026-06-09
 # Concept DOI (below) resolves to the latest archived version on Zenodo;
 # the author mints a version DOI on Zenodo for selected releases.
