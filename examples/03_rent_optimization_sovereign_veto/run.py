@@ -2,9 +2,10 @@
 
 This example exercises the full DEFCON + Sovereign Veto + Audit Ledger stack
 on a rent-optimization action. The constraint check models operator-side
-controls relevant to U.S. v. RealPage, Inc. et al., M.D.N.C., filed
-August 23, 2024 (ongoing antitrust litigation, alleged Sherman § 1 violations,
-not adjudicated). Restrictions modeled: data older than 12 months only,
+controls relevant to U.S. v. RealPage, Inc. et al., filed August 23, 2024
+(DOJ + 8 state AGs; alleged Sherman Act §§ 1 AND 2 violations; resolved by
+proposed consent judgment filed Nov 24, 2025 pending Tunney Act approval,
+never adjudicated). Restrictions modeled: data older than 12 months only,
 state-level granularity only, no coordinated price recommendations across
 owners in the same market. Not legal advice — consult antitrust counsel.
 
@@ -36,8 +37,9 @@ class RentOptimizationAction(AgentAction):
 
 class RealPageAntitrustCheck(ConstraintCheck):
     """Pre-flight constraint check modeling operator-side controls relevant to
-    U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 —
-    ongoing antitrust litigation, not adjudicated."""
+    U.S. v. RealPage, Inc. et al., filed August 23, 2024 (DOJ + 8 state AGs;
+    Sherman Act §§ 1 and 2) — resolved by proposed consent judgment
+    (DOJ filed Nov 24, 2025, pending Tunney Act approval), never adjudicated."""
 
     MAX_GRANULARITY = "state"
     MIN_DATA_AGE_MONTHS = 12
@@ -54,10 +56,11 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 owner_required="legal:antitrust_counsel",
                 detail=(
                     f"Rent-pricing AI emitted recommendation at {granularity!r} granularity. "
-                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    f"ongoing antitrust litigation, ALLEGED conduct. Operator control "
+                    f"U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 "
+                    f"and 2) — ALLEGED conduct, resolved by proposed consent judgment, never "
+                    f"adjudicated. Operator control "
                     f"restricts recommendations to {self.MAX_GRANULARITY!r}-level granularity. "
-                    f"Consult antitrust counsel re: Sherman § 1 exposure."
+                    f"Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         if data_age < self.MIN_DATA_AGE_MONTHS:
@@ -67,9 +70,10 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 detail=(
                     f"Training data is {data_age} months old. Operator control requires "
                     f"data ≥ {self.MIN_DATA_AGE_MONTHS} months old. "
-                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    f"ongoing antitrust litigation, ALLEGED conduct. "
-                    f"Consult antitrust counsel re: Sherman § 1 exposure."
+                    f"U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 "
+                    f"and 2) — ALLEGED conduct, resolved by proposed consent judgment, never "
+                    f"adjudicated. "
+                    f"Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         if coordinated:
@@ -78,9 +82,10 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 owner_required="legal:antitrust_counsel",
                 detail=(
                     "Recommendation includes coordination signal across owners in the same market. "
-                    "U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    "ongoing antitrust litigation, ALLEGED conduct re: coordinated pricing. "
-                    "Consult antitrust counsel re: Sherman § 1 exposure."
+                    "U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 and 2) "
+                    "— ALLEGED conduct re: coordinated pricing, resolved by proposed consent "
+                    "judgment, never adjudicated. "
+                    "Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         return VetoResult.passing()

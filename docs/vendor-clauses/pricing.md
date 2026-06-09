@@ -4,7 +4,7 @@
 
 Drop-in contract language for the operator's next vendor contract renewal or change-order with a revenue-management AI vendor (RealPage YieldStar, RealPage LRO, AppFolio Property Manager, Yardi Revenue IQ, or equivalent). The clauses below pair with [ADR-0011 (Vendor-Output Adapter)](../adr/0011-vendor-output-adapter-pattern.md) and the documented stance in [ADR-0008's section on pricing-coordination defense framing](../adr/0008-fair-housing-preflight-gate.md).
 
-**Operator note.** *U.S. v. RealPage* is ongoing civil antitrust litigation (DOJ + 8 state AGs, M.D.N.C., filed Aug 23, 2024). These clauses are drafted to support **process evidence relevant to good-faith defenses under § 1 rule-of-reason analysis**. They **do not cure per se exposure from data-pooling**; Operator's antitrust counsel must independently assess whether the Vendor's data-input topology creates per se exposure regardless of these contractual provisions.
+**Operator note.** *U.S. v. RealPage, Inc. et al.* was a DOJ + 8 state AG civil antitrust action (filed Aug 23, 2024, Sherman Act §§ 1 AND 2). DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026); the matter was resolved without admission of liability and was never adjudicated. These clauses are drafted to support **process evidence relevant to good-faith defenses under the rule-of-reason analysis**. They **do not cure per se exposure from data-pooling**; Operator's antitrust counsel must independently assess whether the Vendor's data-input topology creates per se exposure regardless of these contractual provisions.
 
 ## Section 1 — Data-input topology disclosure
 

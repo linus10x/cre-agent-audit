@@ -1,8 +1,11 @@
 """Example 04 — RealPage Antitrust Replay (Standalone Entrypoint).
 
 Operator-side governance signals relevant to U.S. v. RealPage, Inc. et al.,
-M.D.N.C., filed August 23, 2024. DOJ + 8 state AGs filed under Sherman § 1.
-ONGOING antitrust litigation — allegations NOT adjudicated.
+filed August 23, 2024 (DOJ + 8 state AGs; Sherman Act §§ 1 AND 2). Current
+posture: DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025
+(pending Tunney Act approval); co-defendant final judgments entered (e.g.,
+Greystar, Mar 2, 2026). Resolved without admission of liability — allegations
+NEVER adjudicated, NOT "ongoing litigation."
 
 Patterns engaged:
 - ADR-0001: DEFCON State Machine (RENT_OPTIMIZATION capability check)
@@ -14,10 +17,10 @@ Input: 50 synthetic rental pricing decisions across three DFW submarkets
 (Uptown Dallas · Plano · Fort Worth). No real data. random.seed(42).
 
 Not legal advice. Patterns are software; regulatory citations are reference
-mappings. Consult antitrust counsel re: Sherman § 1 exposure.
+mappings. Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure.
 
 For the full 6-artifact evidence bundle run:
-    cre-replay run 03_realpage_ongoing_litigation
+    cre-replay run 03_realpage_consent_judgment
 
 Run:
     python examples/04_realpage_antitrust_replay/run.py
@@ -42,7 +45,7 @@ from cre_agent_audit.governance.vendor_score_gate import InMemoryVendorScoreGate
 
 @dataclass(frozen=True)
 class PricingDecision(AgentAction):
-    market_geo_granularity: str   # 'state' | 'metro' | 'submarket' | 'building'
+    market_geo_granularity: str  # 'state' | 'metro' | 'submarket' | 'building'
     training_data_age_months: int
     coordinated_with_other_owners: bool
     recommended_rent: float
@@ -51,8 +54,9 @@ class PricingDecision(AgentAction):
 
 class RealPageAntitrustCheck(ConstraintCheck):
     """Pre-flight constraint check modeling operator-side controls relevant to
-    U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 —
-    ongoing antitrust litigation, not adjudicated."""
+    U.S. v. RealPage, Inc. et al., filed August 23, 2024 (DOJ + 8 state AGs;
+    Sherman Act §§ 1 and 2) — resolved by proposed consent judgment
+    (DOJ filed Nov 24, 2025, pending Tunney Act approval), never adjudicated."""
 
     MAX_GRANULARITY = "state"
     MIN_DATA_AGE_MONTHS = 12
@@ -69,10 +73,11 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 owner_required="legal:antitrust_counsel",
                 detail=(
                     f"Rent-pricing AI emitted recommendation at {granularity!r} granularity. "
-                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    f"ongoing antitrust litigation, ALLEGED conduct. Operator control "
+                    f"U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 "
+                    f"and 2) — ALLEGED conduct, resolved by proposed consent judgment, never "
+                    f"adjudicated. Operator control "
                     f"restricts recommendations to {self.MAX_GRANULARITY!r}-level granularity. "
-                    f"Consult antitrust counsel re: Sherman § 1 exposure."
+                    f"Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         if data_age < self.MIN_DATA_AGE_MONTHS:
@@ -82,9 +87,10 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 detail=(
                     f"Training data is {data_age} months old. Operator control requires "
                     f"data ≥ {self.MIN_DATA_AGE_MONTHS} months old. "
-                    f"U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    f"ongoing antitrust litigation, ALLEGED conduct. "
-                    f"Consult antitrust counsel re: Sherman § 1 exposure."
+                    f"U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 "
+                    f"and 2) — ALLEGED conduct, resolved by proposed consent judgment, never "
+                    f"adjudicated. "
+                    f"Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         if coordinated:
@@ -93,9 +99,10 @@ class RealPageAntitrustCheck(ConstraintCheck):
                 owner_required="legal:antitrust_counsel",
                 detail=(
                     "Recommendation includes coordination signal across owners in the same market. "
-                    "U.S. v. RealPage, Inc. et al., M.D.N.C., filed August 23, 2024 — "
-                    "ongoing antitrust litigation, ALLEGED conduct re: coordinated pricing. "
-                    "Consult antitrust counsel re: Sherman § 1 exposure."
+                    "U.S. v. RealPage, Inc. et al., filed August 23, 2024 (Sherman Act §§ 1 and 2) "
+                    "— ALLEGED conduct re: coordinated pricing, resolved by proposed consent "
+                    "judgment, never adjudicated. "
+                    "Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             )
         return VetoResult.passing()
@@ -142,9 +149,7 @@ def main() -> int:
     ledger = AuditLedger()
     vendor_ledger = AuditLedger()
 
-    veto = SovereignVeto(ledger=ledger).register(
-        "rent_optimization", RealPageAntitrustCheck()
-    )
+    veto = SovereignVeto(ledger=ledger).register("rent_optimization", RealPageAntitrustCheck())
     vendor_gate = InMemoryVendorScoreGate(ledger=vendor_ledger, raise_on_drift=False)
 
     decisions = _make_decisions()
@@ -182,17 +187,14 @@ def main() -> int:
     # Audit chain
     ledger.verify_chain()
     chain_sha = ledger.chain_head()[:8]
-    print(
-        f"[LEDGER] {len(ledger.entries)} entries. "
-        f"Chain verified intact. SHA-256: {chain_sha}..."
-    )
+    print(f"[LEDGER] {len(ledger.entries)} entries. Chain verified intact. SHA-256: {chain_sha}...")
 
     print("---")
     print(
         f"{len(decisions)} decisions logged. {veto_count} coordination signals flagged. "
         "Audit chain intact."
     )
-    print("Full 6-artifact evidence bundle: cre-replay run 03_realpage_ongoing_litigation")
+    print("Full 6-artifact evidence bundle: cre-replay run 03_realpage_consent_judgment")
     return 0
 
 

@@ -21,8 +21,9 @@ abstract: >-
   PII Data Residency Partitioning, hash-chained audit ledger, sovereign
   veto with structured bypass, DEFCON state machine, shadow-mode rollout,
   and a regulation-mapping loader. MIT-licensed, zero runtime
-  dependencies, primary-source regulatory citations. Companion to
-  finserv-agent-audit for financial services. The repository is a
+  dependencies, primary-source regulatory citations. One of six co-equal
+  regulated-vertical libraries in the Autonomy Ladder™ family (finserv,
+  banking, payments, payer, private-capital, cre). The repository is a
   reference architecture, not legal, regulatory, audit, or fairness-testing
   advice — see DISCLAIMER.md.
 keywords:
@@ -38,7 +39,8 @@ keywords:
   - eu-ai-act
   - colorado-ai-act
 license: MIT
-version: 0.2.2
-date-released: 2026-05-28
-# DOI minted via Zenodo on every tagged GitHub release.
+version: 0.2.3
+date-released: 2026-06-09
+# Concept DOI (below) resolves to the latest archived version on Zenodo;
+# the author mints a version DOI on Zenodo for selected releases.
 doi: "10.5281/zenodo.20437081"

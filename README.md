@@ -3,11 +3,11 @@
 > Nine MIT-licensed governance patterns for AI in commercial real estate operations. Durable artifacts, not slideware.
 
 [![CI](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml/badge.svg)](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml)
-[![Coverage 89%](https://img.shields.io/badge/coverage-89%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Coverage 86%](https://img.shields.io/badge/coverage-86%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
-[![v0.2.2](https://img.shields.io/badge/release-v0.2.2-blue)](https://github.com/linus10x/cre-agent-audit/releases/tag/v0.2.2)
+[![v0.2.3](https://img.shields.io/badge/release-v0.2.3-blue)](https://github.com/linus10x/cre-agent-audit/releases)
 [![Autonomy Ladder™ family](https://img.shields.io/badge/family-Autonomy%20Ladder%E2%84%A2-purple)](https://autonomy-ladder.io)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20437081.svg)](https://doi.org/10.5281/zenodo.20437081)
 
@@ -25,13 +25,13 @@ These anchor the framing. The patterns below are the artifact.
 
 ## Lede
 
-The U.S. Department of Justice filed *U.S. v. RealPage, Inc.* in August 2024 — DOJ plus eight state attorneys general, civil antitrust under Sherman § 1, alleging algorithmic rent-coordination across commercial real estate operating companies. The case is ongoing. The *Louis v. SafeRent Solutions, LLC* class settlement (No. 1:22-cv-10800, D. Mass., approximately $2.275M, November 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. The Trans Union Rental Screening Solutions joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
+The U.S. Department of Justice filed *U.S. v. RealPage, Inc. et al.* on August 23, 2024 — DOJ plus eight state attorneys general, civil antitrust under the **Sherman Act §§ 1 AND 2**, alleging algorithmic rent-coordination across commercial real estate operating companies. *U.S. v. RealPage* — filed Aug 23, 2024 (DOJ + 8 state AGs; Sherman Act §§ 1 AND 2). Current posture: DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated, not "ongoing litigation." The *Louis v. SafeRent Solutions, LLC* class settlement (No. 1:22-cv-10800, D. Mass., approximately $2.275M, November 20, 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. The Trans Union Rental Screening Solutions joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
 
 Each matter named the same operator-side gap: no audit trail of the model decision. No human-in-loop documentation. No way to prove the system stayed bounded.
 
-**cre-agent-audit** is the artifact stack that addresses that gap. Nine MIT-licensed governance patterns for AI-enabled CRE workflows — written for the operators who own tenant-screening, lease abstraction, pricing, underwriting, vendor-data flow, and lease-renewal decisions. Production Python. Nine architectural decision records (ADRs) with primary-source regulatory citations. Three runnable worked examples. Companion to [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) for financial services.
+**cre-agent-audit** is the artifact stack that addresses that gap. Nine MIT-licensed governance patterns for AI-enabled CRE workflows — written for the operators who own tenant-screening, lease abstraction, pricing, underwriting, vendor-data flow, and lease-renewal decisions. Production Python. Fourteen architectural decision records (ADRs) with primary-source regulatory citations. Three runnable worked examples plus three regulatory-incident replays. Companion to [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) and four other regulated-vertical libraries (see the Autonomy Ladder™ family below).
 
-The Colorado AI Act timeline is the next state-level regulatory checkpoint for CRE operators in the housing branch.
+The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) — compliance horizon January 1, 2027 — is the next state-level regulatory checkpoint for CRE operators in the housing branch.
 
 > **⚠ Notice.** This repository is a reference architecture, not legal, regulatory, audit, or fairness-testing advice. Regulatory characterizations are summaries; readers must consult qualified counsel for jurisdiction-specific compliance. No attorney-client relationship is formed by use of this repository. See [`DISCLAIMER.md`](DISCLAIMER.md).
 
@@ -49,7 +49,7 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 - [How it compares](#how-it-compares)
 - [Who this is for](#who-this-is-for)
 - [Repo layout](#repo-layout)
-- [Related: the Autonomy Ladder™ family](#related-the-autonomy-ladder-family)
+- [Part of the Autonomy Ladder™ family](#part-of-the-autonomy-ladder-family)
 - [Governance artifacts (FINOS-format contributory)](#governance-artifacts-finos-format-contributory)
 - [Vendor clauses](#vendor-clauses)
 - [Roadmap](#roadmap)
@@ -78,6 +78,8 @@ The Colorado AI Act timeline is the next state-level regulatory checkpoint for C
 | Type-checked | `mypy --strict` clean |
 | Linted | `ruff` clean |
 | Sibling | [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) (financial services) |
+
+**Proof strip (verified by `make verify` on `main`):** 336 tests passing · 86% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 18 Hypothesis property/fuzz tests summing to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
 
 ## Why this exists
 
@@ -120,6 +122,19 @@ Three subpackages under `src/cre_agent_audit/`:
 
 Patterns compose into a runtime via the orchestrator (see [`ARCHITECTURE.md`](ARCHITECTURE.md)). Every decision routes through DEFCON state filter → domain pre-flight → Sovereign Veto → Audit Ledger. Veto'd decisions write to the ledger as fully as executed ones.
 
+### Maturity (honest)
+
+The governance layer is production-grade Python; the agent layer is mostly scaffolding. This table keeps the "production Python" claim from over-reaching.
+
+| Layer | What ships | Maturity |
+|---|---|---|
+| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Production** — fully implemented, `mypy --strict`, 86% branch coverage, 51,000-example property campaign |
+| `schemas/` — typed decision objects (lease clause, screening decision) | **Production** — typed, validated, tested |
+| `examples/regulatory-incidents/` — 3 runnable replays + `cre-replay` CLI | **Functional** — runs end-to-end; produces 6-artifact evidence bundles |
+| `agents/` — 6 agent base classes | **1 functional reference (orchestrator) + 5 stubs** (audit, monitor, risk, strategy, domain_intelligence) — base classes/seams, not full agents |
+
+The runnable value is in the governance primitives and the replays — not in the agent stubs.
+
 ## Deployment economics
 
 For an interim CTO or fractional CAIO scoping adoption:
@@ -144,7 +159,7 @@ The 90-day deployment cadence is in [`examples/FIRST_90_DAYS.md`](examples/FIRST
 | 3 | Hash-Chained Audit Ledger | `src/cre_agent_audit/governance/audit_chain.py` | EU AI Act Art. 12 · SOC 2 CC7.2 · SEC 17a-4 | [CTRL-003](docs/controls/CTRL-003-audit-ledger.md) |
 | 4 | Autonomy Ladder™ A0→A4 | `src/cre_agent_audit/governance/autonomy_ladder.py` | EU AI Act Art. 14 · CO AI Act | [CTRL-004](docs/controls/CTRL-004-autonomy-ladder.md) |
 | 5 | Regulation Loader (pattern↔reg map) | `src/cre_agent_audit/governance/regulation_loader.py` | self-referential (governs all others) | [CTRL-005](docs/controls/CTRL-005-regulation-loader.md) |
-| 6 | Shadow-Mode Rollout | `src/cre_agent_audit/governance/shadow_mode.py` | SR 11-7 (model risk) · EU AI Act Art. 15 | [CTRL-006](docs/controls/CTRL-006-shadow-mode.md) |
+| 6 | Shadow-Mode Rollout | `src/cre_agent_audit/governance/shadow_mode.py` | SR 11-7 (model risk; superseded 2026-04-17) · EU AI Act Art. 15 | [CTRL-006](docs/controls/CTRL-006-shadow-mode.md) |
 | 7 | Lease-Abstraction Provenance | `src/cre_agent_audit/governance/lease_provenance.py` | Litigation discovery defensibility · SOC 2 CC7.2 | [CTRL-007](docs/controls/CTRL-007-lease-provenance.md) |
 | 8 | Fair-Housing Pre-Flight Gate | `src/cre_agent_audit/governance/fair_housing_preflight.py` | Fair Housing Act § 3604 · ICP v Texas (576 U.S. 519) · ECOA · CO AI Act | [CTRL-008](docs/controls/CTRL-008-fair-housing-preflight.md) |
 | 9 | Tenant PII Data Residency | `src/cre_agent_audit/governance/tenant_pii_residency.py` | GDPR Art. 6 · CCPA/CPRA · state tenant-data statutes | [CTRL-009](docs/controls/CTRL-009-tenant-pii-residency.md) |
@@ -167,7 +182,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 
 **2. Lease-abstraction discovery defense (office + industrial).** When a lease term is contested in litigation, courts ask: how was that clause extracted, what was the model's confidence, and who validated it? Lease-Abstraction Provenance (Pattern 7) tags every clause with source-document hash, OCR confidence, and extraction confidence. Discovery becomes a forensic exercise instead of a credibility one — *if* the lease-abstraction pipeline (typically a third-party vendor) exposes the clause-level provenance object. For vendor-shipped outputs that do not expose provenance, see [`docs/vendor-clauses/abstraction.md`](docs/vendor-clauses/abstraction.md) for the contractual SLA template that obligates provenance disclosure.
 
-**3. Pricing-model good-faith documentation (multifamily + industrial).** The *U.S. v. RealPage* matter is ongoing civil antitrust litigation alleging algorithmic rent-coordination. Pattern 3 (Audit Ledger) + Pattern 4 (Autonomy Ladder A2 with sampled per-cycle audit) produce **process evidence relevant to good-faith defenses under § 1 rule-of-reason analysis**. They **do not cure per se exposure from data-pooling** — antitrust counsel must independently assess data-input topology; software governance does not substitute for input-side antitrust review.
+**3. Pricing-model good-faith documentation (multifamily + industrial).** *U.S. v. RealPage* — filed Aug 23, 2024 (DOJ + 8 state AGs; Sherman Act §§ 1 AND 2). Current posture: DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated, not "ongoing litigation." Pattern 3 (Audit Ledger) + Pattern 4 (Autonomy Ladder A2 with sampled per-cycle audit) produce **process evidence relevant to good-faith defenses under rule-of-reason analysis**. They **do not cure per se exposure from data-pooling** — antitrust counsel must independently assess data-input topology; software governance does not substitute for input-side antitrust review.
 
 **4. AI-mediated resident communication (chatbots, leasing agents).** Most large multifamily operators run vendor chatbots (EliseAI, Hyly, Funnel Leasing) on resident communication. These surfaces touch TCPA, Reg-Z disclosure, and fair-housing-steering risk simultaneously. Pattern 8's protected-surface list already names `tenant_communication_personalization`; the Audit Ledger captures every interaction; the Sovereign Veto fires on protected-class-adjacent topics. ADR-0011 (Vendor-Output Adapter, design) covers the vendor-mediated case.
 
@@ -177,7 +192,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 |---|---|---|---|---|
 | Target | CRE operating cos | FSI regulated systems | Universal | Security awareness |
 | Form | MIT reference architecture | MIT reference architecture | Government playbook | Threat list |
-| Runnable patterns | ✅ 9 patterns + 142 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
+| Runnable patterns | ✅ 9 patterns + 336 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
 | Kill switch | ✅ Sovereign Veto | ✅ | ❌ | ❌ |
 | Audit trail | ✅ Hash-chained | ✅ Hash-chained | Recommended | ❌ |
 | Decision-class autonomy | ✅ A0→A4 | ✅ A0→A4 | Recommended | ❌ |
@@ -204,8 +219,8 @@ cre-agent-audit/
 ├── Makefile                              # `make verify` runs full gate
 ├── pyproject.toml                        # zero runtime deps
 ├── docs/
-│   ├── adr/                              # 11 architectural decision records (0001-0011)
-│   ├── controls/                         # 9 per-pattern Control Description Tables (CTRL-001..009)
+│   ├── adr/                              # 14 architectural decision records (0001-0014)
+│   ├── controls/                         # 13 Control Description Tables (CTRL-001..013)
 │   ├── vendor-clauses/                   # drop-in contract addenda for vendor-mediated AI
 │   ├── MAPPING-MATRICES.md               # NIST × ISO 42001 × COSO ICAIR × Big-4 taxonomy
 │   ├── LIMITATIONS.md                    # what this stack does NOT do
@@ -216,20 +231,31 @@ cre-agent-audit/
 │   ├── governance/                       # 9 pattern implementations
 │   ├── agents/                           # 6 agent classes (1 functional + 5 v0.3 stubs)
 │   └── schemas/                          # typed decision objects
-├── examples/                             # 3 runnable demos + FIRST_90_DAYS.md
+├── examples/                             # 3 runnable demos + 3 regulatory-incident replays + FIRST_90_DAYS.md
 ├── config/
 │   ├── compliance_rules.yaml             # author-time source of truth
 │   └── compliance_rules.json             # runtime artifact (generated; CI-verified in sync)
 ├── governance-artifacts/                 # 3 FINOS-format contributory control drafts
 ├── scripts/build_compliance_json.py      # author-time YAML → JSON converter
-└── tests/                                # 142 unit tests · 89% branch coverage
+└── tests/                                # 336 tests (318 deterministic + 18 Hypothesis) · 86% branch coverage
 ```
 
-## Related: the Autonomy Ladder™ family
+## Part of the Autonomy Ladder™ family
 
-`cre-agent-audit` is the commercial-real-estate half of an MIT-licensed pattern family for governing AI in regulated industries. The financial-services half is here:
+Six co-equal regulated-vertical reference libraries implementing the **Autonomy Ladder** — a governance framework for autonomous AI in regulated operations (A0→A4, every rung demotable). **Framework + whitepaper: [autonomy-ladder.io](https://autonomy-ladder.io).**
 
-**[`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit)** — Six governance patterns for AI in regulated financial services. Anchored to SR 11-7 (model risk), MiFID II, SEC record-retention, NIST AI RMF, and Treasury FS AI RMF. Already at v1.0.0.
+| Vertical | Library |
+|---|---|
+| Cross-vertical financial services | [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) |
+| Banking (model risk · ECOA/Reg B · BSA/AML/OFAC) | [`banking-agent-audit`](https://github.com/linus10x/banking-agent-audit) |
+| Payments (OFAC · Reg E · rail finality) | [`payments-agent-audit`](https://github.com/linus10x/payments-agent-audit) |
+| Health-insurance payer (UM · prior auth · appeals) | [`payer-agent-audit`](https://github.com/linus10x/payer-agent-audit) |
+| SEC-registered investment advisers (Advisers Act §206) | [`private-capital-agent-audit`](https://github.com/linus10x/private-capital-agent-audit) |
+| Commercial real estate | **[`cre-agent-audit`](https://github.com/linus10x/cre-agent-audit)** |
+
+The financial-services library shares the most pattern overlap with this one:
+
+**[`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit)** — Six governance patterns for AI in regulated financial services. Anchored to NIST AI RMF, Treasury FS AI RMF, SEC record-retention, and MiFID II. (Model-risk references that previously cited SR 11-7 note it was superseded on 2026-04-17.)
 
 | Pattern | finserv-agent-audit | cre-agent-audit |
 |---|---|---|
@@ -237,7 +263,7 @@ cre-agent-audit/
 | Sovereign Veto | ✅ | ✅ |
 | Hash-chained Audit Ledger | ✅ | ✅ |
 | Autonomy Ladder A0→A4 | ✅ | ✅ |
-| Regulation Mapping | ✅ MiFID II · SEC · SR 11-7 | ✅ FHA · CO AI Act · EU AI Act |
+| Regulation Mapping | ✅ MiFID II · SEC · SR 11-7 (superseded 2026-04-17) | ✅ FHA · CO AI Act · EU AI Act |
 | Shadow-Mode Rollout | ✅ | ✅ |
 | Lease-Abstraction Provenance | — | ✅ CRE-specific |
 | Fair-Housing Pre-Flight Gate | — | ✅ CRE-specific |
@@ -245,7 +271,7 @@ cre-agent-audit/
 
 Both repos: MIT, zero runtime dependencies, primary-source regulatory citations, `mypy --strict` clean, ≥85% branch coverage.
 
-The umbrella discipline — **Regulated-Operations AI Governance** — is documented at [autonomy-ladder.io](https://autonomy-ladder.io). One framework, two named verticals, one author.
+The umbrella discipline — **Regulated-Operations AI Governance** — is documented at [autonomy-ladder.io](https://autonomy-ladder.io). One framework, six co-equal regulated verticals, one author.
 
 ## Governance artifacts (FINOS-format contributory)
 
@@ -294,7 +320,7 @@ These patterns translate financial-services AI-governance discipline to CRE fail
 
 ## Citation
 
-If you cite this work in research or in adoption-decision memos, use the metadata in [`CITATION.cff`](CITATION.cff). Zenodo DOI is minted at every tagged release; the badge above will resolve.
+If you cite this work in research or in adoption-decision memos, use the metadata in [`CITATION.cff`](CITATION.cff). The concept DOI [10.5281/zenodo.20437081](https://doi.org/10.5281/zenodo.20437081) always resolves to the latest archived version; the author mints a new version DOI on Zenodo for selected releases (Zenodo metadata is driven by [`.zenodo.json`](.zenodo.json)).
 
 ```bibtex
 @software{bhaduri_cre_agent_audit_2026,
@@ -324,7 +350,7 @@ Three runnable replays of named CRE-AI matters under [`examples/regulatory-incid
 
 - **TransUnion Rental Screening Solutions** — FTC + CFPB consent orders, October 2023, $15M civil money penalty, FCRA § 607(b) accuracy
 - ***Louis v. SafeRent Solutions, LLC*** — D. Mass. class settlement, November 20, 2024, approximately $2.275M with a five-year score-use injunction
-- ***U.S. v. RealPage, Inc. et al.*** — M.D.N.C., DOJ + 8 state AGs, **ongoing antitrust litigation** (framed as alleged conduct throughout)
+- ***U.S. v. RealPage, Inc. et al.*** — filed Aug 23, 2024 (DOJ + 8 state AGs; **Sherman Act §§ 1 AND 2**); DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending Tunney Act approval); co-defendant final judgments entered (e.g., Greystar, Mar 2, 2026); **resolved without admission of liability — not adjudicated, not "ongoing litigation"** (framed as alleged conduct throughout)
 
 Each replay produces a six-artifact audit-evidence bundle (chain export + verify report + MI Proxy attestation + findings + controls description table + executive narrative). Run them:
 
@@ -359,7 +385,7 @@ Email `contact@autonomy-ladder.io` with the service name in the subject.
 
 ## Limitations and what this stack does NOT do
 
-- **Lexical-only proxy detection.** The Fair-Housing Pre-Flight Gate (Pattern 8) checks for named-feature proxies against a configurable blocklist. It does NOT detect learned proxies in embedding space, behavioral-signal proxies (browser fingerprints, language patterns), or geospatial-granularity proxies. The MI-threshold learned-proxy detector (mutual-information based, ADR-0008 update) is a tracked v0.2.1 deliverable — not yet landed.
+- **Lexical-first proxy detection, with an opt-in MI-threshold learned-proxy detector.** The Fair-Housing Pre-Flight Gate (Pattern 8) checks for named-feature proxies against a configurable blocklist. The mutual-information-based MI-threshold learned-proxy detector (ADR-0008 update) **shipped in v0.2.2** and is opt-in via `FairHousingPreflightGate(mi_proxy_detector=...)`; it emits `FHA-MI-PROXY` when a feature's MI against a protected-class reference exceeds the threshold. Lexical + MI detection together still do NOT cover behavioral-signal proxies (browser fingerprints, language patterns) or every geospatial-granularity proxy.
 - **Internally-consistent ledger by default; adversarial tamper-evidence requires the witness pattern.** The hash-chained Audit Ledger (Pattern 3) detects modification by an honest holder of the chain head. Adversarial integrity against an attacker with full ledger-host write access requires anchoring the chain head to an external witness register. v0.2.1 ships `RekorWitness` (Sigstore), `OpenTimestampsWitness`, and the `anchor_to_witness()` helper that binds the receipt back into the chain (ADR-0012 Seam 3). Scheduling the anchor is the deployer's responsibility.
 - **Four-fifths-rule monitor only.** The disparate-impact check is the standard four-fifths-rule selection-rate comparison. It does not engage the fairness-metric pluralism / impossibility-result literature (Kleinberg/Mullainathan/Raghavan 2016; Chouldechova 2017) — adopters owning a regulator-facing fairness defense should choose their fairness metric in consultation with counsel and document the choice.
 - **Vendor-mediated AI scoring captured via `VendorScoreGate` in v0.2.1.** The Protocol + `InMemoryVendorScoreGate` default backend ship (ADR-0011 update; FAILURE-MODES.md Row 8); score-drift on `(vendor_id, input_hash, model_version)` surfaces as a flagged chain entry and, by default, raises to halt the pipeline. Vendor-clauses remain the procurement-side companion.

@@ -1,6 +1,6 @@
 {
-  "matter": "03_realpage_ongoing_litigation",
-  "_alleged_disclaimer": "This matter is ongoing antitrust litigation. The conduct described in the failure_shape is ALLEGED and has not been adjudicated. This synthetic dataset does NOT represent real operator pricing data; it is shape-faithful only.",
+  "matter": "03_realpage_consent_judgment",
+  "_alleged_disclaimer": "This matter was resolved by a proposed consent judgment (DOJ filed with RealPage Nov 24, 2025, pending Tunney Act approval). The conduct described in the failure_shape is ALLEGED and was never adjudicated. This synthetic dataset does NOT represent real operator pricing data; it is shape-faithful only.",
   "description": "50 synthetic operator-pricing decisions. Each decision accepts the vendor's algorithmic price recommendation unmodified (DEFCON-state operator-review signal). Cohort statistical clustering is engineered into the score distribution (VendorScoreGate cohort-drift signal). No real operator names, no real prices, no real submissions.",
   "generation_seed": "v1.0-deterministic-2026-05-28",
   "_synthetic_note": "Full 50-record dataset is synthesized programmatically by replay.synthetic_dataset(). The JSON file documents the schema and engineering counts; the replay generates the dataset deterministically for repeatability."

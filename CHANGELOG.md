@@ -13,6 +13,34 @@ The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list �
 
 ---
 
+## [0.2.3] — 2026-06-09 — RealPage posture correction + numbers reconciliation + family update
+
+Documentation- and example-layer correctness pass. No governance-primitive behavior changes; the public API is unchanged from v0.2.2.
+
+### Changed
+
+- **RealPage posture corrected throughout (CODE + docs).** The matter is no longer framed as "ongoing litigation." Canonical posture now stated everywhere: *U.S. v. RealPage, Inc. et al.* — filed Aug 23, 2024 (DOJ + 8 state AGs; **Sherman Act §§ 1 AND 2**). DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated.
+  - Renamed example folder `examples/regulatory-incidents/03_realpage_ongoing_litigation/` → `03_realpage_consent_judgment/`; updated `matter_id`, the `RealPageConsentJudgmentReplay` class, `synthetic_data.json`, `expected_findings.json`, the per-matter README, the `cre-replay run` invocation, the test `MATTERS` list, and `FAILURE-MODES.md`.
+  - Corrected "Sherman § 1" → "Sherman Act §§ 1 and 2" everywhere (replay docstrings + `SystemModel`/`Citation` strings, `examples/03_*` and `examples/04_*` veto details, ADRs, PRIOR-ART, vendor-clauses, governance-artifacts, `config/compliance_rules.{yaml,json}`).
+- **`config/compliance_rules.yaml`** RealPage rule renamed and re-described to the consent-judgment posture; `compliance_rules.json` regenerated in sync.
+- **README numbers reconciled to a single verified truth** (`make verify` on `main`): 336 tests passing · 86% branch coverage · 14 ADRs · 13 control description tables. Badges, At-a-glance, the new proof strip, the repo-layout block, and the comparison table now agree. (Prior surfaces variously claimed 142/317/336 tests, 86%/89% coverage, 11/14 ADRs, 9/13 controls.)
+- **Autonomy Ladder™ family framing updated** from "two named verticals" to **six co-equal regulated-vertical libraries** (finserv · banking · payments · payer · private-capital · cre); added the family block + per-vertical links.
+- **Colorado AI Act horizon stated precisely:** SB 24-205, as amended by SB 26-189 (signed May 14, 2026) — compliance horizon January 1, 2027.
+- **SR 11-7 references** annotated as superseded (2026-04-17) where cited.
+- **Honest maturity table** added (governance = production; agents = 1 functional reference + 5 stubs) so the "production Python" claim does not over-reach.
+- **Citation/DOI claim corrected** — replaced "DOI minted at every tagged release" with the accurate concept-DOI-resolves-to-latest + author-mints-selected-versions description.
+- **Limitations** updated to reflect that the MI-threshold learned-proxy detector shipped in v0.2.2 (was described as "not yet landed").
+
+### Added
+
+- **`.zenodo.json`** — drives Zenodo archive metadata (concept DOI 10.5281/zenodo.20437081), matching the schema used across the Autonomy Ladder family.
+
+### Tests
+
+- pytest: **336 passing**, 2 skipped (README in-flight badge checks; no in-flight badge present), with `[dev,audit-verify]` installed. mypy `--strict` clean; ruff + ruff format clean; `compliance_rules.json` in sync with YAML.
+
+---
+
 ## [0.2.2] — 2026-05-28 — Engineering items 2 of 3 closed
 
 **Released:** 2026-05-28 · **Tag:** `v0.2.2` (minted post-CI green on the release commit) · **PR:** post-PR-#31 follow-on commits on `main`

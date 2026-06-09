@@ -12,7 +12,7 @@ Three regulatory matters in 24 months name the operator-side AI-governance gap t
 
 - **TransUnion** — October 2023 — $15M to the FTC and CFPB on systemic accuracy failures in rental-screening reports under FCRA § 607(b). The matter named *In re Trans Union Rental Screening Solutions, Inc.* (joint FTC/CFPB consent orders).
 - **SafeRent** — November 2024 — approximately $2.275M class settlement in *Louis v. SafeRent Solutions, LLC*, No. 1:22-cv-10800 (D. Mass.). The complaint named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. **Class settlement, not adjudicated FHA liability.**
-- **RealPage** — August 2024 — *U.S. v. RealPage, Inc.* filed by DOJ + 8 state AGs alleging Sherman § 1 violations from algorithmic rent-coordination. **Ongoing civil antitrust litigation** as of v0.2.0 (not a consent decree or settled liability).
+- **RealPage** — August 2024 — *U.S. v. RealPage, Inc. et al.* filed Aug 23, 2024 by DOJ + 8 state AGs alleging **Sherman Act §§ 1 AND 2** violations from algorithmic rent-coordination. **Current posture:** DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated, not "ongoing litigation."
 
 The doctrinal foundation for disparate-impact under the FHA is *Texas Dept. of Housing v. Inclusive Communities Project*, 576 U.S. 519 (2015), which constitutionalized disparate-impact and articulated the burden-shifting framework HUD codified at 24 C.F.R. § 100.500.
 

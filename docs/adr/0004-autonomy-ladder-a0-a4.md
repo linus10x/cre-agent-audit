@@ -8,7 +8,7 @@
 
 ## Context
 
-Three case-of-record regulatory matters — *In re Trans Union Rental Screening Solutions* (Oct 2023, $15M FTC/CFPB), *Louis v. SafeRent Solutions* (D. Mass., Nov 2024, ~$2.275M class settlement), *U.S. v. RealPage* (M.D.N.C., Aug 2024, ongoing Sherman § 1 litigation) — all involved AI operating above the autonomy level its **assurance case** (Kelly & Weaver 2004; Bloomfield et al. 2021) could defend. The pattern this ADR describes is how to size autonomy to the evidence stack a regulator, an opposing counsel, or an audit committee would actually accept.
+Three case-of-record regulatory matters — *In re Trans Union Rental Screening Solutions* (Oct 2023, $15M FTC/CFPB), *Louis v. SafeRent Solutions* (D. Mass., Nov 2024, ~$2.275M class settlement), *U.S. v. RealPage* (filed Aug 2024, Sherman Act §§ 1 and 2; resolved by DOJ proposed consent judgment Nov 24, 2025, pending Tunney Act approval, never adjudicated) — all involved AI operating above the autonomy level its **assurance case** (Kelly & Weaver 2004; Bloomfield et al. 2021) could defend. The pattern this ADR describes is how to size autonomy to the evidence stack a regulator, an opposing counsel, or an audit committee would actually accept.
 
 "Is this AI program ready for production?" is the wrong question. The question is "at what level of autonomy is this program ready, and what is the next promotable tier?" A program at full autonomy on a low-risk read-only task is shipping. A program at full autonomy on a sovereign-veto-required task is a settlement waiting to happen. A program at human-in-loop on every decision at portfolio scale is unscalable and underperforming the unit economics that justified the AI investment in the first place.
 

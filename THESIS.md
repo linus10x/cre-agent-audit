@@ -6,7 +6,7 @@ This document records what this project is, why it persists across years not wee
 
 ## The thesis
 
-Operator-side AI governance for regulated industries is a category of software that does not exist as a defined market in 2026 because the buyers — operators carrying the liability when their vendor AI fails — have not yet named what they need. The named-matter record (TransUnion 2023, SafeRent 2024, RealPage ongoing) is changing that. Operators now know what audit-evidence they need to produce. Few have it. Almost none can produce it from their existing vendor stack.
+Operator-side AI governance for regulated industries is a category of software that does not exist as a defined market in 2026 because the buyers — operators carrying the liability when their vendor AI fails — have not yet named what they need. The named-matter record (TransUnion 2023, SafeRent 2024, RealPage 2024 — resolved by proposed consent judgment Nov 2025) is changing that. Operators now know what audit-evidence they need to produce. Few have it. Almost none can produce it from their existing vendor stack.
 
 This project is the public framework + the productized services + the published commentary that names that category, populates it with reference implementations, and earns the right to be cited as canonical over the 2026–2028 window.
 

@@ -1,6 +1,6 @@
 {
-  "matter_id": "03_realpage_ongoing_litigation",
-  "_alleged_disclaimer": "ALLEGED CONDUCT — ongoing antitrust litigation, NOT adjudicated. Findings are operator-side signals, NOT proof of Sherman § 1 violation.",
+  "matter_id": "03_realpage_consent_judgment",
+  "_alleged_disclaimer": "ALLEGED CONDUCT — resolved by proposed consent judgment, NEVER adjudicated. DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending Tunney Act approval); co-defendant final judgments entered (e.g., Greystar, Mar 2, 2026). Findings are operator-side signals, NOT proof of a Sherman Act §§ 1 or 2 violation.",
   "findings": [
     {
       "pattern": "ADR-0001",
@@ -11,12 +11,12 @@
       },
       "regulatory_anchor": {
         "case_name": "U.S. v. RealPage, Inc. et al.",
-        "court": "M.D.N.C. (DOJ + 8 state AGs)",
-        "docket": "Civil Action (filed Aug 23, 2024) — ongoing",
+        "court": "DOJ + 8 state AGs (Sherman Act §§ 1 and 2)",
+        "docket": "Filed Aug 23, 2024; DOJ proposed consent judgment filed Nov 24, 2025 (pending Tunney Act approval)",
         "date_iso": "2024-08-23",
         "url": null
       },
-      "remediation": "Operator-side independent-judgment workflow: document the operator's deliberate independent decision for each vendor recommendation accepted unmodified. Consult antitrust counsel re: Sherman § 1 exposure."
+      "remediation": "Operator-side independent-judgment workflow: document the operator's deliberate independent decision for each vendor recommendation accepted unmodified. Consult antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
     },
     {
       "pattern": "ADR-0011",
@@ -27,8 +27,8 @@
       },
       "regulatory_anchor": {
         "case_name": "U.S. v. RealPage, Inc. et al.",
-        "court": "M.D.N.C. (DOJ + 8 state AGs)",
-        "docket": "Civil Action (filed Aug 23, 2024) — ongoing",
+        "court": "DOJ + 8 state AGs (Sherman Act §§ 1 and 2)",
+        "docket": "Filed Aug 23, 2024; DOJ proposed consent judgment filed Nov 24, 2025 (pending Tunney Act approval)",
         "date_iso": "2024-08-23",
         "url": null
       },

@@ -1,12 +1,12 @@
-# Matter 03 — *U.S. v. RealPage, Inc. et al.* (ongoing antitrust litigation — alleged conduct)
+# Matter 03 — *U.S. v. RealPage, Inc. et al.* (resolved by proposed consent judgment — alleged conduct, never adjudicated)
 
-> **⚠ Important framing.** This matter is **ongoing antitrust litigation**. *U.S. v. RealPage, Inc. et al.* was filed August 23, 2024 in the Middle District of North Carolina by the U.S. Department of Justice and 8 state attorneys general. The allegations are not adjudicated. Nothing in this worked example asserts or implies that the underlying conduct violates Sherman § 1 or any other antitrust statute. The replay surfaces *coordination signals* the operator-side framework would have made operator-visible — not legal conclusions.
+> **⚠ Important framing.** *U.S. v. RealPage, Inc. et al.* was filed August 23, 2024 by the U.S. Department of Justice and 8 state attorneys general under the Sherman Act §§ 1 AND 2. **Current posture:** DOJ filed a proposed consent judgment with RealPage on November 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, March 2, 2026). The matter was **resolved without admission of liability — not adjudicated, not "ongoing litigation."** Nothing in this worked example asserts or implies that the underlying conduct violated the Sherman Act §§ 1 or 2. The replay surfaces *coordination signals* the operator-side framework would have made operator-visible — not legal conclusions.
 
-**Primary source:** *U.S. v. RealPage, Inc. et al.*, Civil Action No. (M.D.N.C.), filed August 23, 2024 by the U.S. Department of Justice + 8 state attorneys general. **Ongoing antitrust litigation.**
+**Primary source / current posture:** *U.S. v. RealPage, Inc. et al.* — filed August 23, 2024 by the U.S. Department of Justice + 8 state attorneys general (Sherman Act §§ 1 and 2). DOJ filed a proposed consent judgment with RealPage on November 24, 2025 (pending Tunney Act approval); co-defendant final judgments entered (e.g., Greystar, March 2, 2026). Resolved without admission of liability.
 
-**Filed:** August 23, 2024 — case is ongoing.
+**Filed:** August 23, 2024 — **resolved by proposed consent judgment November 24, 2025 (pending Tunney Act approval), never adjudicated.**
 
-**Failure shape (as alleged in the complaint, not adjudicated):** Multifamily revenue-management vendor software allegedly enabled operators to share competitively sensitive data and act on a common algorithmic price recommendation. Operators that used the software allegedly experienced pricing patterns that converged with peer operators using the same software. The complaint alleges this constituted unlawful information-sharing under Sherman § 1; the defendants deny the allegations; the matter has not been adjudicated.
+**Failure shape (as alleged in the complaint, never adjudicated):** Multifamily revenue-management vendor software allegedly enabled operators to share competitively sensitive data and act on a common algorithmic price recommendation. Operators that used the software allegedly experienced pricing patterns that converged with peer operators using the same software. The complaint alleged this constituted unlawful information-sharing under the Sherman Act §§ 1 and 2; the matter was resolved without admission of liability and was never adjudicated.
 
 ## What the operator-side framework would have surfaced (regardless of the merits)
 
@@ -16,11 +16,11 @@ The operator-side audit infrastructure (`cre-agent-audit`) would have produced t
 
 2. **VendorScoreGate cohort drift signal** — when multiple operators using the same vendor + same model_version produce statistically clustered scoring outputs, the `VendorScoreGate` flags cohort drift as a finding for the operator's review. The signal does not prove coordination; it provides documentary evidence that the operator was aware of the cohort statistical pattern and made (or did not make) an independent decision in response. In this synthetic replay, 50 vendor-score emit entries land; the cohort-drift signal flags the entire batch as a single operator-review finding.
 
-Neither finding is proof of Sherman § 1 violation. Both produce documentary evidence the operator can hand to counsel as part of an independent-judgment defense or as part of compliance-program documentation.
+Neither finding is proof of a Sherman Act §§ 1 or 2 violation. Both produce documentary evidence the operator can hand to counsel as part of an independent-judgment defense or as part of compliance-program documentation.
 
 ## What this replay does NOT do
 
-- It does not adjudicate whether the underlying conduct violates Sherman § 1.
+- It does not adjudicate whether the underlying conduct violated the Sherman Act §§ 1 or 2.
 - It does not provide legal advice.
 - It does not characterize the defendants' conduct as unlawful.
 - It does not endorse the plaintiffs' theory or the defendants' theory.
@@ -35,7 +35,7 @@ It is a worked example demonstrating which `cre-agent-audit` patterns would have
 Run it:
 
 ```bash
-cre-replay run 03_realpage_ongoing_litigation
+cre-replay run 03_realpage_consent_judgment
 ```
 
 ## Patterns engaged
@@ -45,7 +45,7 @@ cre-replay run 03_realpage_ongoing_litigation
 
 ## Disclaimer
 
-This worked example is **not legal advice** and **does not adjudicate the underlying matter**. The underlying matter is **ongoing antitrust litigation**. Patterns are software; regulatory characterizations are reference mappings; consult counsel for applicability to your control environment.
+This worked example is **not legal advice** and **does not adjudicate the underlying matter**. The underlying matter was **resolved by a proposed consent judgment (pending Tunney Act approval), without admission of liability, and was never adjudicated.** Patterns are software; regulatory characterizations are reference mappings; consult counsel for applicability to your control environment.
 
 ---
 

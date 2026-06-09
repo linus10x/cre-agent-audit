@@ -67,7 +67,7 @@ The failure-mode classes above map to the runnable replays under [`examples/regu
 
 - **Row 8 — Vendor AI scoring drift** maps to [`01_transunion_rental_screening/`](examples/regulatory-incidents/01_transunion_rental_screening/) (FCRA accuracy failures + VendorScoreGate drift signals)
 - **Rows 1 + 2 — Storage drift + sequence gap** map to [`02_saferent_voucher_screening/`](examples/regulatory-incidents/02_saferent_voucher_screening/) where the operator could not produce chain-of-custody for the voucher-cohort decisions
-- **Row 7 — Verifier compromise** is the conceptual motivator for the MI Proxy hook the replays exercise; [`03_realpage_ongoing_litigation/`](examples/regulatory-incidents/03_realpage_ongoing_litigation/) (framed as ALLEGED conduct) surfaces cohort-coordination signals that an operator-attested verifier would have made operator-visible at decision time
+- **Row 7 — Verifier compromise** is the conceptual motivator for the MI Proxy hook the replays exercise; [`03_realpage_consent_judgment/`](examples/regulatory-incidents/03_realpage_consent_judgment/) (framed as ALLEGED conduct, resolved without admission) surfaces cohort-coordination signals that an operator-attested verifier would have made operator-visible at decision time
 
 ---
 

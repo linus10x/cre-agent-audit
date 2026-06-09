@@ -1,14 +1,18 @@
-"""U.S. v. RealPage, Inc. et al. — replay (ALLEGED conduct, ongoing litigation).
+"""U.S. v. RealPage, Inc. et al. — replay (ALLEGED conduct; resolved by proposed consent judgment, not adjudicated).
 
-IMPORTANT: This matter is ongoing antitrust litigation. The allegations
-in the underlying complaint are NOT adjudicated. This replay surfaces
-operator-side coordination signals; it does not assert that the
-underlying conduct violates Sherman § 1.
+IMPORTANT: This matter was resolved without admission of liability. The
+allegations in the underlying complaint were NEVER adjudicated. This replay
+surfaces operator-side coordination signals; it does not assert that the
+underlying conduct violated the Sherman Act §§ 1 or 2.
 
-Primary source:
-- U.S. v. RealPage, Inc. et al., Civil Action No. (M.D.N.C.)
-- Filed August 23, 2024 by the U.S. Department of Justice + 8 state AGs
-- ONGOING antitrust litigation — NOT settled, NOT adjudicated
+Primary source / current posture:
+- U.S. v. RealPage, Inc. et al. — filed Aug 23, 2024 (DOJ + 8 state AGs;
+  Sherman Act §§ 1 AND 2)
+- DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025
+  (pending court approval under the Tunney Act)
+- Co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026)
+- Resolved without admission of liability — NOT adjudicated, NOT "ongoing
+  litigation"
 
 This worked example is not legal advice and does not adjudicate the
 underlying matter. Patterns are software; regulatory characterizations
@@ -40,32 +44,36 @@ from cre_agent_audit.regulatory_replay import (
 
 _CIT = Citation(
     case_name="U.S. v. RealPage, Inc. et al.",
-    court="M.D.N.C. (DOJ + 8 state AGs)",
-    docket="Civil Action (filed Aug 23, 2024) — ongoing",
+    court="DOJ + 8 state AGs (Sherman Act §§ 1 and 2)",
+    docket="Filed Aug 23, 2024; DOJ proposed consent judgment filed Nov 24, 2025 (pending Tunney Act approval)",
     date_iso="2024-08-23",
     url=None,
 )
 
 
-class RealPageOngoingLitigationReplay(IncidentReplayBase):
-    """ALLEGED CONDUCT — ongoing antitrust litigation, not adjudicated."""
+class RealPageConsentJudgmentReplay(IncidentReplayBase):
+    """ALLEGED CONDUCT — resolved by proposed consent judgment, not adjudicated."""
 
-    matter_id = "03_realpage_ongoing_litigation"
+    matter_id = "03_realpage_consent_judgment"
     matter_title = (
-        "U.S. v. RealPage, Inc. et al. — M.D.N.C., filed August 23, 2024 "
-        "(DOJ + 8 state AGs) — ONGOING antitrust litigation (alleged conduct)"
+        "U.S. v. RealPage, Inc. et al. — filed Aug 23, 2024 (DOJ + 8 state AGs; "
+        "Sherman Act §§ 1 and 2); DOJ proposed consent judgment filed Nov 24, 2025 "
+        "(pending Tunney Act approval) — resolved without admission (alleged conduct)"
     )
     primary_sources = (_CIT,)
     failure_shape = (
-        "ALLEGED (not adjudicated): multifamily revenue-management vendor "
+        "ALLEGED (never adjudicated): multifamily revenue-management vendor "
         "software allegedly enabled operators to share competitively "
         "sensitive data and act on a common algorithmic price "
         "recommendation. Operators allegedly experienced pricing patterns "
         "that converged with peer operators using the same software. "
-        "The complaint alleges this constituted unlawful information-"
-        "sharing under Sherman § 1; defendants deny the allegations; the "
-        "matter has not been adjudicated. This replay surfaces operator-"
-        "side coordination signals only — NOT proof of antitrust violation."
+        "The complaint alleged this constituted unlawful information-"
+        "sharing under the Sherman Act §§ 1 and 2; the matter was resolved "
+        "without admission of liability (DOJ proposed consent judgment filed "
+        "Nov 24, 2025, pending Tunney Act approval; co-defendant final "
+        "judgments entered, e.g., Greystar Mar 2, 2026). This replay surfaces "
+        "operator-side coordination signals only — NOT proof of antitrust "
+        "violation."
     )
     patterns_engaged = (
         ADRRef(number=1, title="DEFCON State Machine"),
@@ -151,7 +159,7 @@ class RealPageOngoingLitigationReplay(IncidentReplayBase):
                     "Operator-side independent-judgment workflow: document "
                     "the operator's deliberate independent decision for each "
                     "vendor recommendation accepted unmodified. Consult "
-                    "antitrust counsel re: Sherman § 1 exposure."
+                    "antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             ),
             Finding(
@@ -198,7 +206,7 @@ class RealPageOngoingLitigationReplay(IncidentReplayBase):
                     "Operator-side independent-judgment workflow: document "
                     "the operator's deliberate independent decision for each "
                     "vendor recommendation accepted unmodified. Consult "
-                    "antitrust counsel re: Sherman § 1 exposure."
+                    "antitrust counsel re: Sherman Act §§ 1 and 2 exposure."
                 ),
             ),
             Finding(
@@ -222,4 +230,4 @@ class RealPageOngoingLitigationReplay(IncidentReplayBase):
         )
 
 
-matter = RealPageOngoingLitigationReplay()
+matter = RealPageConsentJudgmentReplay()

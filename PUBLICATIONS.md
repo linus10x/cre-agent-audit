@@ -69,7 +69,7 @@ Every publication cites the framework version (with DOI) used as the methodologi
 Cross-references to settled matters use verbatim primary-source citations:
 
 - Case name, court (or agency), docket, ISO-8601 date, dollar amount where on the record
-- *U.S. v. RealPage, Inc. et al.* (M.D.N.C., filed August 23, 2024) — **ongoing antitrust litigation**, never described as settled or adjudicated
+- *U.S. v. RealPage, Inc. et al.* (filed August 23, 2024; Sherman Act §§ 1 and 2) — **resolved by a DOJ proposed consent judgment (filed Nov 24, 2025, pending Tunney Act approval), without admission of liability**, never described as adjudicated
 
 ## How citations help the moat
 

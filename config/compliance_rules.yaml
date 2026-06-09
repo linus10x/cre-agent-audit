@@ -295,17 +295,17 @@ patterns:
         treasury_fs_ai_rmf_controls: ["TFRMF-CF-08"]
         last_reviewed: "2026-05-22"
         notes: "Municipal layers exist beyond state floor — community PRs requested via issue #9"
-      - name: "U.S. v. RealPage (DOJ Sherman § 1 litigation)"
-        statute: "United States v. RealPage Inc. (filed Aug 23, 2024 by DOJ + 8 state AGs)"
-        clause: "ongoing civil antitrust litigation alleging algorithmic rent-coordination; operators should retain process evidence supporting good-faith rule-of-reason defense; software-design choices do not cure per se data-pooling exposure"
+      - name: "U.S. v. RealPage (DOJ Sherman Act §§ 1 and 2)"
+        statute: "United States v. RealPage Inc. et al. (filed Aug 23, 2024 by DOJ + 8 state AGs; Sherman Act §§ 1 and 2)"
+        clause: "alleged algorithmic rent-coordination; resolved without admission of liability (DOJ filed a proposed consent judgment with RealPage Nov 24, 2025, pending Tunney Act approval; co-defendant final judgments entered, e.g., Greystar Mar 2, 2026); operators should retain process evidence supporting good-faith rule-of-reason defense; software-design choices do not cure per se data-pooling exposure"
         jurisdiction_level: federal
         jurisdictions: ["us_federal"]
         effective_date: "2024-08-23"
         pattern_function: "RealPageAntitrustCheck.evaluate"
         nist_ai_rmf_function: "MANAGE"
         treasury_fs_ai_rmf_controls: ["TFRMF-CF-09"]
-        last_reviewed: "2026-05-27"
-        notes: "Stage 2c fact-check correction (2026-05-27): prior 'consent decree (Nov 24, 2025)' framing was factually incorrect per primary-source verification — the action is ongoing litigation, not a settled consent decree. Antitrust counsel must independently assess data-input topology; software governance does not substitute for input-side antitrust review."
+        last_reviewed: "2026-06-09"
+        notes: "Posture corrected 2026-06-09 (primary-source verified): no longer 'ongoing litigation.' Filed under Sherman Act §§ 1 AND 2 (not §1 alone). DOJ filed a proposed consent judgment with RealPage Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments entered (e.g., Greystar Mar 2, 2026); resolved without admission of liability, never adjudicated. Antitrust counsel must independently assess data-input topology; software governance does not substitute for input-side antitrust review."
 
   tenant_pii_data_residency_partitioning:
     adr: "0009"

@@ -42,9 +42,9 @@ In commercial-real-estate workflows, AI agents touching tenant screening, renewa
 - Louis v. SafeRent Solutions consent order (D. Mass., November 20, 2024)
 - TransUnion Rental Screening Solutions FTC + CFPB settlement (October 2023)
 - HUD Fair Housing Act AI guidance (2024 HUD memorandum on AI and Fair Housing)
-- Colorado AI Act SB 26-189 (signed 2026 · effective January 1, 2027)
+- Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) — compliance horizon January 1, 2027
 - HUD 2016 criminal-history-screening guidance
-- U.S. v. RealPage, M.D.N.C., DOJ + 8 state AGs, filed August 23, 2024 — ongoing civil antitrust litigation (parallel antitrust surface)
+- U.S. v. RealPage, Inc. et al., DOJ + 8 state AGs, filed August 23, 2024 (Sherman Act §§ 1 and 2; resolved by DOJ proposed consent judgment Nov 24, 2025, pending Tunney Act approval, never adjudicated) — parallel antitrust surface
 
 ## Detection
 

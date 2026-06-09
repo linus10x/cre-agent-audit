@@ -107,7 +107,7 @@ from cre_agent_audit.regulatory_replay import (
     pattern_coverage_score,
 )
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 __all__ = [
     # Pattern 1 — DEFCON state machine (ADR-0001)
     "Capability",

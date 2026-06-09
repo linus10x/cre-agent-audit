@@ -1,0 +1,27 @@
+{
+  "title": "cre-agent-audit: Governance Patterns for AI in Commercial Real Estate Operations",
+  "description": "Reference governance patterns, schemas, and runnable implementations for audit-ready autonomous AI agents in commercial real estate operations. Ships nine governance primitives (a DEFCON state machine, a fail-closed un-self-clearable sovereign veto, a tamper-evident hash-chain audit ledger with witness-anchored regeneration detection, an Autonomy Ladder A0-A4 level-gate, a regulation loader, a shadow-mode rollout router, a lease-abstraction provenance check, a fair-housing pre-flight gate with an opt-in mutual-information learned-proxy detector, and a tenant-PII data-residency check) plus a vendor-output adapter (VendorScoreGate) for vendor-mediated AI scoring, persistence/trusted-timestamp/external-witness seams, a module-integrity verifier-attestation hook, and three runnable regulatory-incident replays (TransUnion, SafeRent, RealPage) that produce six-artifact audit-evidence bundles. Anchored to the Fair Housing Act, ECOA, the Colorado AI Act (SB 24-205 as amended by SB 26-189), FCRA, the Sherman Act, EU AI Act, NIST AI RMF, and Treasury FS AI RMF. Reference IP for adoption, not a control operating in production; not legal or compliance advice.",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "version": "v0.2.3",
+  "creators": [
+    {
+      "name": "Bhaduri, Kunjar",
+      "affiliation": "North Texas Capital Investments"
+    }
+  ],
+  "keywords": [
+    "AI governance",
+    "autonomous agents",
+    "commercial real estate",
+    "fair housing",
+    "tenant screening",
+    "lease abstraction",
+    "rent pricing",
+    "autonomy ladder",
+    "audit trail",
+    "human-in-the-loop",
+    "compliance"
+  ]
+}

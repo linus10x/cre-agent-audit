@@ -25,7 +25,7 @@ INCIDENTS_DIR = REPO_ROOT / "examples" / "regulatory-incidents"
 MATTERS = [
     "01_transunion_rental_screening",
     "02_saferent_voucher_screening",
-    "03_realpage_ongoing_litigation",
+    "03_realpage_consent_judgment",
 ]
 
 

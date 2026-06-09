@@ -80,8 +80,8 @@ The hash-chain construction is standard; the witness-anchor framing follows esta
 
 ## Antitrust (foundation for ADR-0008 + `docs/vendor-clauses/pricing.md`)
 
-- ***U.S. v. RealPage, Inc.***, M.D.N.C. (filed Aug 23, 2024) — DOJ + 8 state AGs civil antitrust litigation alleging Sherman § 1 violations via algorithmic rent-coordination; ongoing as of v0.2.0.
-- **Sherman Act § 1**, 15 U.S.C. § 1 — substantive antitrust statute.
+- ***U.S. v. RealPage, Inc. et al.*** (filed Aug 23, 2024) — DOJ + 8 state AGs civil antitrust action alleging **Sherman Act §§ 1 AND 2** violations via algorithmic rent-coordination. DOJ filed a proposed consent judgment with RealPage Nov 24, 2025 (pending Tunney Act approval); co-defendant final judgments entered (e.g., Greystar, Mar 2, 2026); resolved without admission of liability, never adjudicated.
+- **Sherman Act §§ 1 and 2**, 15 U.S.C. §§ 1–2 — substantive antitrust statutes.
 - **Per se vs rule-of-reason analysis** — doctrinal framing referenced in vendor-clauses/pricing.md regarding the limits of process-evidence good-faith defenses.
 
 ## Regulatory matters (foundation for the README lede and ADR-0008 Context section)

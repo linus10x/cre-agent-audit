@@ -1,6 +1,6 @@
 # Regulatory-Incident Replays
 
-Runnable Python replays of named settled (and one ongoing) matters in commercial real-estate AI. Each replay produces an `audit-evidence/<matter>.zip` bundle showing which `cre-agent-audit` patterns would have surfaced the failure modes the public record describes.
+Runnable Python replays of named resolved matters in commercial real-estate AI (two settled, one resolved by proposed consent judgment). Each replay produces an `audit-evidence/<matter>.zip` bundle showing which `cre-agent-audit` patterns would have surfaced the failure modes the public record describes.
 
 These are not legal opinions and they do not adjudicate the underlying matters. Patterns are software; regulatory characterizations are reference mappings; consult counsel for jurisdiction-specific applicability.
 
@@ -26,9 +26,9 @@ cre-replay verify <bundle.zip>                     # re-validate a bundle
 |---|---|---|---|
 | **01** | TransUnion Rental Screening Solutions — FTC + CFPB consent orders, October 2023, $15M civil money penalty, FCRA § 607(b) accuracy | FTC C-4810; CFPB 2023-CFPB-0008 | ADR-0003 (audit ledger) · ADR-0011 (vendor-output adapter) |
 | **02** | *Louis v. SafeRent Solutions, LLC*, No. 1:22-cv-10800 (D. Mass.) — class settlement, November 20, 2024, ~$2.275M, five-year score-use injunction | D. Mass. docket | ADR-0002 (sovereign veto) · ADR-0008 (fair-housing pre-flight) |
-| **03** | *U.S. v. RealPage, Inc. et al.* (M.D.N.C., filed August 23, 2024 by DOJ + 8 state AGs) — **ongoing antitrust litigation** | M.D.N.C. docket | ADR-0001 (DEFCON) · ADR-0011 (vendor-output adapter) |
+| **03** | *U.S. v. RealPage, Inc. et al.* — filed Aug 23, 2024 (DOJ + 8 state AGs; Sherman Act §§ 1 AND 2); **DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending Tunney Act approval); co-defendant final judgments entered (e.g., Greystar, Mar 2, 2026); resolved without admission of liability — not adjudicated, not "ongoing litigation"** | DOJ ATR; Tunney Act filing | ADR-0001 (DEFCON) · ADR-0011 (vendor-output adapter) |
 
-Matter 03 is framed throughout as **alleged conduct**. The replay surfaces coordination *signals*; it does not adjudicate Sherman § 1 exposure. See the per-matter README for the disclaimer pattern.
+Matter 03 is framed throughout as **alleged conduct** that was resolved without admission of liability and never adjudicated. The replay surfaces coordination *signals*; it does not adjudicate Sherman Act §§ 1 or 2 exposure. See the per-matter README for the disclaimer pattern.
 
 ## Want a deeper engagement?
 
