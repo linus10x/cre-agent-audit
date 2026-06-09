@@ -1,45 +1,67 @@
 # cre-agent-audit
 
-> Nine MIT-licensed governance patterns for AI in commercial real estate operations. Durable artifacts, not slideware.
+Nine MIT-licensed governance patterns for AI agents in commercial real estate operations — tenant screening, lease abstraction, and pricing — with a hash-chained audit trail. Durable artifacts, not slideware.
 
 [![CI](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml/badge.svg)](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml)
 [![Coverage 86%](https://img.shields.io/badge/coverage-86%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Tests 336](https://img.shields.io/badge/tests-336%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
-[![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
-[![v0.2.3](https://img.shields.io/badge/release-v0.2.3-blue)](https://github.com/linus10x/cre-agent-audit/releases)
-[![Autonomy Ladder™ family](https://img.shields.io/badge/family-Autonomy%20Ladder%E2%84%A2-purple)](https://autonomy-ladder.io)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20437081.svg)](https://doi.org/10.5281/zenodo.20437081)
+[![v0.2.4](https://img.shields.io/badge/release-v0.2.4-blue)](https://github.com/linus10x/cre-agent-audit/releases)
+[![Autonomy Ladder family](https://img.shields.io/badge/family-Autonomy%20Ladder-purple)](https://github.com/linus10x/autonomy-ladder-libraries)
 
-## The five anchors
+> **What this is:** a reference architecture — production Python, zero runtime dependencies — for governing AI agents in CRE operations: a DEFCON state machine, a non-overridable sovereign veto, a hash-chained audit ledger, a Fair-Housing Pre-Flight Gate, and the A0→A4 Autonomy Ladder.
+> **What this is not:** legal, regulatory, audit, or fairness-testing advice; a deployed production control; or a substitute for counsel. Regulatory characterizations are summaries — consult qualified counsel for jurisdiction-specific compliance. See [`DISCLAIMER.md`](DISCLAIMER.md).
+> **Who this is for:** a CRE owner/operator, or a proptech screening / compliance lead, who owns tenant-screening, lease-abstraction, or pricing decisions and needs to prove the AI stayed bounded.
 
-- **$750M wealth-platform anchor account rescue** at a top-3 wealth-platform vendor (deal architecture + delivery)
-- **12-day ransomware crisis** rebuilt on Azure in 50 days — SOC 2 Type 2 + ISO 27001 in the same window
-- **$7M → $140M P&L growth** over an 18-year arc — JPMorgan Chase Partner of the Year 2007 · 2009 · 2010
-- **Autonomy Ladder™ governance framework** — author of A0→A4 (this repo + [sibling for FSI](https://github.com/linus10x/finserv-agent-audit) + [autonomy-ladder.io](https://autonomy-ladder.io))
-- **Operated through PE-acquisition-to-divestiture** at a regulated-industry technology platform — full hold-period operating cadence
+## 30-second tour
 
-These anchor the framing. The patterns below are the artifact.
+```bash
+git clone https://github.com/linus10x/cre-agent-audit.git
+cd cre-agent-audit
+pip install -e .
+python examples/worked_example_fair_housing_preflight.py
+```
 
----
+An agent submits two tenant-screening decisions. The bounded one passes. The one that reaches for a housing-voucher feature — the pattern named in the *Louis v. SafeRent* settlement — is **vetoed** with a named reason code (`FHA-VOUCHER`), recorded in the hash-chained ledger, and the recurring pattern demotes the system one DEFCON rung, mechanically pausing the capability until a human clears it. Every step is evidence. Cold-clone to verified output: under 60 seconds.
 
-## Lede
+## Read me first
 
-The U.S. Department of Justice filed *U.S. v. RealPage, Inc. et al.* on August 23, 2024 — DOJ plus eight state attorneys general, civil antitrust under the **Sherman Act §§ 1 AND 2**, alleging algorithmic rent-coordination across commercial real estate operating companies. *U.S. v. RealPage* — filed Aug 23, 2024 (DOJ + 8 state AGs; Sherman Act §§ 1 AND 2). Current posture: DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated, not "ongoing litigation." The *Louis v. SafeRent Solutions, LLC* class settlement (No. 1:22-cv-10800, D. Mass., approximately $2.275M, November 20, 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. The Trans Union Rental Screening Solutions joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
+1. **Run a Fair-Housing-Pre-Flight test** — `python examples/worked_example_fair_housing_preflight.py`, or `pip install -e ".[dev]" && pytest tests/test_fair_housing_preflight.py`. See the rail fire on real code.
+2. **[`WORKED_EXAMPLE.md`](WORKED_EXAMPLE.md)** — the one decision class (tenant screening) walked end to end: agent acts → pre-flight catches it → audit entry → demotion, using the real public API.
+3. **[autonomy-ladder.io](https://autonomy-ladder.io)** — the framework and whitepaper behind the A0→A4 ladder. Pattern-to-rung mapping: [`AUTONOMY_LADDER.md`](AUTONOMY_LADDER.md).
 
-Each matter named the same operator-side gap: no audit trail of the model decision. No human-in-loop documentation. No way to prove the system stayed bounded.
+## Install
 
-**cre-agent-audit** is the artifact stack that addresses that gap. Nine MIT-licensed governance patterns for AI-enabled CRE workflows — written for the operators who own tenant-screening, lease abstraction, pricing, underwriting, vendor-data flow, and lease-renewal decisions. Production Python. Fourteen architectural decision records (ADRs) with primary-source regulatory citations. Three runnable worked examples plus three regulatory-incident replays. Companion to [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) and four other regulated-vertical libraries (see the Autonomy Ladder™ family below).
-
-The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) — compliance horizon January 1, 2027 — is the next state-level regulatory checkpoint for CRE operators in the housing branch.
+```bash
+pip install -e .                  # runtime: stdlib only, zero dependencies
+pip install -e ".[dev]"           # + pytest, ruff, mypy, hypothesis
+pip install -e ".[dev,audit-verify]"   # + cryptography (RFC 3161 timestamp verification)
+make verify                       # ruff + mypy + pytest (336 tests, 86% coverage) + JSON-sync + wheel
+```
 
 > **⚠ Notice.** This repository is a reference architecture, not legal, regulatory, audit, or fairness-testing advice. Regulatory characterizations are summaries; readers must consult qualified counsel for jurisdiction-specific compliance. No attorney-client relationship is formed by use of this repository. See [`DISCLAIMER.md`](DISCLAIMER.md).
 
 ---
 
+## Why this matters — three regulatory matters in 24 months
+
+The U.S. Department of Justice filed *U.S. v. RealPage, Inc. et al.* on August 23, 2024 — DOJ plus eight state attorneys general, civil antitrust under the **Sherman Act §§ 1 AND 2**, alleging algorithmic rent-coordination across commercial real estate operating companies. Current posture: DOJ filed a proposed consent judgment with RealPage on Nov 24, 2025 (pending court approval under the Tunney Act); co-defendant final judgments have been entered (e.g., Greystar, Mar 2, 2026). Resolved without admission of liability — not adjudicated, not "ongoing litigation." The *Louis v. SafeRent Solutions, LLC* class settlement (No. 1:22-cv-10800, D. Mass., approximately $2.275M, November 20, 2024) named tenant-screening AI that scored applicants below threshold with no documented reason; the settlement included a five-year score-use injunction on voucher-holder applicants. The Trans Union Rental Screening Solutions joint FTC/CFPB consent orders (October 2023, $15M) named systemic accuracy failures in its rental-screening reports under FCRA § 607(b).
+
+Each matter named the same operator-side gap: no audit trail of the model decision. No human-in-loop documentation. No way to prove the system stayed bounded.
+
+**cre-agent-audit** is the artifact stack that addresses that gap. Nine MIT-licensed governance patterns for AI-enabled CRE workflows — written for the operators who own tenant-screening, lease abstraction, pricing, underwriting, vendor-data flow, and lease-renewal decisions. Production Python. Fourteen architectural decision records (ADRs) with primary-source regulatory citations. Three runnable worked examples plus three regulatory-incident replays. Companion to [`finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) and four other regulated-vertical libraries (see the [Autonomy Ladder family](https://github.com/linus10x/autonomy-ladder-libraries) below).
+
+The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) — compliance horizon January 1, 2027 — is the next state-level regulatory checkpoint for CRE operators in the housing branch.
+
+---
+
 ## Table of contents
 
+- [Why this matters — three regulatory matters in 24 months](#why-this-matters--three-regulatory-matters-in-24-months)
 - [At a glance](#at-a-glance)
+- [Why this exists for frontier autonomy stacks](#why-this-exists-for-frontier-autonomy-stacks)
 - [Why this exists](#why-this-exists)
 - [Quick start](#quick-start)
 - [Architecture overview](#architecture-overview)
@@ -93,7 +115,7 @@ The controls in this library are **domain-agnostic**. The DEFCON state machine, 
 
 ## Why this exists
 
-Three regulatory matters in 24 months changed what *reasonable AI governance* means for commercial real estate operating companies. The plaintiffs and the consent orders named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
+The three matters above named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
 
 Most operator AI surface is vendor-mediated. Tenant-screening models come from SafeRent, RentGrow, TransUnion SmartMove. Revenue-management models come from RealPage, AppFolio, Yardi Revenue IQ. Lease-abstraction models come from Leverton/MRI, V7 Lease, Reonomy. For those surfaces, the patterns in this repo translate to **procurement-clause power** as much as engineering rails — see [`docs/vendor-clauses/`](docs/vendor-clauses/) for the contractual companion to the code.
 
@@ -252,7 +274,7 @@ cre-agent-audit/
 
 ## Part of the Autonomy Ladder™ family
 
-Six co-equal regulated-vertical reference libraries implementing the **Autonomy Ladder** — a governance framework for autonomous AI in regulated operations (A0→A4, every rung demotable). **Framework + whitepaper: [autonomy-ladder.io](https://autonomy-ladder.io).**
+Six co-equal regulated-vertical reference libraries implementing the **Autonomy Ladder** — a governance framework for autonomous AI in regulated operations (A0→A4, every rung demotable). **Family index: [autonomy-ladder-libraries](https://github.com/linus10x/autonomy-ladder-libraries). Framework + whitepaper: [autonomy-ladder.io](https://autonomy-ladder.io).** This repo's pattern-to-rung mapping is in [`AUTONOMY_LADDER.md`](AUTONOMY_LADDER.md).
 
 | Vertical | Library |
 |---|---|
