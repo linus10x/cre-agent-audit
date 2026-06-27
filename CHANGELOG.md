@@ -13,6 +13,10 @@ The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list �
 
 ---
 
+## [0.2.5] — 2026-06-27
+
+First distribution to PyPI via Trusted Publishing (no code changes; packaging/release only).
+
 ## [0.2.4] — 2026-06-09
 
 Frontier-autonomy README section ('Why this exists for frontier autonomy stacks', placed up top) + 'for reviewers & safety teams' note; links the framework and the non-financial agent-coordination demo. No source changes.
