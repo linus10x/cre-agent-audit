@@ -14,9 +14,9 @@ This project is the public framework + the productized services + the published 
 
 The reason this project is durable: the author's specific combination of operator credentials cannot be assembled by anyone starting from scratch in less than 20 years.
 
-1. **$750M wealth-platform anchor account rescue** at a top-3 wealth-platform vendor — deal architecture + delivery
-2. **12-day ransomware crisis** rebuilt on Azure in 50 days — SOC 2 Type 2 + ISO 27001 in the same window
-3. **$7M → $140M P&L growth** over an 18-year arc — JPMorgan Chase Partner of the Year 2007 · 2009 · 2010
+1. **Wealth-platform anchor-account rescue** — owned the deal architecture and the delivery turnaround that kept a flagship wealth-management platform a strategic client was about to walk from
+2. **12-day ransomware crisis** rebuilt on Azure in 50 days — the recovered platform subsequently certified to SOC 2 Type 2 and ISO 27001
+3. **$7M → $140M portfolio growth** over an 18-year arc — recognized three times (2007, 2009, 2010) for partnership performance on the flagship account
 4. **Autonomy Ladder™ governance framework** — author of A0→A4 (`linus10x/cre-agent-audit`, `linus10x/finserv-agent-audit`, [`autonomy-ladder.io`](https://autonomy-ladder.io))
 5. **PE-acquisition-to-divestiture operating arc** at a regulated-industry technology platform — full hold-period operating cadence
 

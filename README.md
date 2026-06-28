@@ -323,13 +323,15 @@ Most CRE operators do not run their own tenant-screening, lease-abstraction, or 
 
 See [`ROADMAP.md`](ROADMAP.md). Highlights for v0.3: pluggable persistence backend for the audit ledger, RFC 3161 trusted-timestamp integration, OpenTimestamps / Sigstore Rekor witness-anchor reference implementation, VendorScoreGate concrete implementation, MI-threshold learned-proxy detection in the Fair-Housing gate, five-state regulatory-mapping community contributions (TX/NY/CA/WA/FL).
 
-## Author
+## Author & disclosures
 
-**Kunjar Bhaduri** — 25-year financial-services and technology executive. Rescued a $750M multi-year wealth-management platform anchor account at a top-3 wealth-platform vendor. Rebuilt production infrastructure on Azure during a 12-day ransomware attack with no DR available — SOC 2 Type 2 and ISO 27001 cleared in the same 50-day window. Three-time JPMorgan Chase Partner of the Year (2007 · 2009 · 2010). Operated through a PE-acquisition-to-divestiture arc at a regulated-industry technology platform.
+**Kunjar Bhaduri** — 25+ year financial-services technology executive. Author of the Autonomy Ladder (A0→A4) AI-governance framework and its six open regulated-vertical reference libraries; founder of North Texas Capital Investments, a self-funded AI-governance research lab. Earlier in his career he rebuilt a regulated production platform on Azure through a 12-day ransomware hard-down with no disaster recovery available; the MVP was restored in 50 days against a six-month plan, with full migration in 75 days. The recovered platform was subsequently certified to SOC 2 Type 2 and ISO 27001. The governance patterns in this library trace to that regulated-production experience and to the operational discipline of a private quantitative options research program (a multi-year, multi-hundred-session solo build that runs in paper-trading Phase 0, with no live capital deployed).
 
 These patterns translate financial-services AI-governance discipline to CRE failure modes documented in the three named regulatory matters. The cross-domain pattern (FSI governance → CRE adoption) is intentional; CRE operators face the same audit-trail, human-in-loop, and proof-of-bounded-operation expectations that FSI institutions resolved over the last decade.
 
-[LinkedIn](https://linkedin.com/in/kunjarbhaduri) · [NTCI Portfolio](https://github.com/linus10x)
+This is independent research. It is not produced on behalf of, and does not represent the views of, any employer or client, and contains no employer- or client-confidential material. The regulatory content is reference mapping, not legal advice. See [DISCLAIMER.md](DISCLAIMER.md).
+
+[LinkedIn](https://linkedin.com/in/kunjarbhaduri) · [Autonomy Ladder](https://autonomy-ladder.io) · [NTCI Portfolio](https://github.com/linus10x)
 
 ## Community
 
