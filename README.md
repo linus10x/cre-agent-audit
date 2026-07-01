@@ -345,7 +345,6 @@ This is independent research. It is not produced on behalf of, and does not repr
 - [NIST AI Risk Management Framework 1.0](https://www.nist.gov/itl/ai-risk-management-framework) — function categories used in every pattern mapping
 - [Treasury Financial Services AI Risk Management Framework](https://home.treasury.gov/) — 230 control objectives, Feb 2026
 - [FINOS AI Risk Initiative](https://air.finos.org/) — artifact format the `governance-artifacts/` folder targets
-- [Marcos López de Prado](https://www.quantresearch.org/) — named advisor on adjacent work on a private quantitative options research program; methodological discipline applied here
 - [Solon Barocas, Moritz Hardt, Arvind Narayanan](https://fairmlbook.org/) — *Fairness and Machine Learning* foundational text
 - Andrew Selbst, Danah Boyd, Sorelle Friedler, Suresh Venkatasubramanian, Janet Vertesi — *Fairness and Abstraction in Sociotechnical Systems* (FAT* 2019)
 - Margaret Mitchell, Simone Wu, Andrew Zaldivar et al. — *Model Cards for Model Reporting* (FAT* 2019)

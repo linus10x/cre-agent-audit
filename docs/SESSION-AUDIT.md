@@ -89,7 +89,7 @@
 | F10 | "Tamper-evident" overclaims without external witness anchor. | Researcher | Folded — Stage 3.7 code reframe + 4.2.6 ADR-0003 Audit Evidence Properties section | 3, 4.2 |
 | F11 | Fair-housing gate is lexical-only but ADR claims MI-threshold detection. | Researcher | Folded — Stage 4.2.2 bounded claim (PARTIAL — full implementation deferred to v0.3) | 4.2 |
 | F12 | Vendor-mediated AI is 80% of operator surface. | CRE CTO | Folded — Stage 6.2 ADR-0011 design + Stage 8.1 vendor-clauses (implementation deferred to v0.3) | 6, 8 |
-| F13 | Author bio APEX/López de Prado line non-sequitur for CRE authority. | PE op-partner | Folded — Stage 4.1 Section 18 rewrite (drop line; move to Acknowledgements only) | 4.1 |
+| F13 | Author-bio provenance line a non-sequitur for CRE authority. | PE op-partner | Folded — Stage 4.1 Section 18 rewrite (line dropped) | 4.1 |
 | F14 | Comparison table missing actual peer set. | PE op-partner + Big-4 | Folded — Stage 4.1 Section 11 two-block table | 4.1 |
 | F15 | Use-case scenarios miss CRE-CTO top-3. | CRE CTO | Folded — Stage 4.1 Section 10 (replace multi-state-PII with AI-mediated resident communication) | 4.1 |
 | F16 | First-90-Days reframe: privileged engineering rails, not public baseline. | CRE CTO | Folded — Stage 4.3 reframe | 4.3 |
