@@ -368,7 +368,7 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - `.gitignore`
 
 ### Reviewed
-- Council pass at 9.80/10 content bar with 5/5 affirmations (slate: Dorie Clark · Justin Welsh · Lou Adler · Marcos López de Prado · Elad Gil)
+- Content review pass at a 9.80/10 bar with a five-mentor brand-advisory review slate (5/5 affirmations)
 
 ### Notes
 - v0.1 is the architectural backbone — no executable Python yet. Quickstart instructions in README assume v0.2 ships before public push to GitHub.

@@ -21,7 +21,7 @@
 - [ ] **ADR boundary:** if this PR changes a pattern's scope, the "What this does NOT cover" section is updated
 - [ ] **Banned words audit:** the diff contains none of: delve, leverage, navigate, journey, transformative, unleash, unlock, game-changer
 - [ ] **No banned openers:** "In today's", "As a leader"
-- [ ] **Confidentiality:** no client, vendor, or counterparty identified in the diff (use generic framing: "PE-backed CRE operating company," "a top-3 wealth-platform vendor")
+- [ ] **Confidentiality:** no client, vendor, or counterparty identified in the diff (use generic framing: "PE-backed CRE operating company," "a large wealth-platform vendor")
 
 ## Engineering checklist
 
