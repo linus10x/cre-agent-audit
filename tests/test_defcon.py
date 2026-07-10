@@ -7,9 +7,21 @@ import pytest
 from cre_agent_audit.governance.defcon import (
     Capability,
     DefconController,
+    DefconDeEscalationError,
+    DefconOverrideRejectedError,
     DefconState,
     DefconTransition,
 )
+
+
+class _AllowAuthorizer:
+    def authorize(self, operator_id: str, action: str, context: dict) -> bool:  # type: ignore[type-arg]
+        return True
+
+
+class _RejectAuthorizer:
+    def authorize(self, operator_id: str, action: str, context: dict) -> bool:  # type: ignore[type-arg]
+        return False
 
 
 class TestDefconInitialState:
@@ -109,7 +121,14 @@ class TestDefconTransitions:
         controller = DefconController()
         controller.transition_to(DefconState.HEIGHTENED, actor="op", reason="r1")
         controller.transition_to(DefconState.RESTRICTED, actor="op", reason="r2")
-        controller.transition_to(DefconState.NORMAL, actor="op", reason="r3 — back to normal")
+        # P4 — de-escalation (RESTRICTED -> NORMAL) must go through the
+        # Authorizer-gated manual_override path, not the unguarded transition_to.
+        controller.manual_override(
+            DefconState.NORMAL,
+            authorizer=_AllowAuthorizer(),
+            operator_id="op",
+            reason="r3 — back to normal",
+        )
         history = controller.history
         assert len(history) == 3
         assert [t.new_state for t in history] == [
@@ -141,4 +160,77 @@ class TestDefconValidation:
             controller = DefconController(initial_state=state)
             assert controller.is_allowed(Capability.AUDIT_WRITE) is True, (
                 f"Audit write must remain allowed at {state!r}"
+            )
+
+
+# --------------------------------------------------------------------------- #
+# P4 — transition-direction guard: no one-call de-escalation via transition_to;
+# de-escalation requires manual_override + a wired Authorizer (fail-closed).
+# --------------------------------------------------------------------------- #
+
+
+class TestDefconTransitionDirectionGuard:
+    def test_escalation_via_transition_to_allowed(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        assert c.state == DefconState.SHUTDOWN
+
+    def test_one_call_deescalation_shutdown_to_normal_refused(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        with pytest.raises(DefconDeEscalationError, match="not permitted via transition_to"):
+            c.transition_to(DefconState.NORMAL, actor="rogue", reason="resume")
+        assert c.state == DefconState.SHUTDOWN  # fail-safe: stays contained
+
+    def test_manual_override_without_authorizer_fails_closed(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        with pytest.raises(DefconOverrideRejectedError, match="requires a wired Authorizer"):
+            c.manual_override(
+                DefconState.NORMAL, authorizer=None, operator_id="op", reason="resume"
+            )
+        assert c.state == DefconState.SHUTDOWN
+
+    def test_manual_override_rejected_by_authorizer_stays_shutdown(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        with pytest.raises(DefconOverrideRejectedError, match="rejected"):
+            c.manual_override(
+                DefconState.NORMAL,
+                authorizer=_RejectAuthorizer(),
+                operator_id="op",
+                reason="resume",
+            )
+        assert c.state == DefconState.SHUTDOWN
+
+    def test_manual_override_approved_deescalates(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        c.manual_override(
+            DefconState.NORMAL,
+            authorizer=_AllowAuthorizer(),
+            operator_id="op",
+            reason="reviewed; safe to resume",
+        )
+        assert c.state == DefconState.NORMAL
+
+    def test_idempotent_same_state_allowed_via_transition_to(self) -> None:
+        c = DefconController()
+        t = c.transition_to(DefconState.NORMAL, actor="op", reason="noop")
+        assert t.new_state == DefconState.NORMAL
+
+    def test_manual_override_empty_operator_id_rejected(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        with pytest.raises(ValueError, match="operator_id"):
+            c.manual_override(
+                DefconState.NORMAL, authorizer=_AllowAuthorizer(), operator_id="", reason="r"
+            )
+
+    def test_manual_override_empty_reason_rejected(self) -> None:
+        c = DefconController()
+        c.transition_to(DefconState.SHUTDOWN, actor="risk", reason="kill")
+        with pytest.raises(ValueError, match="reason"):
+            c.manual_override(
+                DefconState.NORMAL, authorizer=_AllowAuthorizer(), operator_id="op", reason=""
             )

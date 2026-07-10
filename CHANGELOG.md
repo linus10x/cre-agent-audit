@@ -13,6 +13,18 @@ The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list �
 
 ---
 
+## [0.3.0] — STAGED (release date + tag + Zenodo DOI set by owner at tag time — OWNER GATE)
+
+**Autonomy Ladder primitive-hardening release (S1).** Closes the cre primitive defects found by the assurance-catalog pressure-test: the DEFCON transition-direction gap (P4) and the advisory-vs-enforcing labelling of the A2→A3 level-gate (P1). **MINOR bump (the breaking slot in 0.x)** from the live `v0.2.5` tag: the DEFCON change narrows the `transition_to` contract (see *Changed*). Concept DOI (10.5281/zenodo.20437081) resolves to the latest archived version on Zenodo; the author mints a version-specific DOI for selected releases — NEVER re-tag an already-DOI'd version.
+
+### Changed (breaking)
+- **P4 — DEFCON transition-direction guard.** `DefconController.transition_to` now PERMITS only escalation (to a more-severe / lower-level state) and idempotent same-state transitions. A de-escalation toward NORMAL (e.g. the one-call `SHUTDOWN → NORMAL` footgun) raises `DefconDeEscalationError`. De-escalation must go through the new `manual_override(...)`, which requires a wired `Authorizer` and FAILS CLOSED (raises `DefconOverrideRejectedError`) without an approving authorizer. New symbols: `Authorizer`, `DefconDeEscalationError`, `DefconOverrideRejectedError`, `DefconController.manual_override`.
+
+### Added
+- **P1 — independent-attestation strict mode for the A2→A3 level-gate.** `check_a2_to_a3_promotion(..., require_attestation=True, attestations=...)` requires each satisfied criterion to carry an independent (line-2/3) `CriterionAttestation` or it fails. The default check is now explicitly labelled **advisory** (`PromotionGateReport.advisory=True`). New: `CriterionAttestation`; new field `PromotionGateReport.advisory` (defaulted, non-breaking).
+- **Adversarial AL-PROBE suite.** `tests/adversarial/test_al_probes.py` re-authors the assurance-catalog probes (01 level-gate, 03 ledger tamper, 04 DEFCON direction-guard) as committed, reproducible tests. **AL-PROBE-05 is recorded N/A** — cre has no effective-challenge primitive (documented as a skip, never fabricated as a pass).
+- **§7 property tier.** `tests/test_primitive_properties.py` (hypothesis, ~1,400 generated cases) pinning P1 monotonicity, P3 ledger tamper-evidence, and the P4 direction-guard algebra. The CRE golden corpus (RealPage / SafeRent / TransUnion matters-of-record) was already present in `tests/test_regulatory_incident_matters.py`.
+
 ## [0.2.5] — 2026-06-27
 
 First distribution to PyPI via Trusted Publishing (no code changes; packaging/release only).
