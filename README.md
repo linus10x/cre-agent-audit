@@ -29,9 +29,10 @@ An agent submits two tenant-screening decisions. The bounded one passes. The one
 
 ## Read me first
 
-1. **Run a Fair-Housing-Pre-Flight test** — `python examples/worked_example_fair_housing_preflight.py`, or `pip install -e ".[dev]" && pytest tests/test_fair_housing_preflight.py`. See the rail fire on real code.
-2. **[`WORKED_EXAMPLE.md`](WORKED_EXAMPLE.md)** — the one decision class (tenant screening) walked end to end: agent acts → pre-flight catches it → audit entry → demotion, using the real public API.
-3. **[autonomy-ladder.io](https://autonomy-ladder.io)** — the framework and whitepaper behind the A0→A4 ladder. Pattern-to-rung mapping: [`AUTONOMY_LADDER.md`](AUTONOMY_LADDER.md).
+1. **Run `./demo.sh`** — zero install, no network, no make. Three scenes against the real public API: an agent forges its own authorization (no `ConstraintCheck` was ever registered for the action class) and the Sovereign Veto refuses it; an attacker deletes a revocation entry and `verify_chain()` catches the break; an attacker regenerates the *entire* chain (internally self-consistent — `verify_chain()` alone is fooled, exactly as ADR-0003 warns it can be) and forges a witness-anchor claim that the external RFC 3161 / witness register never actually recorded. Source: [`examples/governance_demo.py`](examples/governance_demo.py).
+2. **Run a Fair-Housing-Pre-Flight test** — `python examples/worked_example_fair_housing_preflight.py`, or `pip install -e ".[dev]" && pytest tests/test_fair_housing_preflight.py`. See the rail fire on real code.
+3. **[`WORKED_EXAMPLE.md`](WORKED_EXAMPLE.md)** — the one decision class (tenant screening) walked end to end: agent acts → pre-flight catches it → audit entry → demotion, using the real public API.
+4. **[autonomy-ladder.io](https://autonomy-ladder.io)** — the framework and whitepaper behind the A0→A4 ladder. Pattern-to-rung mapping: [`AUTONOMY_LADDER.md`](AUTONOMY_LADDER.md).
 
 ## Install
 
