@@ -59,6 +59,10 @@ cre_agent_audit = ["py.typed"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-ra --strict-markers"
+# examples/ is not a package (matches the repo's existing convention of
+# runnable-but-not-importable example scripts) -- this lets tests/test_demo.py
+# import examples/governance_demo.py directly by module name.
+pythonpath = ["examples"]
 
 [tool.coverage.run]
 source = ["src/cre_agent_audit"]
@@ -97,3 +101,8 @@ warn_unused_ignores = true
 disallow_any_generics = true
 disallow_untyped_defs = true
 no_implicit_optional = true
+# examples/ is not a package (matches this repo's convention of runnable-
+# but-not-importable example scripts) -- lets `mypy --strict src/ tests/`
+# (the Makefile's typecheck target) resolve tests/test_demo.py's import of
+# examples/governance_demo.py without adding examples/ to that command line.
+mypy_path = "examples"
