@@ -117,7 +117,7 @@ The controls in this library are **domain-agnostic**. The DEFCON state machine, 
 
 ## Why this exists
 
-The three matters above named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
+The three matters above named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below draw on the author's earlier operating experience in financial services and wealth platforms. They are reference implementations written to stand up to risk-committee review, not controls deployed at any firm.
 
 Most operator AI surface is vendor-mediated. Tenant-screening models come from SafeRent, RentGrow, TransUnion SmartMove. Revenue-management models come from RealPage, AppFolio, Yardi Revenue IQ. Lease-abstraction models come from Leverton/MRI, V7 Lease, Reonomy. For those surfaces, the patterns in this repo translate to **procurement-clause power** as much as engineering rails — see [`docs/vendor-clauses/`](docs/vendor-clauses/) for the contractual companion to the code.
 
@@ -158,12 +158,12 @@ Patterns compose into a runtime via the orchestrator (see [`ARCHITECTURE.md`](AR
 
 ### Maturity (honest)
 
-The governance layer is production-grade Python; the agent layer is mostly scaffolding. This table keeps the "production Python" claim from over-reaching.
+The governance layer is fully implemented and tested; the agent layer is mostly scaffolding. This is a reference implementation, not deployed in production by the author or any named adopter (see [docs/LIMITATIONS.md](docs/LIMITATIONS.md)).
 
 | Layer | What ships | Maturity |
 |---|---|---|
-| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Production** — fully implemented, `mypy --strict`, 86% branch coverage, 51,000-example property campaign |
-| `schemas/` — typed decision objects (lease clause, screening decision) | **Production** — typed, validated, tested |
+| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Implemented** — `mypy --strict`, 86% branch coverage, 51,000-example property campaign |
+| `schemas/` — typed decision objects (lease clause, screening decision) | **Implemented** — typed, validated, tested |
 | `examples/regulatory-incidents/` — 3 runnable replays + `cre-replay` CLI | **Functional** — runs end-to-end; produces 6-artifact evidence bundles |
 | `agents/` — 6 agent base classes | **1 functional reference (orchestrator) + 5 stubs** (audit, monitor, risk, strategy, domain_intelligence) — base classes/seams, not full agents |
 
@@ -178,8 +178,7 @@ For an interim CTO or fractional CAIO scoping adoption:
 | Engineering hours to integrate per pattern | 0.5–3 dev-days |
 | Ongoing CPU / memory cost | Negligible (stdlib only; ledger size grows linearly with decision volume) |
 | Exception-review headcount | 0.1–0.3 FTE compliance reviewer per A2+ workflow at portfolio scale |
-| What it offsets | The runtime-gate + audit-primitive layer of a commercial AI-governance platform subscription (typical tier: $120K–$280K/yr) for the patterns this repo covers — does NOT replace policy authoring, vendor-risk workflow, or board-reporting modules those platforms also provide; complementary, not competitive (see Section 11). Also offsets ~40 hours/month manual GC review of decision logs. |
-| Hardest integration item | Wiring Sovereign-Veto authority resolver to your IdP (Okta, Azure AD) — 4–6 months at most enterprises |
+| Hardest integration item | Wiring the Sovereign-Veto authority resolver to your IdP (Okta, Azure AD) |
 | Cold-clone-to-running examples | < 60 seconds |
 
 The 90-day deployment cadence is in [`examples/FIRST_90_DAYS.md`](examples/FIRST_90_DAYS.md).
@@ -234,7 +233,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 | Zero runtime deps | ✅ stdlib only | ✅ stdlib only | N/A | N/A |
 | Python typed (mypy --strict) | ✅ | ✅ | N/A | N/A |
 
-**Commercial AI-governance platforms** — Credo AI, Holistic AI, Fairly AI, Monitaur, IBM watsonx.governance, Microsoft Purview AI Hub — are a different category. They are managed services with subscriptions in the $50K–$300K/yr range, opinionated workflow tooling, vendor-managed control evidence storage, and ongoing policy-as-code maintained by the vendor. cre-agent-audit is a **reference architecture you fork into your own stack**. It is complementary, not competitive: many adopters use a commercial platform for policy + reporting and cre-agent-audit's patterns for the runtime gates and audit primitives the platform integrates with.
+**Commercial AI-governance platforms** — Credo AI, Holistic AI, Fairly AI, Monitaur, IBM watsonx.governance, Microsoft Purview AI Hub — are a different category. They are managed services with subscriptions, opinionated workflow tooling, vendor-managed control evidence storage, and ongoing policy-as-code maintained by the vendor. cre-agent-audit is a **reference architecture you fork into your own stack**. It is complementary, not competitive: many adopters use a commercial platform for policy + reporting and cre-agent-audit's patterns for the runtime gates and audit primitives the platform integrates with.
 
 ## Who this is for
 
@@ -398,23 +397,10 @@ cre-replay verify <bundle.zip>                     # re-validate a bundle
 
 ## Engage
 
-Seven productized-service templates under [`docs/services/`](docs/services/):
-
-| Service | Price | Shape |
-|---|---|---|
-| Diagnostic | $5K | 90-min interview + 20-page deliverable |
-| Audit | $40K | 4 weeks; full audit-evidence bundle |
-| Retainer | $15K/quarter | Quarterly rerun + new-incident + regulatory-update brief |
-| Workshop | $25K–$50K | 1-day on-site or 2-day virtual |
-| Cohort | $50K–$200K | 8-week program; 20–40 seats |
-| Private intel | $25K–$100K/yr | Gated newsletter + private failure-mode catalog + playbook library |
-| Practitioner bench | $10K–$50K/yr | Invite-only practitioner community |
-
-Email `contact@autonomy-ladder.io` with the service name in the subject.
+For advisory or implementation help with these patterns, see [autonomy-ladder.io](https://autonomy-ladder.io).
 
 ## Thesis + publications
 
-- [`THESIS.md`](THESIS.md) — three-year project commitment (2026–2028) — version roadmap, publishing cadence, productization commitment, what the project will NOT become
 - [`PUBLICATIONS.md`](PUBLICATIONS.md) — academic publication track — four target venues (ACM SEMS, ACM FAccT, Journal of Risk & Financial Management, SAFE consortium / NIST AI RMF profile), four draft outlines, citation discipline
 - [ADR-0014](docs/adr/0014-operator-side-ai-governance-category.md) — operator-side AI governance for regulated industries (the category claim)
 
