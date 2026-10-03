@@ -18,6 +18,7 @@ program to DEFCON-4 (ADR-0001).
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 
@@ -67,6 +68,11 @@ _CRIM_BLANKET_FEATURES: frozenset[str] = frozenset(
     {"criminal_history_blanket_deny", "no_criminal_history_allowed"}
 )
 _CRIM_YEARS_SINCE_FEATURE = "criminal_history_years_since"
+
+
+def _utc_now() -> datetime:
+    """Default gate clock: the current UTC wall-clock time."""
+    return datetime.now(timezone.utc)
 
 
 @dataclass(frozen=True)
@@ -159,12 +165,18 @@ class FairHousingPreflightGate(ConstraintCheck):
     Constraint check registered against the protected-surface action classes
     (TENANT_SCREENING, RENEWAL_PRICING, MARKETING_AUDIENCE_TARGETING,
     HOUSING_CREDIT_DECISION, TENANT_COMMUNICATION_PERSONALIZATION).
+
+    ``clock`` supplies the evaluation time for the disparate-impact window
+    (check 5). It defaults to the UTC wall clock. Pass a fixed clock to
+    evaluate the window as of a known instant, for example in tests or when
+    replaying recorded decisions.
     """
 
     jurisdiction_rules: dict[str, JurisdictionRules] = field(default_factory=dict)
     disparate_impact_monitor: DisparateImpactMonitor | None = None
     bypass_registry: BypassRegistry = field(default_factory=BypassRegistry)
     mi_proxy_detector: MIThresholdDetector | None = None
+    clock: Callable[[], datetime] = _utc_now
 
     def _resolve_rules(self, jurisdiction: str) -> JurisdictionRules:
         override = self.jurisdiction_rules.get(jurisdiction)
@@ -290,9 +302,7 @@ class FairHousingPreflightGate(ConstraintCheck):
 
         # 5. Disparate-impact monitor on outputs.
         if self.disparate_impact_monitor is not None:
-            ratio = self.disparate_impact_monitor.lowest_cohort_ratio(
-                now=datetime.now(timezone.utc)
-            )
+            ratio = self.disparate_impact_monitor.lowest_cohort_ratio(now=self.clock())
             if ratio < _FOUR_FIFTHS_RATIO:
                 return VetoResult.veto(
                     reason_code="FHA-DISPARATE",
