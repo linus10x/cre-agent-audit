@@ -1,5 +1,5 @@
 """Mutual-information-based learned-proxy detector for the Fair-Housing
-Pre-Flight Gate (ADR-0008 update; closes F11 from SHIP-RECEIPT).
+Pre-Flight Gate (ADR-0008 update; closes deferred item F11 from v0.2.0).
 
 Detects features carrying statistical signal about a binary protected-class
 attribute, even when those features are lexically opaque (zip-code-shaped

@@ -4,20 +4,17 @@ For every name exported from the package (`cre_agent_audit.__all__`), this
 test scans the public-facing doc surfaces and fails the build if a
 known-deferred marker appears in close proximity to that exported name.
 
-The motivating failure mode (observed 2026-05-28 post-PR-#31 merge):
-multiple downstream docs (`docs/LIMITATIONS.md`, `docs/SHIP-RECEIPT.md`,
-`ROADMAP.md`, `ARCHITECTURE.md`) still said "v0.3 candidate" for
-`VendorScoreGate`, RFC 3161 timestamps, and the witness anchor — features
-that had just shipped in `0.2.1.dev2`. The Majors-chamber transparency
-hit was real: anyone reading the LinkedIn-post-linked GitHub repo first
-encountered the README's accurate state, then drifted-into-stale claims
-in the secondary docs.
+The motivating failure mode (observed 2026-05-28 after PR #31 merged):
+several downstream docs (`docs/LIMITATIONS.md`, `ROADMAP.md`,
+`ARCHITECTURE.md` and a since-removed release note) still said "v0.3
+candidate" for `VendorScoreGate`, RFC 3161 timestamps, and the witness
+anchor. Those features had just shipped in `0.2.1.dev2`. A reader saw the
+accurate state in the README and then stale claims in the secondary docs.
 
 This test runs in CI. A failure means a recent change to either the
-package exports or a doc surface drifted a claim. The fix is the SoT-
-propagation discipline (see `feedback_sot_propagation_discipline.md` in
-the user's memory): identify the SoT for the claim, edit it first, then
-propagate to every downstream doc in the same commit.
+package exports or a doc surface drifted a claim. To fix it, find the
+source of truth for the claim (the ADR or module), edit it first, then
+update every downstream doc in the same commit.
 """
 
 from __future__ import annotations
@@ -39,20 +36,10 @@ PUBLIC_DOC_PATHS = [
     "ARCHITECTURE.md",
     "ROADMAP.md",
     "FAILURE-MODES.md",
-    "THESIS.md",
     "PUBLICATIONS.md",
     "docs/LIMITATIONS.md",
-    "docs/SHIP-RECEIPT.md",
     "docs/PRIOR-ART.md",
     "docs/MAPPING-MATRICES.md",
-    "docs/services/README.md",
-    "docs/services/01-diagnostic-5k.md",
-    "docs/services/02-audit-40k.md",
-    "docs/services/03-retainer-15k-quarterly.md",
-    "docs/services/04-workshop-25k-50k.md",
-    "docs/services/05-cohort-50k-200k.md",
-    "docs/services/06-private-intel-subscription.md",
-    "docs/services/07-practitioner-bench.md",
     "examples/regulatory-incidents/README.md",
 ]
 
