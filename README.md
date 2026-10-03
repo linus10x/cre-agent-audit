@@ -94,7 +94,7 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | | |
 |---|---|
 | Patterns | 9 core (ADR-0001 → ADR-0009) + 4 hardening (ADR-0010 retention; ADR-0011 vendor adapter; ADR-0012 persistence / timestamps / witness anchor; ADR-0013 MI Proxy) + 1 category-claim (ADR-0014 operator-side AI governance) |
-| Tests | 336 passing — 318 deterministic + 18 Hypothesis property/fuzz tests totaling 51,000 generated examples (enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`) |
+| Tests | 336 passing, including the Hypothesis property/fuzz tests (up to 51,000 generated examples in `tests/test_enterprise_scrutiny_campaign.py`) |
 | Branch coverage | 86% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
 | Runtime dependencies | 0 (stdlib only) |
 | Python | 3.10, 3.11, 3.12 (CI matrix) |
@@ -103,7 +103,7 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | Linted | `ruff` clean |
 | Sibling | [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) (financial services) |
 
-**Proof strip (verified by `make verify` on `main`):** 336 tests passing · 86% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 18 Hypothesis property/fuzz tests summing to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
+**Proof strip (verified by `make verify` on `main`):** 336 tests passing · 86% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 17 Hypothesis property/fuzz tests summing to up to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
 
 ## Why this exists for frontier autonomy stacks
 
@@ -112,7 +112,7 @@ The controls in this library are **domain-agnostic**. The DEFCON state machine, 
 - **Framework + whitepaper:** [autonomy-ladder.io](https://autonomy-ladder.io)
 - **Non-financial demo (under 60s):** [`finserv-agent-audit/examples/agent_coordination`](https://github.com/linus10x/finserv-agent-audit/tree/main/examples/agent_coordination) — the same veto / envelope / audit-chain / demotion primitives on a generic agent swarm.
 
-> **For reviewers & safety teams:** every control here is falsifiable — the test suite (336 tests · 51,000-example property campaign) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
+> **For reviewers & safety teams:** every control here is falsifiable — the test suite (336 tests · property campaign of up to 51,000 examples) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
 
 
 ## Why this exists
@@ -326,7 +326,7 @@ See [`ROADMAP.md`](ROADMAP.md). Highlights for v0.3: pluggable persistence backe
 
 ## Author & disclosures
 
-**Kunjar Bhaduri** — 25+ year financial-services technology executive. Author of the Autonomy Ladder (A0→A4) AI-governance framework and its six open regulated-vertical reference libraries; founder of North Texas Capital Investments, a self-funded AI-governance research lab. Earlier in his career he rebuilt a regulated production platform on Azure through a 12-day ransomware hard-down with no disaster recovery available; the MVP was restored in 50 days against a six-month plan, with full migration in 75 days. The recovered platform was subsequently certified to SOC 2 Type 2 and ISO 27001. The governance patterns in this library trace to that regulated-production experience and to the operational discipline of a private quantitative options research program (a multi-year, multi-hundred-session solo build that runs in paper-trading Phase 0, with no live capital deployed).
+**Kunjar Bhaduri** — 25+ year financial-services technology executive. Author of the Autonomy Ladder (A0→A4) AI-governance framework and its six open regulated-vertical reference libraries; founder of North Texas Capital Investments, a self-funded AI-governance research lab. Earlier in his career he rebuilt a regulated production platform on Azure through a 12-day ransomware hard-down with no disaster recovery available; the MVP was restored in 50 days against a six-month plan, with full migration in 75 days. The recovered platform was subsequently certified to SOC 2 Type 2 and ISO 27001. The governance patterns in this library trace to that regulated-production experience.
 
 These patterns translate financial-services AI-governance discipline to CRE failure modes documented in the three named regulatory matters. The cross-domain pattern (FSI governance → CRE adoption) is intentional; CRE operators face the same audit-trail, human-in-loop, and proof-of-bounded-operation expectations that FSI institutions resolved over the last decade.
 
