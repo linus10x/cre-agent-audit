@@ -20,7 +20,7 @@ The standard consulting cadence is "Day 30: publish an audit-baseline report." A
 
 1. Ask the GC for (a) the last three AI-system exception logs and (b) the last RFP response to an enterprise customer's AI-governance questionnaire. Those two documents tell you what governance debt you inherited.
 2. Confirm with the GC the privilege framing for the next 30 days' inventory work (attorney-direction memo; work-product protection scope).
-3. Read [`docs/SHIP-RECEIPT.md`](../docs/SHIP-RECEIPT.md) (if you adopted this repo via fork) and `ROADMAP.md` to know what is here and what is v0.3.
+3. Read [`CHANGELOG.md`](../CHANGELOG.md) and `ROADMAP.md` to know what is here and what is v0.3.
 
 **Day-15 target:**
 
