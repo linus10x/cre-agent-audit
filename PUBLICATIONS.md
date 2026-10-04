@@ -77,9 +77,7 @@ Each peer-reviewed publication produces:
 
 1. **An academic citation surface** — every future paper citing the work compounds the framework's authority (Helmer Power 5, Branding).
 2. **A defensibility anchor** — Big-4 methods review and BigLaw Daubert challenges become survivable.
-3. **A speaking-circuit credential** — peer-reviewed work qualifies for tier-1 conference invitations. Speaking engagements are direct revenue (per `THESIS.md` § Productization, $10K–$25K per talk × 6–12/yr) and indirect credibility (each talk seeds the audience for the next productized-service buyer).
-4. **An audience-expansion signal** — academic readers become inbound for the productized-service portfolio (`docs/services/`).
-5. **A case-history compounding signal** — every peer-reviewed publication is a public anchor that references the (private) case-history library built from paid engagements. Maister's professional-service-firm moat: "we have N prior matters on this exact surface" reads with peer-reviewed credibility, not as practitioner anecdote.
+3. **A speaking-circuit credential** — peer-reviewed work qualifies for tier-1 conference invitations. Speaking engagements build indirect credibility (each talk seeds the audience for the next productized-service buyer).
 
 ## Cadence integration
 

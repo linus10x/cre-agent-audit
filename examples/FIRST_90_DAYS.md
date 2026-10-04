@@ -20,7 +20,7 @@ The standard consulting cadence is "Day 30: publish an audit-baseline report." A
 
 1. Ask the GC for (a) the last three AI-system exception logs and (b) the last RFP response to an enterprise customer's AI-governance questionnaire. Those two documents tell you what governance debt you inherited.
 2. Confirm with the GC the privilege framing for the next 30 days' inventory work (attorney-direction memo; work-product protection scope).
-3. Read [`docs/SHIP-RECEIPT.md`](../docs/SHIP-RECEIPT.md) (if you adopted this repo via fork) and `ROADMAP.md` to know what is here and what is v0.3.
+3. Read [`CHANGELOG.md`](../CHANGELOG.md) and `ROADMAP.md` to know what is here and what is v0.3.
 
 **Day-15 target:**
 
@@ -48,7 +48,7 @@ Each AI surface scored against A0–A4 (per ADR-0004); the misclassified flagged
 1. Wire `SovereignVeto.check()` into the agent boundary on every A2+ decision class identified in `RUNNING-INVENTORY.md`.
 2. Wire `AuditLedger.append()` into every decision class — vetoed *and* executed.
 3. Resolve the "Designating the Sovereign" RACI to your IdP groups (Okta, Azure AD). Document the resolution.
-4. Build the `BypassAuthorityResolver` integration (the most-likely 4–6-month item if you don't already have SOX SOX-style IdP plumbing).
+4. Build the `BypassAuthorityResolver` integration (the most-likely 4–6-month item if you don't already have SOX-style IdP plumbing).
 5. Wire `AuditLedger.chain_head()` publication to an external witness register (OpenTimestamps is free; Sigstore Rekor if your CD pipeline already has Sigstore). Weekly cadence is sufficient for most operators.
 
 **Day-60 target:**

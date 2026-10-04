@@ -3,8 +3,8 @@
 Nine MIT-licensed governance patterns for AI agents in commercial real estate operations — tenant screening, lease abstraction, and pricing — with a hash-chained audit trail. Durable artifacts, not slideware.
 
 [![CI](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml/badge.svg)](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml)
-[![Coverage 86%](https://img.shields.io/badge/coverage-86%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
-[![Tests 336](https://img.shields.io/badge/tests-336%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Coverage 88%](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Tests 348](https://img.shields.io/badge/tests-348%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
@@ -40,7 +40,7 @@ An agent submits two tenant-screening decisions. The bounded one passes. The one
 pip install -e .                  # runtime: stdlib only, zero dependencies
 pip install -e ".[dev]"           # + pytest, ruff, mypy, hypothesis
 pip install -e ".[dev,audit-verify]"   # + cryptography (RFC 3161 timestamp verification)
-make verify                       # ruff + mypy + pytest (336 tests, 86% coverage) + JSON-sync + wheel
+make verify                       # ruff + mypy + pytest (348 tests, 88% coverage) + JSON-sync + wheel
 ```
 
 > **⚠ Notice.** This repository is a reference architecture, not legal, regulatory, audit, or fairness-testing advice. Regulatory characterizations are summaries; readers must consult qualified counsel for jurisdiction-specific compliance. No attorney-client relationship is formed by use of this repository. See [`DISCLAIMER.md`](DISCLAIMER.md).
@@ -94,8 +94,8 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | | |
 |---|---|
 | Patterns | 9 core (ADR-0001 → ADR-0009) + 4 hardening (ADR-0010 retention; ADR-0011 vendor adapter; ADR-0012 persistence / timestamps / witness anchor; ADR-0013 MI Proxy) + 1 category-claim (ADR-0014 operator-side AI governance) |
-| Tests | 336 passing — 318 deterministic + 18 Hypothesis property/fuzz tests totaling 51,000 generated examples (enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`) |
-| Branch coverage | 86% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
+| Tests | 348 passing, including the Hypothesis property/fuzz tests (up to 51,000 generated examples in `tests/test_enterprise_scrutiny_campaign.py`) |
+| Branch coverage | 88% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
 | Runtime dependencies | 0 (stdlib only) |
 | Python | 3.10, 3.11, 3.12 (CI matrix) |
 | License | MIT |
@@ -103,21 +103,21 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | Linted | `ruff` clean |
 | Sibling | [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) (financial services) |
 
-**Proof strip (verified by `make verify` on `main`):** 336 tests passing · 86% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 18 Hypothesis property/fuzz tests summing to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
+**Proof strip (verified by `make verify` on `main`):** 348 tests passing · 88% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 17 Hypothesis property/fuzz tests summing to up to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
 
 ## Why this exists for frontier autonomy stacks
 
-The controls in this library are **domain-agnostic**. The DEFCON state machine, the non-overridable **sovereign veto** (a separate-process control the agent cannot switch off), the **hash-chain audit ledger** (it detects tampering within its trust boundary), the **hard envelopes with mechanical escalation**, the **sampled-review tripwires**, and **monitor-led promotion** were forged in real multi-agent production systems under consequence — and they apply directly to any high-stakes coordinated autonomy (vehicles, robots, agent swarms) where *invisible promotion* or *cascade failure* is unacceptable. The decision class is a parameter: this repo encodes it for **commercial real estate**, but the same A0→A4 deployment-authority structure lifts into any decision class without inheriting financial-services assumptions.
+The controls in this library are **domain-agnostic**. The DEFCON state machine, the non-overridable **sovereign veto** (a separate-process control the agent cannot switch off), the **hash-chain audit ledger** (it detects tampering within its trust boundary), the **hard envelopes with mechanical escalation**, the **sampled-review tripwires**, and **monitor-led promotion** were developed in my own multi-agent research systems — and they apply directly to any high-stakes coordinated autonomy (vehicles, robots, agent swarms) where *invisible promotion* or *cascade failure* is unacceptable. The decision class is a parameter: this repo encodes it for **commercial real estate**, but the same A0→A4 deployment-authority structure lifts into any decision class without inheriting financial-services assumptions.
 
 - **Framework + whitepaper:** [autonomy-ladder.io](https://autonomy-ladder.io)
 - **Non-financial demo (under 60s):** [`finserv-agent-audit/examples/agent_coordination`](https://github.com/linus10x/finserv-agent-audit/tree/main/examples/agent_coordination) — the same veto / envelope / audit-chain / demotion primitives on a generic agent swarm.
 
-> **For reviewers & safety teams:** every control here is falsifiable — the test suite (336 tests · 51,000-example property campaign) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
+> **For reviewers & safety teams:** every control here is falsifiable — the test suite (348 tests · property campaign of up to 51,000 examples) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
 
 
 ## Why this exists
 
-The three matters above named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below are extracted from production work in regulated industries — financial services, wealth platforms, and now CRE — and they survive risk-committee scrutiny because they were designed for it.
+The three matters above named the same evidentiary gap — no documented decision trail, no human-in-loop record, no documented record of bounded operation. The patterns below draw on the author's earlier operating experience in financial services and wealth platforms. They are reference implementations written to stand up to risk-committee review, not controls deployed at any firm.
 
 Most operator AI surface is vendor-mediated. Tenant-screening models come from SafeRent, RentGrow, TransUnion SmartMove. Revenue-management models come from RealPage, AppFolio, Yardi Revenue IQ. Lease-abstraction models come from Leverton/MRI, V7 Lease, Reonomy. For those surfaces, the patterns in this repo translate to **procurement-clause power** as much as engineering rails — see [`docs/vendor-clauses/`](docs/vendor-clauses/) for the contractual companion to the code.
 
@@ -158,12 +158,12 @@ Patterns compose into a runtime via the orchestrator (see [`ARCHITECTURE.md`](AR
 
 ### Maturity (honest)
 
-The governance layer is production-grade Python; the agent layer is mostly scaffolding. This table keeps the "production Python" claim from over-reaching.
+The governance layer is fully implemented and tested; the agent layer is mostly scaffolding. This is a reference implementation, not deployed in production by the author or any named adopter (see [docs/LIMITATIONS.md](docs/LIMITATIONS.md)).
 
 | Layer | What ships | Maturity |
 |---|---|---|
-| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Production** — fully implemented, `mypy --strict`, 86% branch coverage, 51,000-example property campaign |
-| `schemas/` — typed decision objects (lease clause, screening decision) | **Production** — typed, validated, tested |
+| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Implemented** — `mypy --strict`, 88% branch coverage, 51,000-example property campaign |
+| `schemas/` — typed decision objects (lease clause, screening decision) | **Implemented** — typed, validated, tested |
 | `examples/regulatory-incidents/` — 3 runnable replays + `cre-replay` CLI | **Functional** — runs end-to-end; produces 6-artifact evidence bundles |
 | `agents/` — 6 agent base classes | **1 functional reference (orchestrator) + 5 stubs** (audit, monitor, risk, strategy, domain_intelligence) — base classes/seams, not full agents |
 
@@ -178,8 +178,7 @@ For an interim CTO or fractional CAIO scoping adoption:
 | Engineering hours to integrate per pattern | 0.5–3 dev-days |
 | Ongoing CPU / memory cost | Negligible (stdlib only; ledger size grows linearly with decision volume) |
 | Exception-review headcount | 0.1–0.3 FTE compliance reviewer per A2+ workflow at portfolio scale |
-| What it offsets | The runtime-gate + audit-primitive layer of a commercial AI-governance platform subscription (typical tier: $120K–$280K/yr) for the patterns this repo covers — does NOT replace policy authoring, vendor-risk workflow, or board-reporting modules those platforms also provide; complementary, not competitive (see Section 11). Also offsets ~40 hours/month manual GC review of decision logs. |
-| Hardest integration item | Wiring Sovereign-Veto authority resolver to your IdP (Okta, Azure AD) — 4–6 months at most enterprises |
+| Hardest integration item | Wiring the Sovereign-Veto authority resolver to your IdP (Okta, Azure AD) |
 | Cold-clone-to-running examples | < 60 seconds |
 
 The 90-day deployment cadence is in [`examples/FIRST_90_DAYS.md`](examples/FIRST_90_DAYS.md).
@@ -226,7 +225,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 |---|---|---|---|---|
 | Target | CRE operating cos | FSI regulated systems | Universal | Security awareness |
 | Form | MIT reference architecture | MIT reference architecture | Government playbook | Threat list |
-| Runnable patterns | ✅ 9 patterns + 336 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
+| Runnable patterns | ✅ 9 patterns + 348 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
 | Kill switch | ✅ Sovereign Veto | ✅ | ❌ | ❌ |
 | Audit trail | ✅ Hash-chained | ✅ Hash-chained | Recommended | ❌ |
 | Decision-class autonomy | ✅ A0→A4 | ✅ A0→A4 | Recommended | ❌ |
@@ -234,7 +233,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 | Zero runtime deps | ✅ stdlib only | ✅ stdlib only | N/A | N/A |
 | Python typed (mypy --strict) | ✅ | ✅ | N/A | N/A |
 
-**Commercial AI-governance platforms** — Credo AI, Holistic AI, Fairly AI, Monitaur, IBM watsonx.governance, Microsoft Purview AI Hub — are a different category. They are managed services with subscriptions in the $50K–$300K/yr range, opinionated workflow tooling, vendor-managed control evidence storage, and ongoing policy-as-code maintained by the vendor. cre-agent-audit is a **reference architecture you fork into your own stack**. It is complementary, not competitive: many adopters use a commercial platform for policy + reporting and cre-agent-audit's patterns for the runtime gates and audit primitives the platform integrates with.
+**Commercial AI-governance platforms** — Credo AI, Holistic AI, Fairly AI, Monitaur, IBM watsonx.governance, Microsoft Purview AI Hub — are a different category. They are managed services with subscriptions, opinionated workflow tooling, vendor-managed control evidence storage, and ongoing policy-as-code maintained by the vendor. cre-agent-audit is a **reference architecture you fork into your own stack**. It is complementary, not competitive: many adopters use a commercial platform for policy + reporting and cre-agent-audit's patterns for the runtime gates and audit primitives the platform integrates with.
 
 ## Who this is for
 
@@ -271,7 +270,7 @@ cre-agent-audit/
 │   └── compliance_rules.json             # runtime artifact (generated; CI-verified in sync)
 ├── governance-artifacts/                 # 3 FINOS-format contributory control drafts
 ├── scripts/build_compliance_json.py      # author-time YAML → JSON converter
-└── tests/                                # 336 tests (318 deterministic + 18 Hypothesis) · 86% branch coverage
+└── tests/                                # 348 tests · 88% branch coverage
 ```
 
 ## Part of the Autonomy Ladder™ family
@@ -327,7 +326,7 @@ See [`ROADMAP.md`](ROADMAP.md). Highlights for v0.3: pluggable persistence backe
 
 ## Author & disclosures
 
-**Kunjar Bhaduri** — 25+ year financial-services technology executive. Author of the Autonomy Ladder (A0→A4) AI-governance framework and its six open regulated-vertical reference libraries; founder of North Texas Capital Investments, a self-funded AI-governance research lab. Earlier in his career he rebuilt a regulated production platform on Azure through a 12-day ransomware hard-down with no disaster recovery available; the MVP was restored in 50 days against a six-month plan, with full migration in 75 days. The recovered platform was subsequently certified to SOC 2 Type 2 and ISO 27001. The governance patterns in this library trace to that regulated-production experience and to the operational discipline of a private quantitative options research program (a multi-year, multi-hundred-session solo build that runs in paper-trading Phase 0, with no live capital deployed).
+**Kunjar Bhaduri** — 25+ year financial-services technology executive. Author of the Autonomy Ladder (A0→A4) AI-governance framework and its six open regulated-vertical reference libraries; founder of North Texas Capital Investments, a self-funded AI-governance research lab. Earlier in his career he rebuilt a regulated production platform on Azure through a 12-day ransomware hard-down with no disaster recovery available; the MVP was restored in 50 days against a six-month plan, with full migration in 75 days. The recovered platform was subsequently certified to SOC 2 Type 2 and ISO 27001. The governance patterns in this library trace to that regulated-production experience.
 
 These patterns translate financial-services AI-governance discipline to CRE failure modes documented in the three named regulatory matters. The cross-domain pattern (FSI governance → CRE adoption) is intentional; CRE operators face the same audit-trail, human-in-loop, and proof-of-bounded-operation expectations that FSI institutions resolved over the last decade.
 
@@ -398,23 +397,10 @@ cre-replay verify <bundle.zip>                     # re-validate a bundle
 
 ## Engage
 
-Seven productized-service templates under [`docs/services/`](docs/services/):
-
-| Service | Price | Shape |
-|---|---|---|
-| Diagnostic | $5K | 90-min interview + 20-page deliverable |
-| Audit | $40K | 4 weeks; full audit-evidence bundle |
-| Retainer | $15K/quarter | Quarterly rerun + new-incident + regulatory-update brief |
-| Workshop | $25K–$50K | 1-day on-site or 2-day virtual |
-| Cohort | $50K–$200K | 8-week program; 20–40 seats |
-| Private intel | $25K–$100K/yr | Gated newsletter + private failure-mode catalog + playbook library |
-| Practitioner bench | $10K–$50K/yr | Invite-only practitioner community |
-
-Email `contact@autonomy-ladder.io` with the service name in the subject.
+For advisory or implementation help with these patterns, see [autonomy-ladder.io](https://autonomy-ladder.io).
 
 ## Thesis + publications
 
-- [`THESIS.md`](THESIS.md) — three-year project commitment (2026–2028) — version roadmap, publishing cadence, productization commitment, what the project will NOT become
 - [`PUBLICATIONS.md`](PUBLICATIONS.md) — academic publication track — four target venues (ACM SEMS, ACM FAccT, Journal of Risk & Financial Management, SAFE consortium / NIST AI RMF profile), four draft outlines, citation discipline
 - [ADR-0014](docs/adr/0014-operator-side-ai-governance-category.md) — operator-side AI governance for regulated industries (the category claim)
 
