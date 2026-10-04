@@ -3,8 +3,8 @@
 Nine MIT-licensed governance patterns for AI agents in commercial real estate operations — tenant screening, lease abstraction, and pricing — with a hash-chained audit trail. Durable artifacts, not slideware.
 
 [![CI](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml/badge.svg)](https://github.com/linus10x/cre-agent-audit/actions/workflows/test.yml)
-[![Coverage 86%](https://img.shields.io/badge/coverage-86%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
-[![Tests 336](https://img.shields.io/badge/tests-336%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Coverage 88%](https://img.shields.io/badge/coverage-88%25-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
+[![Tests 348](https://img.shields.io/badge/tests-348%20passing-brightgreen)](https://github.com/linus10x/cre-agent-audit/actions)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![Zero Dependencies](https://img.shields.io/badge/runtime%20deps-0-brightgreen)](pyproject.toml)
@@ -40,7 +40,7 @@ An agent submits two tenant-screening decisions. The bounded one passes. The one
 pip install -e .                  # runtime: stdlib only, zero dependencies
 pip install -e ".[dev]"           # + pytest, ruff, mypy, hypothesis
 pip install -e ".[dev,audit-verify]"   # + cryptography (RFC 3161 timestamp verification)
-make verify                       # ruff + mypy + pytest (336 tests, 86% coverage) + JSON-sync + wheel
+make verify                       # ruff + mypy + pytest (348 tests, 88% coverage) + JSON-sync + wheel
 ```
 
 > **⚠ Notice.** This repository is a reference architecture, not legal, regulatory, audit, or fairness-testing advice. Regulatory characterizations are summaries; readers must consult qualified counsel for jurisdiction-specific compliance. No attorney-client relationship is formed by use of this repository. See [`DISCLAIMER.md`](DISCLAIMER.md).
@@ -94,8 +94,8 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | | |
 |---|---|
 | Patterns | 9 core (ADR-0001 → ADR-0009) + 4 hardening (ADR-0010 retention; ADR-0011 vendor adapter; ADR-0012 persistence / timestamps / witness anchor; ADR-0013 MI Proxy) + 1 category-claim (ADR-0014 operator-side AI governance) |
-| Tests | 336 passing, including the Hypothesis property/fuzz tests (up to 51,000 generated examples in `tests/test_enterprise_scrutiny_campaign.py`) |
-| Branch coverage | 86% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
+| Tests | 348 passing, including the Hypothesis property/fuzz tests (up to 51,000 generated examples in `tests/test_enterprise_scrutiny_campaign.py`) |
+| Branch coverage | 88% (above 85% gate; v0.2.0 baseline was 89.18% on a smaller surface) |
 | Runtime dependencies | 0 (stdlib only) |
 | Python | 3.10, 3.11, 3.12 (CI matrix) |
 | License | MIT |
@@ -103,7 +103,7 @@ The Colorado AI Act (SB 24-205, as amended by SB 26-189 signed May 14, 2026) —
 | Linted | `ruff` clean |
 | Sibling | [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finserv-agent-audit) (financial services) |
 
-**Proof strip (verified by `make verify` on `main`):** 336 tests passing · 86% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 17 Hypothesis property/fuzz tests summing to up to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
+**Proof strip (verified by `make verify` on `main`):** 348 tests passing · 88% branch coverage (above the 85% gate) · 14 ADRs · 13 control description tables · `mypy --strict` clean · `ruff` clean · 0 runtime dependencies · 17 Hypothesis property/fuzz tests summing to up to **51,000 generated examples** (the enterprise-scrutiny campaign in `tests/test_enterprise_scrutiny_campaign.py`).
 
 ## Why this exists for frontier autonomy stacks
 
@@ -112,7 +112,7 @@ The controls in this library are **domain-agnostic**. The DEFCON state machine, 
 - **Framework + whitepaper:** [autonomy-ladder.io](https://autonomy-ladder.io)
 - **Non-financial demo (under 60s):** [`finserv-agent-audit/examples/agent_coordination`](https://github.com/linus10x/finserv-agent-audit/tree/main/examples/agent_coordination) — the same veto / envelope / audit-chain / demotion primitives on a generic agent swarm.
 
-> **For reviewers & safety teams:** every control here is falsifiable — the test suite (336 tests · property campaign of up to 51,000 examples) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
+> **For reviewers & safety teams:** every control here is falsifiable — the test suite (348 tests · property campaign of up to 51,000 examples) turns each rule into a runnable check, and the veto and ledger are infrastructure with operational properties (separate process boundary, distinct credentials, a gate the agent cannot reach; write-once retention). These are reference implementations for adoption, not deployed production controls.
 
 
 ## Why this exists
@@ -162,7 +162,7 @@ The governance layer is fully implemented and tested; the agent layer is mostly 
 
 | Layer | What ships | Maturity |
 |---|---|---|
-| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Implemented** — `mypy --strict`, 86% branch coverage, 51,000-example property campaign |
+| `governance/` — the 9 pattern primitives + hardening modules (DEFCON, Sovereign Veto, hash-chain ledger, Autonomy Ladder, Regulation Loader, Shadow Router, Lease Provenance, Fair-Housing Preflight, Tenant PII Residency, VendorScoreGate, persistence/timestamps/witness, MI Proxy, MI-threshold detector) | **Implemented** — `mypy --strict`, 88% branch coverage, 51,000-example property campaign |
 | `schemas/` — typed decision objects (lease clause, screening decision) | **Implemented** — typed, validated, tested |
 | `examples/regulatory-incidents/` — 3 runnable replays + `cre-replay` CLI | **Functional** — runs end-to-end; produces 6-artifact evidence bundles |
 | `agents/` — 6 agent base classes | **1 functional reference (orchestrator) + 5 stubs** (audit, monitor, risk, strategy, domain_intelligence) — base classes/seams, not full agents |
@@ -225,7 +225,7 @@ For the four-framework mapping (NIST AI RMF × ISO/IEC 42001 × COSO ICAIR × Bi
 |---|---|---|---|---|
 | Target | CRE operating cos | FSI regulated systems | Universal | Security awareness |
 | Form | MIT reference architecture | MIT reference architecture | Government playbook | Threat list |
-| Runnable patterns | ✅ 9 patterns + 336 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
+| Runnable patterns | ✅ 9 patterns + 348 tests | ✅ 6 patterns | Conceptual guidance | Conceptual guidance |
 | Kill switch | ✅ Sovereign Veto | ✅ | ❌ | ❌ |
 | Audit trail | ✅ Hash-chained | ✅ Hash-chained | Recommended | ❌ |
 | Decision-class autonomy | ✅ A0→A4 | ✅ A0→A4 | Recommended | ❌ |
@@ -270,7 +270,7 @@ cre-agent-audit/
 │   └── compliance_rules.json             # runtime artifact (generated; CI-verified in sync)
 ├── governance-artifacts/                 # 3 FINOS-format contributory control drafts
 ├── scripts/build_compliance_json.py      # author-time YAML → JSON converter
-└── tests/                                # 336 tests (318 deterministic + 18 Hypothesis) · 86% branch coverage
+└── tests/                                # 348 tests · 88% branch coverage
 ```
 
 ## Part of the Autonomy Ladder™ family
