@@ -29,7 +29,7 @@ class Severity(str, Enum):
 class Citation:
     """A primary-source citation for a regulatory anchor.
 
-    Verbatim case identification per CLAUDE.md voice rules: case name,
+    Verbatim case identification: case name,
     court (or agency), docket, ISO-8601 date. `url` is optional but
     encouraged for verifiability.
     """

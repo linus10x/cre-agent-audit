@@ -30,9 +30,9 @@ cre-replay verify <bundle.zip>                     # re-validate a bundle
 
 Matter 03 is framed throughout as **alleged conduct** that was resolved without admission of liability and never adjudicated. The replay surfaces coordination *signals*; it does not adjudicate Sherman Act §§ 1 or 2 exposure. See the per-matter README for the disclaimer pattern.
 
-## Want a deeper engagement?
+## Engage
 
-See [`docs/services/`](../../docs/services/) for the productized service templates ($5K Diagnostic, $40K Audit, $15K/q Retainer, $25K-$50K Workshop, $50K-$200K Cohort, plus the private intel subscription and the practitioner bench).
+For advisory or implementation help with these patterns, see [autonomy-ladder.io](https://autonomy-ladder.io).
 
 ---
 

@@ -6,7 +6,7 @@ The repo is open because the failure modes a community catches are an order of m
 
 - **Regulatory-coverage PRs.** Each PR cites the specific statute or ordinance (with section number) and adds a test that fails on the current code and passes after the change. Examples: state-level SOI ordinance mappings, multi-language lease provenance extensions, new disparate-impact thresholds for a named jurisdiction.
 - **Adversarial test cases.** Each issue first, PR with a passing test second. Each test exercises one veto reason code at an edge condition (a near-threshold confidence value · a feature name that almost matches a proxy list · a borderline jurisdiction).
-- **Pattern extensions.** New ADRs proposed via PR with the ADR template (Context · Decision · Consequences · Alternatives · Regulatory Anchor · Related). Council bar of 9.5+ content with at least 3 affirmations from the maintainer's review slate before merge.
+- **Pattern extensions.** New ADRs proposed via PR with the ADR template (Context · Decision · Consequences · Alternatives · Regulatory Anchor · Related). Maintainer review before merge.
 - **Documentation improvements.** Diagrams, runnable examples, contributor guides.
 
 ## Code style
@@ -48,7 +48,7 @@ Architecture Decision Records live under `docs/adr/NNNN-short-name.md`. To add o
 1. File a discussion or issue with the proposed ADR title and a one-paragraph context.
 2. Wait for a maintainer to approve the slot or suggest revisions.
 3. PR with the ADR following the template structure (Status · Date · Decider · Context · Decision · Consequences · Regulatory Anchor · CRE-specific notes · Related).
-4. Council bar of 9.5+ content with at least 3-of-5 affirmations from the maintainer's review slate before merge.
+4. Maintainer review and approval before merge.
 
 ## Pull request checklist
 

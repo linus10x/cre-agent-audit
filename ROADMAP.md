@@ -18,7 +18,7 @@
 
 ## v0.2.1 — Adversarial-review follow-ups (released 2026-05-28; tag `v0.2.1`; DOI [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575))
 
-The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings; 26 folded into v0.2.0; 7 deferred to v0.2.1. PR #31 merged 2026-05-28 closed 4 of the 7 plus 2 added during PR 3 (ADR-0013 MI Proxy + the consolidated `AuditConsumer`). 3 items remain for v0.2.2.
+An adversarial pressure test written from five viewpoints (PE operating partner, Big-4 AI-audit partner, AI-governance attorney, CRE-vertical CTO, algorithmic-fairness academic) surfaced 33 findings. 26 were folded into v0.2.0 and 7 were deferred to v0.2.1. PR #31 merged 2026-05-28 closed 4 of the 7 plus 2 added during PR 3 (ADR-0013 MI Proxy + the consolidated `AuditConsumer`). 3 items remain for v0.2.2.
 
 ### Landed in `v0.2.1`
 
@@ -32,7 +32,7 @@ The 5-chamber adversarial review (PE op-partner, Big-4 AI-audit partner, AI-gove
 
 ## v0.2.2 — Released 2026-05-28 (engineering items 2 of 3 closed)
 
-The 3 items deferred from the original 7 `SHIP-RECEIPT.md` v0.2.1 follow-up list:
+The 3 items carried over from the original 7-item v0.2.1 follow-up list:
 
 - ✅ **MI-threshold learned-proxy detection** in `fair_housing_preflight.py` — shipped (ADR-0008 update; mutual-information based; `MIThresholdDetector` + `FHA-MI-PROXY` veto code). Distinct from the Module Integrity Proxy that shipped under ADR-0013.
 - ✅ **`audit-verify` extra wiring** — shipped (`rfc3161_verify.py` signature-chain validation behind the `[audit-verify]` extra; `cryptography>=42`)
