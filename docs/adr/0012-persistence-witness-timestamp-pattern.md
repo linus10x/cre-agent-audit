@@ -14,7 +14,7 @@ v0.2.0 shipped the hash-chained `AuditLedger` (ADR-0003) with three named limita
 2. **Local-clock timestamps.** `AuditEntry.timestamp = datetime.now(timezone.utc)` — no trusted-time attestation; a deployer with system-clock control can backdate.
 3. **Internally consistent, not adversarially tamper-evident.** Hash-chaining alone detects modification by an honest holder of the chain head; an attacker with full ledger-host write access can regenerate the chain end-to-end and `verify_chain()` will still pass.
 
-All three limitations were explicitly deferred to v0.2.1 in [`docs/SHIP-RECEIPT.md`](../SHIP-RECEIPT.md) (items F20 + F20 + F10 of the 5-chamber adversarial review). This ADR documents the v0.2.1 decisions that close them.
+All three limitations were explicitly deferred to v0.2.1 (items F20 + F20 + F10 in the v0.2.0 findings list). This ADR documents the v0.2.1 decisions that close them.
 
 The constraint that bounds every choice in this ADR: **the package's Zero-Runtime-Dependencies posture is load-bearing.** Optional integrations live behind `extras_require`; they are never imported by `cre_agent_audit/__init__.py`.
 

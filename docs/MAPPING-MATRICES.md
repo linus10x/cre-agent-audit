@@ -100,4 +100,4 @@ The mappings in this document are author-asserted at v0.2.0 release. Annual revi
 2. Mapping accuracy holds (a framework revision may add controls that change a pattern's mapping)
 3. New patterns added to the repo are mapped before release
 
-Annual review evidence is recorded in the equivalent of `docs/SESSION-AUDIT.md` Stage 2c "Verified facts ledger" — primary-source URLs + accessed-date + mapping-change deltas.
+Annual review evidence is recorded in a verified-facts ledger: primary-source URLs, accessed dates, and mapping changes.

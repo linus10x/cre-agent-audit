@@ -73,10 +73,8 @@ The category is defined by three structural commitments:
 - ADR-0011 — Vendor-output adapter (the vendor-input boundary)
 - ADR-0012 — Persistence / timestamps / witness anchor (substrate-level operator commitments)
 - ADR-0013 — MI Proxy (operator-attestable verifier)
-- [`THESIS.md`](../../THESIS.md) — three-year project commitment grounded on this category
 - [`PUBLICATIONS.md`](../../PUBLICATIONS.md) — academic publication track defending the category claim
 - [`examples/regulatory-incidents/`](../../examples/regulatory-incidents/) — named-matter replays operationalizing the category
-- [`docs/services/`](../../docs/services/) — productized services anchored on the category
 
 ## Implementation notes
 
@@ -84,8 +82,7 @@ This ADR is positioning, not code. The supporting code + content shipping alongs
 
 - `src/cre_agent_audit/regulatory_replay/` — the framework that operationalizes the category claim (IncidentReplay Protocol + EvidenceBundle + cre-replay CLI)
 - `examples/regulatory-incidents/` — three named-matter replays (TransUnion, SafeRent, RealPage-as-alleged)
-- `docs/services/` — seven productized service templates (5 public-anchor + 2 private-tier)
-- `THESIS.md` + `PUBLICATIONS.md` — the long-term commitment + the academic credibility track
+- `PUBLICATIONS.md`: the academic publication track
 
 Future ADRs (likely 0015+) build on this one. Any new pattern, any new vertical, any new product offering is measured against the three structural commitments named above.
 

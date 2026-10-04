@@ -160,7 +160,7 @@ class TestDisparateImpactMonitor:
             monitor.record(cohort="B", approved=False, when=_ts(-30))
         ratio = monitor.lowest_cohort_ratio(now=_ts())
         assert ratio < 0.80
-        gate = FairHousingPreflightGate(disparate_impact_monitor=monitor)
+        gate = FairHousingPreflightGate(disparate_impact_monitor=monitor, clock=_ts)
         result = gate.evaluate(_action(_decision()))
         assert result.verdict is VetoVerdict.VETO
         assert result.reason_code == "FHA-DISPARATE"
@@ -176,7 +176,23 @@ class TestDisparateImpactMonitor:
             monitor.record(cohort="B", approved=True, when=_ts(-30))
         for _ in range(20):
             monitor.record(cohort="B", approved=False, when=_ts(-30))
-        gate = FairHousingPreflightGate(disparate_impact_monitor=monitor)
+        gate = FairHousingPreflightGate(disparate_impact_monitor=monitor, clock=_ts)
+        result = gate.evaluate(_action(_decision()))
+        assert result.verdict is VetoVerdict.PASS
+
+    def test_gate_evaluates_window_at_its_clock(self) -> None:
+        # The same breach recorded 30 days before _ts() is outside the
+        # 90-day window when the gate's clock reads 120 days after _ts().
+        monitor = DisparateImpactMonitor(window_days=90)
+        for _ in range(80):
+            monitor.record(cohort="A", approved=True, when=_ts(-30))
+        for _ in range(20):
+            monitor.record(cohort="A", approved=False, when=_ts(-30))
+        for _ in range(50):
+            monitor.record(cohort="B", approved=True, when=_ts(-30))
+        for _ in range(50):
+            monitor.record(cohort="B", approved=False, when=_ts(-30))
+        gate = FairHousingPreflightGate(disparate_impact_monitor=monitor, clock=lambda: _ts(120))
         result = gate.evaluate(_action(_decision()))
         assert result.verdict is VetoVerdict.PASS
 

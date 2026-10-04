@@ -203,7 +203,7 @@ class TestValidation:
 
 
 class TestNistAndTreasuryMapping:
-    """Per Gap-Finding G-58 (G_58 in Memos/Gap_Finding_Synthesis_Report_2026-05-22.md).
+    """Per Gap-Finding G-58.
 
     Every pattern carries at least one NIST AI RMF function + one Treasury
     FS AI RMF control range. The loader exposes both as queryable fields.
