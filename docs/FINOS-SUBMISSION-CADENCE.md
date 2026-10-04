@@ -14,7 +14,7 @@ The remaining 16 files are author-draft (structural stubs) awaiting Week-7 fill-
 |---|---|---|
 | Local git branch `finos-submission-wip` on the maintainer's machine | All 19 files at commit `e9d2f6eb5e81ac28018576d1fdfb39e724f11f6c` | Active working copy |
 | Local-only safety tag `archive/finos-submission-wip-20260528T044124Z` | Same commit pinned by tag | Recoverable reference; NOT pushed to origin by design |
-| Timestamped tarball at `~/Documents/110 - Kunjar's Resume/_archives/finos-submission-wip-snapshot-20260528T044124Z.tar.gz` | All 19 files + the submission-package README | Disaster-recovery backup |
+| Timestamped tarball on the maintainer's machine | All 19 files + the submission-package README | Disaster-recovery backup |
 | `origin/finos-submission-wip` | **Deleted 2026-05-28** | The branch was previously on origin (carried over from pre-Stage-5 work) and was deleted after the public-visibility flip revealed that GitHub has no concept of a private branch on a public repo. See "Historical-commit acknowledgement" below. |
 
 ### Historical-commit acknowledgement
@@ -106,7 +106,7 @@ If the local `cre-agent-audit` checkout is lost, corrupted, or accidentally has 
 
 1. **First:** `git reflog --all | grep finos-submission` — the reflog typically retains the branch tip for 90 days after deletion.
 2. **Second:** `git show archive/finos-submission-wip-20260528T044124Z` — the local-only safety tag preserves the commit reference at the snapshot moment.
-3. **Third:** restore from the tarball at `~/Documents/110 - Kunjar's Resume/_archives/finos-submission-wip-snapshot-20260528T044124Z.tar.gz`. The tarball is a complete snapshot of the 19 files at the moment of branch-deletion.
+3. **Third:** restore from the local tarball. The tarball is a complete snapshot of the 19 files at the moment of branch-deletion.
 4. **Last resort:** the historical commit `e9d2f6e` on origin/main still contains the full `finos-air-submission/` folder via git history. `git fetch origin && git checkout e9d2f6e -- finos-air-submission/` retrieves the files from public history.
 
 The disaster-recovery surface is intentionally multi-layered. The Week-7 work is too valuable to lose to a stray `git branch -D`.
