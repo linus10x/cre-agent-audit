@@ -6,7 +6,7 @@ The repo is open because the failure modes a community catches are an order of m
 
 - **Regulatory-coverage PRs.** Each PR cites the specific statute or ordinance (with section number) and adds a test that fails on the current code and passes after the change. Examples: state-level SOI ordinance mappings, multi-language lease provenance extensions, new disparate-impact thresholds for a named jurisdiction.
 - **Adversarial test cases.** Each issue first, PR with a passing test second. Each test exercises one veto reason code at an edge condition (a near-threshold confidence value · a feature name that almost matches a proxy list · a borderline jurisdiction).
-- **Pattern extensions.** New ADRs proposed via PR with the ADR template (Context · Decision · Consequences · Alternatives · Regulatory Anchor · Related). Council bar of 9.5+ content with at least 3 affirmations from the maintainer's review slate before merge.
+- **Pattern extensions.** New ADRs proposed via PR with the ADR template (Context · Decision · Consequences · Alternatives · Regulatory Anchor · Related). Maintainer review before merge.
 - **Documentation improvements.** Diagrams, runnable examples, contributor guides.
 
 ## Code style

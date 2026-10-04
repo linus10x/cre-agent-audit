@@ -257,7 +257,7 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - `README.md` mapping table extended with NIST function + Treasury TFRMF-* control range columns per pattern row; cross-links to sibling `finserv-agent-audit` ADRs added on every inherited-pattern row
 - `CONTRIBUTING.md` — table-stakes OSS contributor guide (regulatory-coverage PR process · adversarial test case workflow · TDD discipline · ADR additions · PR checklist · issue triage labels)
 - `SECURITY.md` — GitHub Security Advisory channel · 72-hour acknowledgment SLA · 90-day disclosure window · severity rubric (Critical / High / Medium / Low) · scope and out-of-scope
-- `finos-air-submission/` directory with the full 18-file submission package — 9 risk markdown files across `risks/operational/`, `risks/regulatory-and-compliance/`, `risks/security/` + 9 mitigation files crediting Autonomy Ladder™ as the named pattern source. 3 fully drafted (AIR-RC-004 Sovereign Veto · AIR-RC-007 Fair Housing · AIR-MIT-RC-VETO-01); 15 carry council-approved structured stubs ready for Week-7 Kunjar fill-in.
+- `finos-air-submission/` directory with the full 18-file submission package — 9 risk markdown files across `risks/operational/`, `risks/regulatory-and-compliance/`, `risks/security/` + 9 mitigation files crediting Autonomy Ladder™ as the named pattern source. 3 fully drafted (AIR-RC-004 Sovereign Veto · AIR-RC-007 Fair Housing · AIR-MIT-RC-VETO-01); 15 carry structured stubs ready for Week-7 Kunjar fill-in.
 
 ### Verified
 - pytest: **140 / 140 passing** (up from 133; the 7 new TestNistAndTreasuryMapping tests load clean)
@@ -265,12 +265,6 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - ruff: **clean** across src/ + tests/ + examples/
 - mypy: **clean** in strict mode across 22 source files
 - All 3 example scripts continue to exit 0
-
-### Companion artifacts shipped outside the repo
-- `Memos/Workbook_First90Days_PE_CRE_CTO_v2.md` — full 28-page workbook draft (council 9.78/10 · 5/5 affirm · WeasyPrint render pending)
-- `Content/CRE-Track/_deliverables/Case_Study_Regulated_Operations_AI_v1.md` — anonymized 8-page case study source (Stage 1 content 9.78/10 + Stage 2 re-ID 10.0/10 universal · APPROVED for publish)
-- `Content/CRE-Track/Article_Phase6_Case_Study_Anchor_v1.md` — ~1,150-word Article 6 RECAST (council 9.78/10 · 5/5 affirm)
-- `Memos/Private_Capital_ADR_Merge_Prep_2026-05-22.md` — bash sequence + PR body for the 3 Private Capital ADRs upstream merge
 
 ## [0.2.0] — 2026-05-22 — Python source layer COMPLETE (9 of 9 governance patterns + 6 agent stubs)
 
@@ -306,7 +300,7 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - Per-clause-kind typed schemas (`ClauseSchema` slot specializations for rent_amount · escalation_rate · break_date · co_tenancy · options_to_renew · jurisdiction · outgoings)
 - Agent stub production realizations (orchestrator wiring against the full compose order)
 - compliance_rules.yaml extension with NIST AI RMF function mapping + Treasury FS AI RMF 230-control mapping per Gap-Finding G-58
-- Full FINOS AIR submission (18 markdown files per `Memos/FINOS_AIR_Submission_Outline_v0_2026-05-22.md`) — Week 8 ship
+- Full FINOS AIR submission (18 markdown files) — Week 8 ship
 
 ## [0.2.0-wip] — 2026-05-22 — Python source layer (in progress · 6 of 10 modules landed)
 
@@ -381,7 +375,7 @@ Maps 1:1 with [`linus10x/finserv-agent-audit`](https://github.com/linus10x/finse
 - `.gitignore`
 
 ### Reviewed
-- Content review pass at a 9.80/10 bar with a five-mentor brand-advisory review slate (5/5 affirmations)
+- Content review pass
 
 ### Notes
 - v0.1 is the architectural backbone — no executable Python yet. Quickstart instructions in README assume v0.2 ships before public push to GitHub.

@@ -4,9 +4,9 @@
 
 ## State as of v0.2.0 (2026-05-28)
 
-The 19-file FINOS AIR submission package was originally drafted alongside the v0.2.0 release. Three of the 19 files (`AIR-RC-004`, `AIR-RC-007`, `AIR-MIT-RC-VETO-01`) were author-complete to a release-defensible standard and were carved out, cleaned up, and shipped on main under MIT in [`../governance-artifacts/`](../governance-artifacts/) with explicit non-endorsement provenance headers per the Stage 5 council decision.
+The 19-file FINOS AIR submission package was originally drafted alongside the v0.2.0 release. Three of the 19 files (`AIR-RC-004`, `AIR-RC-007`, `AIR-MIT-RC-VETO-01`) were author-complete to a release-defensible standard and were carved out, cleaned up, and shipped on main under MIT in [`../governance-artifacts/`](../governance-artifacts/) with explicit non-endorsement provenance headers per the Stage 5 review decision.
 
-The remaining 16 files are author-draft (council-approved structural stubs) awaiting Week-7 fill-in.
+The remaining 16 files are author-draft (structural stubs) awaiting Week-7 fill-in.
 
 ### Where the 16 draft files live
 
@@ -88,7 +88,7 @@ grep -niE 'delve|navigate|journey|transformative|unleash|unlock|game-changer' \
 
 ## What NOT to do during Week-7 fill-in
 
-- **Do not push `finos-submission-wip` to `origin/cre-agent-audit`** until the WG has reviewed. The branch was previously on origin and was deliberately deleted (2026-05-28) to honor the Stage 5 council vote ("publishing a draft WG submission unilaterally would front-run the WG"). Re-pushing the branch reverses that decision without WG sign-off.
+- **Do not push `finos-submission-wip` to `origin/cre-agent-audit`** until the WG has reviewed. The branch was previously on origin and was deliberately deleted (2026-05-28) to honor the Stage 5 review decision ("publishing a draft WG submission unilaterally would front-run the WG"). Re-pushing the branch reverses that decision without WG sign-off.
 - **Do not publish the 16 fill-in commits to any other public GitHub repository** (a personal fork, a forked private-repo-made-public-later, etc.). The discipline is: drafts in private working copies → FINOS WG PR → adopted-or-revised through the WG → catalog entry. Skipping the middle two steps is front-running.
 - **Do not create a public discussion thread on this repository asking for feedback on the 16 files** before WG submission. Same principle.
 - **Do not name specific FINOS WG members in the file content** unless they have explicitly consented to attribution. The WG operates on consensus; attribution should be a WG-process decision, not an author-side decision.
@@ -121,6 +121,6 @@ Once the FINOS AIR Working Group reviews the 16-file PR:
 
 ## Why this document exists
 
-The Stage 5 council decision protected the FINOS WG relationship by removing the 16 stub files from the public main HEAD. The post-launch audit (Stage 17) verified that the original "preserve on a private branch" framing was structurally incorrect — GitHub has no concept of a private branch on a public repo — and the WIP branch was therefore publicly accessible until 2026-05-28. The branch deletion + this document together close the gap: the active working copy is now local-only, the leak path through git history is acknowledged transparently, and the Week-7 workflow is documented so the maintainer can complete the submission without ambiguity about state, location, or sequence.
+The Stage 5 review decision protected the FINOS WG relationship by removing the 16 stub files from the public main HEAD. The post-launch audit (Stage 17) verified that the original "preserve on a private branch" framing was structurally incorrect — GitHub has no concept of a private branch on a public repo — and the WIP branch was therefore publicly accessible until 2026-05-28. The branch deletion + this document together close the gap: the active working copy is now local-only, the leak path through git history is acknowledged transparently, and the Week-7 workflow is documented so the maintainer can complete the submission without ambiguity about state, location, or sequence.
 
 If you are reading this in Week-7 (Q3 2026) and any of the file paths above have changed, treat this document as the historical record and update the on-main version with the current state.

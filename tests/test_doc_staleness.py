@@ -162,7 +162,7 @@ def test_no_deferred_marker_near_exported_feature() -> None:
     marker in any public doc. Co-occurrence means a downstream doc still
     describes a shipped feature as not-yet-shipped.
 
-    Failure remediation: apply the SoT-propagation discipline. Identify
+    Failure remediation: start from the source of truth. Identify
     which ADR / module is the SoT for the claim, edit it first, then
     propagate to the downstream doc in the same commit.
     """
@@ -189,7 +189,7 @@ def test_no_deferred_marker_near_exported_feature() -> None:
             "Doc-staleness drift detected — downstream docs describe "
             "shipped features as deferred:\n\n"
             + "\n\n".join(failures)
-            + "\n\nApply the SoT-propagation discipline: edit the ADR/module first, "
+            + "\n\nTo fix: edit the ADR/module first, "
             "then propagate to the downstream doc in the same commit."
         )
         pytest.fail(msg)
