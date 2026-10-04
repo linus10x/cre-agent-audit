@@ -21,7 +21,7 @@ Code review: loader rejects non-JSON file extensions explicitly (preserves zero-
 
 ## Test of operating effectiveness
 
-Annual: re-verify every regulation citation against primary source (statute text / agency press release / court docket); record verification in `docs/SESSION-AUDIT.md`-style Verified Facts Ledger.
+Annual: re-verify every regulation citation against primary source (statute text / agency press release / court docket); record each verification in a verified-facts ledger (primary-source URL and accessed date).
 
 ## Framework mappings
 

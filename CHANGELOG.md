@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 No items currently in flight. Next-cycle candidate work surfaces here as it lands on `main`.
 
-The single remaining item from the original 7 `SHIP-RECEIPT.md` deferred list — **F32 (Big-4) — Named-GC reference quotes** — is research outside engineering scope and stays open until primary-source quotes can be sourced. It is not gating the next release.
+The single remaining item from the original 7-item deferred list — **F32 (Big-4) — Named-GC reference quotes** — is research outside engineering scope and stays open until primary-source quotes can be sourced. It is not gating the next release.
 
 ---
 
@@ -66,7 +66,7 @@ Documentation- and example-layer correctness pass. No governance-primitive behav
 
 **Released:** 2026-05-28 · **Tag:** `v0.2.2` (minted post-CI green on the release commit) · **PR:** post-PR-#31 follow-on commits on `main`
 
-Closes the two engineering items remaining from the original 7 `SHIP-RECEIPT.md` deferred list. The third (F32 — named-GC reference quotes) is research outside engineering scope and remains open.
+Closes the two engineering items remaining from the original 7-item deferred list. The third (F32 — named-GC reference quotes) is research outside engineering scope and remains open.
 
 ### Added
 
@@ -111,7 +111,7 @@ Closes the two engineering items remaining from the original 7 `SHIP-RECEIPT.md`
 
 **Released:** 2026-05-28 · **Tag:** `v0.2.1` at sha `680239a` · **DOI:** [10.5281/zenodo.20434575](https://doi.org/10.5281/zenodo.20434575) · **PR:** [#31](https://github.com/linus10x/cre-agent-audit/pull/31) (PR 1 + 2 + 3 on `feat/audit-system-hardening`)
 
-Closed 4 of the original 7 `docs/SHIP-RECEIPT.md` deferred items plus 2 added during PR 3 (ADR-0013 MI Proxy and the consolidated `AuditConsumer`). 3 items remain for v0.2.2; see `[Unreleased]` above.
+Closed 4 of the original 7 deferred items plus 2 added during PR 3 (ADR-0013 MI Proxy and the consolidated `AuditConsumer`). 3 items remain for v0.2.2; see `[Unreleased]` above.
 
 Build-time historical note: PR 3 bumped the in-flight marker to `0.2.1.dev2`; the published `v0.2.1` wheel built from sha `680239a` self-identifies as `0.2.1.dev2`. Public tag hashes are immutable per repo policy; the cosmetic drift is a one-time historical quirk preserved rather than rewritten.
 
@@ -167,7 +167,7 @@ Build-time historical note: PR 3 bumped the in-flight marker to `0.2.1.dev2`; th
 
 ### Deferred to v0.2.2
 
-The 3 remaining items from the original 7 `SHIP-RECEIPT.md` deferred list move forward as the v0.2.2 candidate scope (see `[Unreleased]` block above): the fair-housing MI-threshold detector, named-GC reference quotes, and the `audit-verify` extra wiring.
+The 3 remaining items from the original 7-item deferred list move forward as the v0.2.2 candidate scope (see `[Unreleased]` block above): the fair-housing MI-threshold detector, named-GC reference quotes, and the `audit-verify` extra wiring.
 
 The agent topology pruning previously forward-referenced as "(ADR-0013, forthcoming)" in PR 1+2's `[Unreleased]` block is **superseded by v0.2.1's ADR-0013 (MI Proxy)**; the topology decision moves to a future ADR (likely ADR-0014). The consolidation of `AuditAgent` + `MonitorAgent` behind `AuditConsumer` is what landed in this v0.2.1 release in its place.
 
@@ -206,7 +206,7 @@ Doctrinal foundation: *Texas Dept. of Housing v. Inclusive Communities Project*,
 
 ### Adversarial pressure-test fold-in
 
-This release reflects a 5-chamber adversarial review by personas representing a PE operating partner, a Big-4 AI-audit partner, an AI-governance attorney, a CRE-vertical CTO, and an algorithmic-fairness academic. 33 findings surfaced; 26 folded into v0.2.0; 7 explicitly deferred to v0.2.1 (named in `docs/SHIP-RECEIPT.md`).
+This release folds in an adversarial pressure test written from five viewpoints: a PE operating partner, a Big-4 AI-audit partner, an AI-governance attorney, a CRE-vertical CTO, and an algorithmic-fairness academic. 33 findings surfaced. 26 were folded into v0.2.0 and 7 were deferred to v0.2.1.
 
 ### Added in v0.2.0
 

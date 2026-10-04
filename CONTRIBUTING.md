@@ -48,7 +48,7 @@ Architecture Decision Records live under `docs/adr/NNNN-short-name.md`. To add o
 1. File a discussion or issue with the proposed ADR title and a one-paragraph context.
 2. Wait for a maintainer to approve the slot or suggest revisions.
 3. PR with the ADR following the template structure (Status · Date · Decider · Context · Decision · Consequences · Regulatory Anchor · CRE-specific notes · Related).
-4. Council bar of 9.5+ content with at least 3-of-5 affirmations from the maintainer's review slate before merge.
+4. Maintainer review and approval before merge.
 
 ## Pull request checklist
 

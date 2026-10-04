@@ -99,6 +99,6 @@ The hash-chain construction is standard; the witness-anchor framing follows esta
 
 ## Annual review
 
-This document is reviewed annually. The patterns + frameworks + doctrinal foundations move; the lineage must move with them. Each annual review records the field updates that informed any pattern revisions in the equivalent of `docs/SESSION-AUDIT.md` Verified Facts Ledger style.
+This document is reviewed annually. The patterns + frameworks + doctrinal foundations move; the lineage must move with them. Each annual review records the field updates that informed any pattern revisions in a verified-facts ledger (primary-source URL, accessed date, and what changed).
 
 If you identify prior work the patterns build on that is not cited here, please open a PR with the citation + the pattern(s) it informs.
