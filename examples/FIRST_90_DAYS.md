@@ -48,7 +48,7 @@ Each AI surface scored against A0–A4 (per ADR-0004); the misclassified flagged
 1. Wire `SovereignVeto.check()` into the agent boundary on every A2+ decision class identified in `RUNNING-INVENTORY.md`.
 2. Wire `AuditLedger.append()` into every decision class — vetoed *and* executed.
 3. Resolve the "Designating the Sovereign" RACI to your IdP groups (Okta, Azure AD). Document the resolution.
-4. Build the `BypassAuthorityResolver` integration (the most-likely 4–6-month item if you don't already have SOX SOX-style IdP plumbing).
+4. Build the `BypassAuthorityResolver` integration (the most-likely 4–6-month item if you don't already have SOX-style IdP plumbing).
 5. Wire `AuditLedger.chain_head()` publication to an external witness register (OpenTimestamps is free; Sigstore Rekor if your CD pipeline already has Sigstore). Weekly cadence is sufficient for most operators.
 
 **Day-60 target:**
